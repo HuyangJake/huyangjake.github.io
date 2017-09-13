@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS隐式动画 | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="先来一段引用改变下对动画的世界观：  Core Animation基于一个假设，说屏幕上的任何东西都可以（或者可能）做动画。 动画并不需要你在Core Animation中手动打开，相反需要明确地关闭，否则他会一直存在。  123456CGFloat red = arc4random() / (CGFloat)INT_MAX;  CGFloat green = arc4random() / (CG">
+<meta name="keywords" content="学习笔记,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS隐式动画">
+<meta property="og:url" content="http://jake.gift/2017/07/19/iOS隐式动画/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="先来一段引用改变下对动画的世界观：  Core Animation基于一个假设，说屏幕上的任何东西都可以（或者可能）做动画。 动画并不需要你在Core Animation中手动打开，相反需要明确地关闭，否则他会一直存在。  123456CGFloat red = arc4random() / (CGFloat)INT_MAX;  CGFloat green = arc4random() / (CG">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS隐式动画">
+<meta name="twitter:description" content="先来一段引用改变下对动画的世界观：  Core Animation基于一个假设，说屏幕上的任何东西都可以（或者可能）做动画。 动画并不需要你在Core Animation中手动打开，相反需要明确地关闭，否则他会一直存在。  123456CGFloat red = arc4random() / (CGFloat)INT_MAX;  CGFloat green = arc4random() / (CG">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS隐式动画" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/19/iOS隐式动画/" class="article-date">
+      <time datetime="2017-07-19T01:08:59.000Z" itemprop="datePublished">2017-07-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS隐式动画
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>先来一段引用改变下对动画的世界观：</p>
+<blockquote>
+<p>Core Animation基于一个假设，说屏幕上的任何东西都可以（或者可能）做动画。 动画并不需要你在Core Animation中手动打开，相反需要明确地关闭，否则他会一直存在。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CGFloat red = arc4random() / (CGFloat)INT_MAX;</div><div class="line">  CGFloat green = arc4random() / (CGFloat)INT_MAX;</div><div class="line">  CGFloat blue = arc4random() / (CGFloat)INT_MAX;</div><div class="line"></div><div class="line">  self.colorLayer.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0].CGColor;</div></pre></td></tr></table></figure>
+<p>上面这样的一段代码，没有设置任何动画，但是在运行的时候会发现颜色的变化并不是突变的，有一定的动画效果。这个动画怎么实现的，时间又是多少呢？ 这得先从事务说起。</p>
+<a id="more"></a>
+<blockquote>
+<p>事务是Core Animation用来包含一系列属性动画集合的机制，任何用指定事务去改变可以做动画的图层属性都不会立刻发生变化，而是当事务一旦提交的时候开始用一个动画过渡到新值。</p>
+<p>事务通过 CATransaction 类来做管理，使用+begin和+commit来入栈和出栈。</p>
+</blockquote>
+<p>Core Animation在每个run loop周期中自动开始一次新的事务，即使不显式的调用<code>[CATransaction begin]</code> 开始一次事务，任何在一次run loop循环中属性的改变都会被集中起来，然后做一次<strong>0.25</strong>秒的动画。</p>
+<h3 id="关闭隐式动画"><a href="#关闭隐式动画" class="headerlink" title="关闭隐式动画"></a>关闭隐式动画</h3><p>Core Animation通常对CALayer的所有属性（可动画的属性）做动画，但是UIView把它关联的图层的这个特性关闭了。</p>
+<p>我们把改变属性时CALayer自动应用的动画称作行为，当CALayer的属性被修改时候，它会调用-actionForKey:方法，传递属性的名称。<br>具体看看是隐式动画的实现步骤：</p>
+<p>这是<code>CALayer</code>头文件里对<code>actionForKey:</code>方法调用的描述</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/* Returns the action object associated with the event named by the</div><div class="line"> * string &apos;event&apos;. The default implementation searches for an action</div><div class="line"> * object in the following places:</div><div class="line"> *</div><div class="line"> * 1. if defined, call the delegate method -actionForLayer:forKey:</div><div class="line"> * 2. look in the layer&apos;s `actions&apos; dictionary</div><div class="line"> * 3. look in any `actions&apos; dictionaries in the `style&apos; hierarchy</div><div class="line"> * 4. call +defaultActionForKey: on the layer&apos;s class</div><div class="line"> *</div><div class="line"> * If any of these steps results in a non-nil action object, the</div><div class="line"> * following steps are ignored. If the final result is an instance of</div><div class="line"> * NSNull, it is converted to `nil&apos;. */</div><div class="line"></div><div class="line">- (nullable id&lt;CAAction&gt;)actionForKey:(NSString *)event;</div></pre></td></tr></table></figure>
+<ol>
+<li><p>图层首先检测它是否有委托，并且是否实现CALayerDelegate协议指定的-actionForLayer:forKey方法。如果有，直接调用并返回结果。</p>
+</li>
+<li><p>如果没有委托，或者委托没有实现-actionForLayer:forKey方法，图层接着检查包含属性名称对应行为映射的actions字典。</p>
+</li>
+<li><p>如果actions字典没有包含对应的属性，那么图层接着在它的style字典接着搜索属性名。</p>
+</li>
+<li><p>最后，如果在style里面也找不到对应的行为，那么图层将会直接调用定义了每个属性的标准行为的-defaultActionForKey:方法。</p>
+</li>
+</ol>
+<p>所以一轮完整的搜索结束之后，-actionForKey:要么返回空（这种情况下将不会有动画发生），要么是CAAction协议对应的对象，最后CALayer拿这个结果去对先前和当前的值做动画。</p>
+<p>这就解释了UIKit是如何禁用隐式动画的：每个UIView对它关联的图层都扮演了一个委托，并且提供了-actionForLayer:forKey的实现方法。当不在一个动画块的实现中，UIView对所有图层行为返回nil，但是在动画block范围之内，它就返回了一个非空值。</p>
+<p>ps : <code>[CATransaction begin]</code>之后添加下面的代码，同样也会阻止动画的发生：</p>
+<pre><code>[CATransaction setDisableActions:YES];
+</code></pre><h3 id="关联图层设置动画"><a href="#关联图层设置动画" class="headerlink" title="关联图层设置动画"></a>关联图层设置动画</h3><ul>
+<li>UIView关联的图层禁用了隐式动画，对这种图层做动画的唯一办法就是使用UIView的动画函数（而不是依赖CATransaction），或者继承UIView，并覆盖-actionForLayer:forKey:方法，或者直接创建一个<a href="">显式动画</a><em>（等待下一篇笔记）</em>。</li>
+</ul>
+<ul>
+<li>对于单独存在的图层，我们可以通过实现图层的-actionForLayer:forKey:委托方法，或者提供一个actions字典来控制隐式动画。 </li>
+</ul>
+<h3 id="自定义行为"><a href="#自定义行为" class="headerlink" title="自定义行为"></a>自定义行为</h3><p>行为通常是一个被Core Animation隐式调用的显式动画。</p>
+<p>我们来对颜色渐变的代码（文章顶部）使用一个不同的行为，通过给colorLayer设置一个自定义的actions字典。我们也可以使用委托来实现，但是actions字典可以写更少的代码。</p>
+<p>PS: CATransition响应CAAction协议，并且可以当做一个图层行为</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//add a custom action</span></div><div class="line">  <span class="built_in">CATransition</span> *transition = [<span class="built_in">CATransition</span> animation];</div><div class="line">  transition.type = kCATransitionPush;</div><div class="line">  transition.subtype = kCATransitionFromLeft;</div><div class="line">  <span class="keyword">self</span>.colorLayer.actions = @&#123;<span class="string">@"backgroundColor"</span>: transition&#125;;</div></pre></td></tr></table></figure>
+<p>在初始化的时候给layer添加了这样的行为之后，就可以对隐式动画添加了一个 推进过度 的效果</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://zsisme.gitbooks.io/ios-/content/chapter7/layer-actions.html" target="_blank" rel="external">iOS Core Animation</a> 十分感谢译者</p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年07月19日 - 09时08分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/19/iOS隐式动画/" title="iOS隐式动画">http://jake.gift/2017/07/19/iOS隐式动画/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/07/19/iOS隐式动画/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2017/07/17/Hi！CALayer我们聊聊/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hi！CALayer我们聊聊</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关闭隐式动画"><span class="toc-number">1.</span> <span class="toc-text">关闭隐式动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关联图层设置动画"><span class="toc-number">2.</span> <span class="toc-text">关联图层设置动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义行为"><span class="toc-number">3.</span> <span class="toc-text">自定义行为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/07/17/Hi！CALayer我们聊聊/" title="下一篇: Hi！CALayer我们聊聊">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

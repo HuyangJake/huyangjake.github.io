@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JSPatch学习笔记(二) | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这次笔记中主要描述的有： JSPath原理理解（学习作者大牛博客） JSPatch使用的时机 AppDelegate中更新JS文件后何时生效 其他时机手动更新JS文件的效果 JS调用OC方法中的几个坑 JS脚本文件的版本控制管理 更多思考   1. JSPatch原理浅谈JSPatch用iOS内置的JavaScriptCore.framework作为JS引擎，但没有用它JSExport的特性进行J">
+<meta name="keywords" content="学习笔记,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSPatch学习笔记(二)">
+<meta property="og:url" content="http://jake.gift/2016/12/19/JSPatch学习笔记-二/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="这次笔记中主要描述的有： JSPath原理理解（学习作者大牛博客） JSPatch使用的时机 AppDelegate中更新JS文件后何时生效 其他时机手动更新JS文件的效果 JS调用OC方法中的几个坑 JS脚本文件的版本控制管理 更多思考   1. JSPatch原理浅谈JSPatch用iOS内置的JavaScriptCore.framework作为JS引擎，但没有用它JSExport的特性进行J">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2474800-2bd018777a64f24e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2474800-fe734288e695601a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSPatch学习笔记(二)">
+<meta name="twitter:description" content="这次笔记中主要描述的有： JSPath原理理解（学习作者大牛博客） JSPatch使用的时机 AppDelegate中更新JS文件后何时生效 其他时机手动更新JS文件的效果 JS调用OC方法中的几个坑 JS脚本文件的版本控制管理 更多思考   1. JSPatch原理浅谈JSPatch用iOS内置的JavaScriptCore.framework作为JS引擎，但没有用它JSExport的特性进行J">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2474800-2bd018777a64f24e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-JSPatch学习笔记-二" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/19/JSPatch学习笔记-二/" class="article-date">
+      <time datetime="2016-12-19T01:14:01.000Z" itemprop="datePublished">2016-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JSPatch学习笔记(二)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="这次笔记中主要描述的有："><a href="#这次笔记中主要描述的有：" class="headerlink" title="这次笔记中主要描述的有："></a>这次笔记中主要描述的有：</h3><ul>
+<li>JSPath原理理解（学习作者大牛博客）</li>
+<li>JSPatch使用的时机</li>
+<li>AppDelegate中更新JS文件后何时生效</li>
+<li>其他时机手动更新JS文件的效果</li>
+<li>JS调用OC方法中的几个坑</li>
+<li>JS脚本文件的版本控制管理</li>
+<li>更多思考</li>
+</ul>
+<hr>
+<h4 id="1-JSPatch原理浅谈"><a href="#1-JSPatch原理浅谈" class="headerlink" title="1. JSPatch原理浅谈"></a>1. JSPatch原理浅谈</h4><p>JSPatch用iOS内置的JavaScriptCore.framework作为JS引擎，但没有用它JSExport的特性进行JS-OC函 数互调，而是通过Objective-C Runtime，从JS传递要调用的类名函数名到Objective-C，再使用NSInvocation动态调用对应的OC方法。</p>
+<a id="more"></a>
+<p>详细原理介绍可见作者博客:<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3" target="_blank" rel="external">JSPatch 实现原理详解</a></p>
+<p>另外JSPatch已经有商业化的平台<a href="http://jspatch.com/" target="_blank" rel="external">jspatch.com</a>，可以使用里面的SDK，通过这个平台上传的js脚本都存储在七牛云。</p>
+<h4 id="2-JSPatch使用的时机"><a href="#2-JSPatch使用的时机" class="headerlink" title="2. JSPatch使用的时机"></a>2. JSPatch使用的时机</h4><p>确切地说应该是在经过怎样的流程之后开始载入调用JS脚本。<br>在董铂然的博客:<a href="http://www.cnblogs.com/dsxniubility/p/5080875.html" target="_blank" rel="external">JSPatch使用小记</a>中有这样的一套方案：<br><img src="http://upload-images.jianshu.io/upload_images/2474800-2bd018777a64f24e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2474800-fe734288e695601a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这个方案的特点：</p>
+<ol>
+<li>添加了上次请求的时间，避免多余的网络请求</li>
+<li>把更新js脚本的代码放在了<code>applicationDidBecomeActive:</code>方法中，避免程序在后台的时候也进行不必要的脚本更新检查。</li>
+<li>对js文件进行code校验，避免传输过程中被修改。实际使用中应对js脚本文件进行加密。（作者的博客中也建议用RSA等非对称加密对文件进行加密传输）</li>
+<li>连续崩溃次数的判断，能够做到程序自我选择性修复</li>
+</ol>
+<h4 id="3-AppDelegate中更新JS文件后何时生效"><a href="#3-AppDelegate中更新JS文件后何时生效" class="headerlink" title="3. AppDelegate中更新JS文件后何时生效"></a>3. AppDelegate中更新JS文件后何时生效</h4><p>当经过本文第二点中流程之后，本地载入了最新的js脚本文件，那么程序什么时候会使用这个脚本中的代码呢？<br>为此我写了<a href="https://github.com/HuyangJake/JSPatchTestDemo.git" target="_blank" rel="external">demo</a>测试：</p>
+<p>AppDelegate中的代码</p>
+<p>判断本地是否存在hotfix.js文件：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions &#123;</div><div class="line">    </div><div class="line">    <span class="built_in">NSString</span> *docuPath = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>) firstObject];</div><div class="line">    <span class="built_in">NSString</span> *hotfixPath = [docuPath stringByAppendingPathComponent:<span class="string">@"hotfix.js"</span>];</div><div class="line">    <span class="keyword">if</span> ([[<span class="built_in">NSFileManager</span> defaultManager] fileExistsAtPath:hotfixPath]) &#123;</div><div class="line">        [JPEngine startEngine];</div><div class="line">        <span class="built_in">NSString</span> *script = [<span class="built_in">NSString</span> stringWithContentsOfFile:hotfixPath encoding:<span class="built_in">NSUTF8StringEncoding</span> error:<span class="literal">nil</span>];</div><div class="line">        [JPEngine evaluateScript:script];</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>检测是否需要更新：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)applicationDidBecomeActive:(<span class="built_in">UIApplication</span> *)application &#123;</div><div class="line">    <span class="comment">// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.</span></div><div class="line">    </div><div class="line">    [HotFixManager checkUpdateCompleteHandle:^(<span class="built_in">BOOL</span> status, <span class="built_in">NSString</span> *response, <span class="built_in">NSError</span> *error) &#123;</div><div class="line">        <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">            <span class="keyword">if</span> (!status)&#123;</div><div class="line">                <span class="keyword">if</span> (!error) &#123;</div><div class="line">                    <span class="built_in">NSLog</span>(<span class="string">@"没有更新"</span>);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, error.userInfo);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> ;</div><div class="line">            &#125;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"Hotfix文件更新成功"</span>);</div><div class="line">            [JPEngine startEngine];</div><div class="line">            <span class="built_in">NSString</span> *script = [<span class="built_in">NSString</span> stringWithContentsOfFile:response encoding:<span class="built_in">NSUTF8StringEncoding</span> error:<span class="literal">nil</span>];</div><div class="line">            [JPEngine evaluateScript:script];</div><div class="line">            </div><div class="line">        &#125;);</div><div class="line">    &#125;];</div><div class="line">   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>首先第一点可以确定的是：<br><strong>判断本地是否存在js文件需要加载的代码不能够写在网络请求是否需要更新的回调中</strong><br>原因：<br>首先看下我的hotfix.js文件中的代码</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">defineClass(<span class="string">'JSPatchController'</span>, [<span class="comment">/*新增的属性*/</span><span class="string">'updateLabel'</span>], &#123;<span class="comment">//实例方法</span></div><div class="line">            </div><div class="line">            viewDidLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"><span class="comment">//            self.ORIGviewDidLoad()</span></div><div class="line">            self.setTitle(<span class="string">"测试JS1"</span>)</div><div class="line">            self.view().addSubview(self.getUpdateLabel())</div><div class="line">            &#125;,</div><div class="line">            </div><div class="line">            <span class="comment">//实现Label的getter方法</span></div><div class="line">            getUpdateLabel: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> _updateLabel = self.updateLabel()</div><div class="line">            <span class="keyword">if</span> (!_updateLabel) &#123;</div><div class="line">                _updateLabel = <span class="built_in">require</span>(<span class="string">'UILabel'</span>).alloc().init()</div><div class="line">                _updateLabel.setFrame(&#123;<span class="attr">x</span>:<span class="number">50</span>, <span class="attr">y</span>:<span class="number">100</span>, <span class="attr">width</span>:<span class="number">100</span>, <span class="attr">height</span>:<span class="number">30</span>&#125;)</div><div class="line">                _updateLabel.setText(<span class="string">"点击按钮更新JS代码---&gt;"</span>)</div><div class="line">                _updateLabel.setFont(<span class="built_in">require</span>(<span class="string">'UIFont'</span>).systemFontOfSize(<span class="number">15</span>))</div><div class="line">                _updateLabel.setTextColor(<span class="built_in">require</span>(<span class="string">'UIColor'</span>).redColor())</div><div class="line">                _updateLabel.sizeToFit()</div><div class="line">                self.setUpdateLabel(_updateLabel)</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> _updateLabel</div><div class="line">            &#125;,</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>代码中是有添加了<code>updateLabel</code>这样一个属性，并添加到<code>JSPatchController</code>的视图中，其中<code>JSPatchController</code>为window下navigationController的rootViewController。</p>
+<p>当我尝试在检查更新的block没有更新的区块中执行</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[JPEngine startEngine];</div><div class="line"> <span class="built_in">NSString</span> *script = [<span class="built_in">NSString</span> stringWithContentsOfFile:hotfixPath encoding:<span class="built_in">NSUTF8StringEncoding</span> error:<span class="literal">nil</span>]; </div><div class="line">[JPEngine evaluateScript:script]</div></pre></td></tr></table></figure>
+<p>发现<code>JSPatchController</code>并没有添加上<code>updateLabel</code>，起初以为是没有回到主线程中更新视图，经过尝试并不是。当执行NSURLSessionDataTask的网络请求后，会新开启一个线程。而主线程继续执行编译<code>JSPatchController</code>，当新的线程中的网络请求完成了，然后加载了js脚本文件，此时已经不能再对<code>JSPatchController</code>动态添加<code>updateLabel</code>了。</p>
+<ul>
+<li><p>第二点：<code>didFinishLaunchingWithOptions:</code> 的执行优先级是高于<code>applicationDidBecomeActive:</code>方法的，检查本地的js文件应发在前者中。</p>
+</li>
+<li><p>第三点： <code>applicationDidBecomeActive:</code> 方法中检测需要更新并下载了js脚本文件，但是<del>只有下一次启动App的时候才能生效</del>  在根控制器中的动态修改代码只能下一次启动App的时候才能生效。</p>
+</li>
+</ul>
+<h4 id="4-其他时机手动更新JS文件的效果"><a href="#4-其他时机手动更新JS文件的效果" class="headerlink" title="4. 其他时机手动更新JS文件的效果"></a>4. 其他时机手动更新JS文件的效果</h4><p>其他时机这里指的是例如<code>UIControl</code>事件，点击按钮后更新js脚本，那么这个脚本文件中的代码何时生效呢？<br>在demo中的<code>JSPatchController</code>中  “更新JS” 这个按钮，点击执行的代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">IBAction</span>)updateJS:(<span class="built_in">UIButton</span> *)sender &#123;</div><div class="line">    sender.selected = !sender.isSelected;</div><div class="line">    <span class="built_in">NSString</span> *url = sender.isSelected ? jsfile1 : jsfile2;</div><div class="line">    [sender setTitle:<span class="string">@"当前JS1"</span> forState:<span class="built_in">UIControlStateSelected</span>];</div><div class="line">    [sender setTitle:<span class="string">@"当前JS2"</span> forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">    </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"下载的是%@"</span>,url);</div><div class="line">    [HotFixManager downLoadHotFixJSfileWithURL:url completeHandle:^(<span class="built_in">BOOL</span> status, <span class="keyword">id</span> response, <span class="built_in">NSError</span> *error) &#123;</div><div class="line">        <span class="keyword">if</span> (!status)&#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"下载出错\n%@"</span>, error.userInfo);</div><div class="line">            <span class="keyword">return</span> ;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Hotfix文件更新成功"</span>);</div><div class="line">        [JPEngine startEngine];</div><div class="line">        <span class="built_in">NSString</span> *script = [<span class="built_in">NSString</span> stringWithContentsOfFile:response encoding:<span class="built_in">NSUTF8StringEncoding</span> error:<span class="literal">nil</span>];</div><div class="line">        [JPEngine evaluateScript:script];</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>点按按钮有两个js脚本文件可以进行切换，两个js文件中的区别部分为对下一个控制器中的lable文字和navigation title的控制 </p>
+<p>jsfile1：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">defineClass(<span class="string">'SecondViewController'</span>, &#123;</div><div class="line">            viewDidLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            self.ORIGviewDidLoad()</div><div class="line">            <span class="keyword">var</span> label = self.myLabel()</div><div class="line">            label.setText(<span class="string">"这是在JS1中修改的文字"</span>)</div><div class="line">            self.setTitle(<span class="string">"JS1推出的页面"</span>)</div><div class="line">            &#125;</div><div class="line">            &#125;)</div></pre></td></tr></table></figure>
+<p>jsfile2:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">defineClass(<span class="string">'SecondViewController'</span>, &#123;</div><div class="line">            viewDidLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            self.ORIGviewDidLoad()</div><div class="line">            <span class="keyword">var</span> label = self.myLabel()</div><div class="line">            label.setText(<span class="string">"这是在JS2中修改的文字"</span>)</div><div class="line">            self.setTitle(<span class="string">"JS2推出的页面"</span>)</div><div class="line">            &#125;</div><div class="line">            &#125;)</div></pre></td></tr></table></figure>
+<p>测试结果是：更新的js脚本中对之后的页面的js修复代码是可以生效的，但是对之前的页面跟同级的页面是没有效果的。</p>
+<p>其实这些，只要搞清楚原理就都能知道缘由和规律。</p>
+<h4 id="5-JS调用OC方法中的几个坑"><a href="#5-JS调用OC方法中的几个坑" class="headerlink" title="5. JS调用OC方法中的几个坑"></a>5. JS调用OC方法中的几个坑</h4><ul>
+<li>在js中 NSNumber不需要在处理，可直接当数值使用。</li>
+<li>NSRang 初始化：<br><code>var range = {location: 0, length: senderName.length()}</code>;</li>
+<li>无论变量还是方法，单下划线全部改为双下划线</li>
+<li>CGRect 取宽高， 直接<code>rect.width</code>, 不用<code>rect.size.width</code>。其他结构体类似</li>
+<li>js 中 YES 为 ture，NO 为false</li>
+<li>oc对象转js对象可操作<code>toJS()</code>，js对象转oc对象暂时没找到方法。<br>js内创建的字典为js对象，传入oc方法无效</li>
+<li>jspatch 不支持变参方法，如<code>stringWithFormat:</code>，可用js字符串方法或<code>NSMutableString</code>代替。</li>
+</ul>
+<h4 id="6-JS脚本文件的版本控制管理"><a href="#6-JS脚本文件的版本控制管理" class="headerlink" title="6. JS脚本文件的版本控制管理"></a>6. JS脚本文件的版本控制管理</h4><p>一般使用的js脚本文件都是从服务器下发过来，服务器的接口需要返回时候需要更新的参数，需要则下载于当前程序版本号对应版本的js脚本文件。对于多个版本的项目来说，js脚本文件最好也进行版本控制避免出错，可以在服务器单独建立js脚本文件的Git仓库来进行管理。</p>
+<h4 id="7-更多思考"><a href="#7-更多思考" class="headerlink" title="7. 更多思考"></a>7. 更多思考</h4><ul>
+<li>JS热修复的代码在下一次更新中应当使用原生的代码替换，不能超过一个版本。避免对JSPatch有过多的依赖</li>
+<li>使用JS语法来调用OC的方法，没有代码自动补全显得非常吃力。作者bang开发了<a href="https://github.com/bang590/JSPatchX" target="_blank" rel="external">Xcode插件：JSPatchX</a>，然而Xcode8不支持插件了。。。</li>
+<li>在一个很复杂的方法中,仅中间某一行代码需要修改,就要将整个方法用JS重写一遍,推介作者开发的Objective-C转JavaScript代码工具<a href="https://github.com/bang590/JSPatchConvertor" target="_blank" rel="external">JSPatch Convertor</a>,但一些复杂的语法还是要人工修正</li>
+</ul>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2016年12月19日 - 09时14分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/12/19/JSPatch学习笔记-二/" title="JSPatch学习笔记(二)">http://jake.gift/2016/12/19/JSPatch学习笔记-二/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2016/12/19/JSPatch学习笔记-二/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/12/19/Objective-C-isa指针/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Objective-C Isa指针
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/19/JSPatch学习笔记-一/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JSPatch学习笔记(一)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#这次笔记中主要描述的有："><span class="toc-number">1.</span> <span class="toc-text">这次笔记中主要描述的有：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JSPatch原理浅谈"><span class="toc-number">1.1.</span> <span class="toc-text">1. JSPatch原理浅谈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-JSPatch使用的时机"><span class="toc-number">1.2.</span> <span class="toc-text">2. JSPatch使用的时机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-AppDelegate中更新JS文件后何时生效"><span class="toc-number">1.3.</span> <span class="toc-text">3. AppDelegate中更新JS文件后何时生效</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-其他时机手动更新JS文件的效果"><span class="toc-number">1.4.</span> <span class="toc-text">4. 其他时机手动更新JS文件的效果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-JS调用OC方法中的几个坑"><span class="toc-number">1.5.</span> <span class="toc-text">5. JS调用OC方法中的几个坑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-JS脚本文件的版本控制管理"><span class="toc-number">1.6.</span> <span class="toc-text">6. JS脚本文件的版本控制管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-更多思考"><span class="toc-number">1.7.</span> <span class="toc-text">7. 更多思考</span></a></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/12/19/Objective-C-isa指针/" title="上一篇: Objective-C Isa指针">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/12/19/JSPatch学习笔记-一/" title="下一篇: JSPatch学习笔记(一)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Objective-C中的装饰模式 | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="背景前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了《Objective-C编程之道：iOS设计模式解析》 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。 什么是装饰模式就描述概念而言，我觉得《Head First 设计模式》这本书通过各种例子阐述得要更加详细易懂。《Objective-C编程之道：iOS设计模式">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C中的装饰模式">
+<meta property="og:url" content="http://jake.gift/2017/01/10/Objective-C中的装饰模式/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="背景前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了《Objective-C编程之道：iOS设计模式解析》 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。 什么是装饰模式就描述概念而言，我觉得《Head First 设计模式》这本书通过各种例子阐述得要更加详细易懂。《Objective-C编程之道：iOS设计模式">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C中的装饰模式">
+<meta name="twitter:description" content="背景前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了《Objective-C编程之道：iOS设计模式解析》 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。 什么是装饰模式就描述概念而言，我觉得《Head First 设计模式》这本书通过各种例子阐述得要更加详细易懂。《Objective-C编程之道：iOS设计模式">
+<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Objective-C中的装饰模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/10/Objective-C中的装饰模式/" class="article-date">
+      <time datetime="2017-01-10T06:34:56.000Z" itemprop="datePublished">2017-01-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Objective-C中的装饰模式
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了<strong>《Objective-C编程之道：iOS设计模式解析》</strong> 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。</p>
+<h3 id="什么是装饰模式"><a href="#什么是装饰模式" class="headerlink" title="什么是装饰模式"></a>什么是装饰模式</h3><p>就描述概念而言，我觉得<strong>《Head First 设计模式》</strong>这本书通过各种例子阐述得要更加详细易懂。<strong>《Objective-C编程之道：iOS设计模式解析》</strong>讲得更多是iOS开发中的使用和不同实现方式的对比。<br><a id="more"></a><br>标准的装饰模式有包括一个抽象的Component父类，它声明了一些操作，它具体的类讲进行重载以实现自己特定的操作。这个Component具体类是模式中的被装饰者，Component父类可以被细化为另一个叫做Decorator的抽象类，即装饰者抽象类。Decorator类中包含了一个Component的引用。Decorator的具体类为Component或者Decorator定义了几个扩展行为，并且会在自己的操作中内嵌Component操作。关系图见 <a href="#class map"><strong>装饰模式类图</strong></a></p>
+<p>Component定义了一些抽象操作，具体类将进行重载实现自己特定的操作。Decorator抽象类通过将一个Component（或Decorator）内嵌到Decorator对象，定义了扩展这个Component的实例的“装饰性”的行为。</p>
+<p>默认的operation方法只是想内嵌的Component发送一个消息，Decorator的具体实现类重载父类的operation，通过super把自己增加的行为扩展给Component的operation。如果只需要向Component添加一种职责，那可以省掉抽象的Decorator类，让具体的Decorator直接把请求转发给Component。那么这种方式就好像形成一种操作链，把一种行为加到另一种行为之上，如<a href="#class map"><strong>对象图</strong></a></p>
+<h4 id="装饰模式类图"><a href="#装饰模式类图" class="headerlink" title="装饰模式类图"></a><span id="class map">装饰模式类图</span></h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<h3 id="何时使用装饰模式"><a href="#何时使用装饰模式" class="headerlink" title="何时使用装饰模式"></a>何时使用装饰模式</h3><ul>
+<li><p>想要在不影响其他对象的情况下，以动态、透明的方式给单个对象添加职责。</p>
+</li>
+<li><p>想要扩展一个类的行为，却做不到。类定义可能被隐藏，无法进行子类化；或者对类的每个行为的扩展，为支持每种功能组合，将产生大量的子类</p>
+</li>
+<li><p>对类的职责的扩展是可选的。</p>
+</li>
+</ul>
+<h3 id="装饰模式在iOS中的实现"><a href="#装饰模式在iOS中的实现" class="headerlink" title="装饰模式在iOS中的实现"></a>装饰模式在iOS中的实现</h3><p>根据Objective-C的特性，有两种实现方式：</p>
+<ol>
+<li><a href="#child">通过真正的子类实现装饰</a></li>
+<li><a href="#category">通过分类实现装饰</a></li>
+</ol>
+<p>第二种方式是使用了Objective-C的语言功能，通过分类向类添加行为，不必进行子类化，这并非标准的装饰模式结构，但是实现了装饰模式同样的需求。尽管使用分类来实现装饰模式跟原始风格有偏离，但是实现少量的装饰器的时候，它比真正子类方式更加轻量、更加容易。</p>
+<p>例子是使用装饰实现UIImage的滤镜功能 终于要见代码了~</p>
+<hr>
+<h4 id="真子类实现装饰"><a href="#真子类实现装饰" class="headerlink" title="真子类实现装饰"></a><span id="child">真子类实现装饰</span></h4><p>先看目录结构：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog" alt=""></p>
+<p>Component抽象类是一个Protocol文件，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ImageComponent</span> &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line"><span class="keyword">@optional</span></div><div class="line">- (<span class="keyword">void</span>)drawAsPatternInRect:(<span class="built_in">CGRect</span>)rect;</div><div class="line">- (<span class="keyword">void</span>)drawAtPoint:(<span class="built_in">CGPoint</span>)point;</div><div class="line">- (<span class="keyword">void</span>)drawAtPoint:(<span class="built_in">CGPoint</span>)ponit blendMode:(<span class="built_in">CGBlendMode</span>)blendMode alpha:(<span class="built_in">CGFloat</span>)alpha;</div><div class="line">- (<span class="keyword">void</span>)drawInRect:(<span class="built_in">CGRect</span>)rect;</div><div class="line">- (<span class="keyword">void</span>)drawInRect:(<span class="built_in">CGRect</span>)rect blendMode:(<span class="built_in">CGBlendMode</span>)blendMode alpha:(<span class="built_in">CGFloat</span>)alpha;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p><code>UIImage_ImageComponent.h</code>是UIImage的一个Extension，让UIImage遵循ImageComponent协议。如此在装饰模式中UIImage类是ImageComponent抽象类的具体类，即UIImage是模式中的被装饰者。</p>
+<p>Decorator抽象类<code>ImageFilter</code>遵守ImageComponent协议，并定义了三个方法和一个ImageComponent协议的代理对象属性。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ImageFilter</span> : <span class="title">NSObject</span> &lt;<span class="title">ImageComponent</span>&gt;</span></div><div class="line">- (<span class="keyword">void</span>)apply;</div><div class="line">- (<span class="keyword">id</span>)initWithImageComponent:(<span class="keyword">id</span> &lt;ImageComponent&gt;) component;</div><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector;</div><div class="line">- </div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ImageFilter</span> ()</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> &lt;ImageComponent&gt; component;</div><div class="line"><span class="keyword">@end</span></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ImageFilter</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">instancetype</span>)initWithImageComponent:(<span class="keyword">id</span>&lt;ImageComponent&gt;)component &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</div><div class="line">        [<span class="keyword">self</span> setComponent:component];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)apply &#123;</div><div class="line">    <span class="comment">//由子类重载</span></div><div class="line">&#125;</div><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector &#123;</div><div class="line">    <span class="built_in">NSString</span> *selectorName = <span class="built_in">NSStringFromSelector</span>(aSelector);</div><div class="line">    <span class="keyword">if</span> ([selectorName hasPrefix:<span class="string">@"draw"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> apply];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.component;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>在Decorator抽象类的具体实现类中去重载apply方法，当发送以”draw”开头的消息时，先执行Decorator具体类中的apply方法，然后再执行Component具体类即UIImage类（被装饰者）中的”draw”开头的那个方法。如此实现了对UIImage对应的”draw”开头方法动态添加行为。</p>
+<p>具体的使用代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"avatar.jpg"</span>];</div><div class="line">    <span class="built_in">CGAffineTransform</span> rorateTransform = <span class="built_in">CGAffineTransformMakeRotation</span>(-M_PI / <span class="number">4</span>);</div><div class="line">    <span class="built_in">CGAffineTransform</span> translateTransform = <span class="built_in">CGAffineTransformMakeTranslation</span>(-image.size.width / <span class="number">2.0</span>, image.size.height / <span class="number">8.0</span>);</div><div class="line">    <span class="built_in">CGAffineTransform</span> finalTransform = <span class="built_in">CGAffineTransformConcat</span>(rorateTransform, translateTransform);</div><div class="line">    </div><div class="line">    <span class="keyword">id</span>&lt;ImageComponent&gt;transformdImage = [[ImageTransformFilter alloc] initWithImageComponent:image transform:finalTransform];</div><div class="line">    </div><div class="line">    <span class="keyword">id</span>&lt;ImageComponent&gt;finalImage = [[ImageShadowFliter alloc] initWithImageComponent:transformdImage];</div><div class="line">    </div><div class="line">    DecoratorView *decoratorView = [[DecoratorView alloc] initWithFrame:<span class="keyword">self</span>.view.frame];</div><div class="line">    [decoratorView setImage:finalImage];</div><div class="line">    [<span class="keyword">self</span>.view addSubview:decoratorView];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由<code>DecoratorView</code>中的<code>drawRect：</code>调起UIImage的装饰</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">DecoratorView</span></span></div><div class="line">during animation.</div><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</div><div class="line">    [<span class="keyword">self</span>.image drawInRect:rect];</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p><strong>类图如下:</strong><br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<p>各种ImageComponent对象可在运行时进行连接，如下图：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog" alt=""></p>
+<hr>
+<h4 id="分类实现装饰"><a href="#分类实现装饰" class="headerlink" title="分类实现装饰"></a><span id="category">分类实现装饰</span></h4><p>分类方式实现就是平常开发中常见的使用，代码就不再一一列出</p>
+<p>类图如下：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<p><code>BaseFilter</code>分类中定义了绘图的方法，<code>Transform</code>和<code>shadow</code>分类中可以调用<code>BaseFilter</code>分类中定义的方法来进行自己的绘制。他们也可以像真正子类化方式那样链接起来，来看对象图:<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog" alt=""></p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>装饰模式在Objective-C中有两种不同的实现方式，真正子类方式的实现使用一种较为结构化的方式链接各种装饰器，分类的方式更加简单和轻量，使用于现有类只需要少量装饰器的应用。</p>
+<p>参考：《Objective-C编程之道：iOS设计模式解析》第16章，（190-206）<br>demo地址：<a href="https://github.com/HuyangJake/DecoratorDemo.git" target="_blank" rel="external">GitHub</a></p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年01月10日 - 14时34分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/10/Objective-C中的装饰模式/" title="Objective-C中的装饰模式">http://jake.gift/2017/01/10/Objective-C中的装饰模式/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/01/10/Objective-C中的装饰模式/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/01/12/cookie-in-iOS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Cookie in iOS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/04/继承与代理-Decorate-Pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">继承与代理--Decorate Pattern</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是装饰模式"><span class="toc-number">2.</span> <span class="toc-text">什么是装饰模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#装饰模式类图"><span class="toc-number">2.1.</span> <span class="toc-text">装饰模式类图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#何时使用装饰模式"><span class="toc-number">3.</span> <span class="toc-text">何时使用装饰模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装饰模式在iOS中的实现"><span class="toc-number">4.</span> <span class="toc-text">装饰模式在iOS中的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#真子类实现装饰"><span class="toc-number">4.1.</span> <span class="toc-text">真子类实现装饰</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分类实现装饰"><span class="toc-number">4.2.</span> <span class="toc-text">分类实现装饰</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/01/12/cookie-in-iOS/" title="上一篇: Cookie in iOS">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/01/04/继承与代理-Decorate-Pattern/" title="下一篇: 继承与代理--Decorate Pattern">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

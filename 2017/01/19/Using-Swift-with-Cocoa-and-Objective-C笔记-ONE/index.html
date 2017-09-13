@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Using Swift With Cocoa and Objective-C笔记_ONE | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Objective-C和Swift的非空值、可选值转换Objective-C 能够使用空值标记来设定一个参数类型，属性类型或者返回值类型是否可以为 NULL 或者 为 nil 值。单独的类型声明可以使用nullable和nonnull标注，空值的范围性的声明可以使用NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END宏。如果一个类型没有任何的空值标注信息，Sw">
+<meta name="keywords" content="iOS,Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using Swift With Cocoa and Objective-C笔记_ONE">
+<meta property="og:url" content="http://jake.gift/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="Objective-C和Swift的非空值、可选值转换Objective-C 能够使用空值标记来设定一个参数类型，属性类型或者返回值类型是否可以为 NULL 或者 为 nil 值。单独的类型声明可以使用nullable和nonnull标注，空值的范围性的声明可以使用NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END宏。如果一个类型没有任何的空值标注信息，Sw">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using Swift With Cocoa and Objective-C笔记_ONE">
+<meta name="twitter:description" content="Objective-C和Swift的非空值、可选值转换Objective-C 能够使用空值标记来设定一个参数类型，属性类型或者返回值类型是否可以为 NULL 或者 为 nil 值。单独的类型声明可以使用nullable和nonnull标注，空值的范围性的声明可以使用NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END宏。如果一个类型没有任何的空值标注信息，Sw">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Using-Swift-with-Cocoa-and-Objective-C笔记-ONE" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/" class="article-date">
+      <time datetime="2017-01-19T07:49:18.000Z" itemprop="datePublished">2017-01-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Using Swift With Cocoa and Objective-C笔记_ONE
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Objective-C和Swift的非空值、可选值转换"><a href="#Objective-C和Swift的非空值、可选值转换" class="headerlink" title="Objective-C和Swift的非空值、可选值转换"></a>Objective-C和Swift的非空值、可选值转换</h2><p>Objective-C 能够使用空值标记来设定一个参数类型，属性类型或者返回值类型是否可以为 NULL 或者 为 nil 值。单独的类型声明可以使用<strong>nullable和</strong>nonnull标注，空值的范围性的声明可以使用NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END宏。如果一个类型没有任何的空值标注信息，Swift 就不能分辨出可选值和非可选值类型，并且将作为隐式的解包可选值导入。</p>
+<ul>
+<li>以__nonnull或者范围宏标注声明的空值类型，被作为非空可选值non-optional导入到 Swift。</li>
+<li>以__nullable标注声明的空值类型，被作为可选值导入到 Swift。</li>
+<li>没有以空值标注声明的类型被作为隐式的解包可选值导入到 Swift。</li>
+</ul>
+<a id="more"></a>
+<p>Objective-C申明</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>) <span class="keyword">id</span>  nullableProperty;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonnull</span>) <span class="keyword">id</span> nonNullProperty;</div><div class="line"><span class="keyword">@property</span> <span class="keyword">id</span> unannotatedProperty;</div><div class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></div><div class="line">- (<span class="keyword">id</span>)returnsNonNullValue;</div><div class="line">- (<span class="keyword">void</span>)takesNonNullParameter:(<span class="keyword">id</span>)value;</div><div class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></div><div class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)returnsNullableValue;</div><div class="line">- (<span class="keyword">void</span>)takesNullableParameter:(<span class="keyword">nullable</span> <span class="keyword">id</span>)value;</div><div class="line">- (<span class="keyword">id</span>)returnsUnannotatedValue;</div><div class="line">- (<span class="keyword">void</span>)takesUnannotatedParameter:(<span class="keyword">id</span>)value;</div></pre></td></tr></table></figure>
+<p>导入Swift中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> nullableProperty: <span class="type">AnyObject</span>?</div><div class="line"><span class="keyword">var</span> nonNullProperty: <span class="type">AnyObject</span></div><div class="line"><span class="keyword">var</span> unannotatedProperty: <span class="type">AnyObject</span>!</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnsNonNullValue</span><span class="params">()</span></span> -&gt; <span class="type">AnyObject</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">takesNonNullParameter</span><span class="params">(value: AnyObject)</span></span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnsNullableValue</span><span class="params">()</span></span> -&gt; <span class="type">AnyObject</span>?</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">takesNullableParameter</span><span class="params">(value: AnyObject?)</span></span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnsUnannotatedValue</span><span class="params">()</span></span> -&gt; <span class="type">AnyObject</span>!</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">takesUnannotatedParameter</span><span class="params">(value: AnyObject!)</span></span></div></pre></td></tr></table></figure>
+<h3 id="闭包和Block的交互"><a href="#闭包和Block的交互" class="headerlink" title="闭包和Block的交互"></a>闭包和Block的交互</h3><p>Objective-C 中的blocks会被自动导入为 Swift 中的闭包。例如，下面是一个 Objective-C 中的 block 变量：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> (^completionBlock)(<span class="built_in">NSData</span> *, <span class="built_in">NSError</span> *) = ^(<span class="built_in">NSData</span> *data, <span class="built_in">NSError</span> *error) &#123;<span class="comment">/* ... */</span>&#125;</div></pre></td></tr></table></figure>
+<p>而它在 Swift 中的形式为:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> completionBlock: (<span class="type">NSData</span>, <span class="type">NSError</span>) -&gt; <span class="type">Void</span> = &#123;data, error <span class="keyword">in</span> <span class="comment">/* ... */</span>&#125;</div></pre></td></tr></table></figure>
+<p>Swift 的闭包与 Objective-C 中的 blocks 能够和睦相处，所以你可以把一个 Swift 闭包传递给一个把 block 作为参数的 Objective-C 函数。Swift 闭包与函数具有互通的类型，所以你甚至可以传递 Swift 函数的名字。</p>
+<p>闭包与 blocks 语义上相通但是在一个地方不同：变量是可以直接改变的，而不是像 block 那样会拷贝变量。换句话说，Swift 中变量的默认行为与 Objective-C 中 __block 变量一致。</p>
+<h3 id="Swift类型兼容性-objc-和-dynamic"><a href="#Swift类型兼容性-objc-和-dynamic" class="headerlink" title="Swift类型兼容性 @objc 和 dynamic"></a>Swift类型兼容性 @objc 和 dynamic</h3><p>@objc可以让你的 Swift API 在 Objective-C 中使用。换句话说，你可以通过在任何 Swift 方法、类、属性前添加@objc，来使得他们可以在 Objective-C 代码中使用。如果你正在使用如键值观察的 API 来动态替换方法的实现，也可以通过使用dynamic修饰符来获得对 Objective-C 运行时被自动派发的成员的访问。</p>
+<p>当你在 Objective-C 中使用 Swift API，编译器通常会对语句做直接的翻译。例如，Swift API func playSong(name: String)会被解释为<code>- (void)playSong:(NSString *)name</code>。然而，有一个例外：当在 Objective-C 中使用 Swift 的初始化函数，编译器会在方法前添加“initWith”并且将原初始化函数的第一个参数首字母大写。例如，这个 Swift 初始化函数<code>init (songName: String, artist: String)</code>将被翻译为<code>- (instancetype)initWithSongName:(NSString *)songName artist:(NSString *)artist</code>。</p>
+<p>Swift 同时也提供了一个@objc关键字的变体，通过它你可以自定义在 Objective-C 中转换的函数名。</p>
+<p>例子：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Swift</span></div><div class="line"><span class="meta">@objc</span>(<span class="type">Squirrel</span>)</div><div class="line"><span class="class"><span class="keyword">class</span> Белка </span>&#123;</div><div class="line">    <span class="meta">@objc</span>(initWithName:)</div><div class="line">    <span class="keyword">init</span> (имя: <span class="type">String</span>) &#123; <span class="comment">/*...*/</span> &#125;</div><div class="line">    <span class="meta">@objc</span>(hideNuts:inTree:)</div><div class="line">    <span class="function"><span class="keyword">func</span> прячьОрехи<span class="params">(Int, вДереве: Дерево)</span></span> &#123; <span class="comment">/*...*/</span> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="轻量级泛型"><a href="#轻量级泛型" class="headerlink" title="轻量级泛型"></a>轻量级泛型</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSDate</span> *&gt;* dates;</div><div class="line"><span class="keyword">@property</span> <span class="built_in">NSSet</span>&lt;<span class="built_in">NSString</span> *&gt;* words;</div><div class="line"><span class="keyword">@property</span> <span class="built_in">NSDictionary</span>&lt;KeyType: <span class="built_in">NSURL</span> *, <span class="built_in">NSData</span> *&gt;* cachedData;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dates: [<span class="type">NSDate</span>]</div><div class="line"><span class="keyword">var</span> words: <span class="type">Set</span>&lt;<span class="type">String</span>&gt;</div><div class="line"><span class="keyword">var</span> cachedData: [<span class="type">NSURL</span>: <span class="type">NSData</span>]</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 除了 Foundation 中的集合类， Objective-C 的轻量级泛型会被 Swift 忽略掉。任何其他使用轻量级泛型的类型在导入到 Swift 中时会被视为无参数化。</p>
+</blockquote>
+<hr>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年01月19日 - 15时49分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/" title="Using Swift With Cocoa and Objective-C笔记_ONE">http://jake.gift/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/01/20/Swift和Objective-C的数组转换/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Swift和Objective-C的数组转换
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Swift的weak Unowned Unowned(unsafe)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective-C和Swift的非空值、可选值转换"><span class="toc-number">1.</span> <span class="toc-text">Objective-C和Swift的非空值、可选值转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包和Block的交互"><span class="toc-number">1.1.</span> <span class="toc-text">闭包和Block的交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Swift类型兼容性-objc-和-dynamic"><span class="toc-number">1.2.</span> <span class="toc-text">Swift类型兼容性 @objc 和 dynamic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#轻量级泛型"><span class="toc-number">1.3.</span> <span class="toc-text">轻量级泛型</span></a></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/01/20/Swift和Objective-C的数组转换/" title="上一篇: Swift和Objective-C的数组转换">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/" title="下一篇: Swift的weak Unowned Unowned(unsafe)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义NSURLProtocol实现UIWebView缓存机制 | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="近期正在研究UIWebView加载网页的缓存的实现，比较常见的是使用自定义的NSURLProtocol进行拦截处理。根据网上的资料，结合试验和自己的理解做个记录。 介绍介绍下我产出的YJURLProtocol完成的功能    功能 支持 说明     缓存数据 是 将整个request缓存下来，以及其response   设置过期时间 是 默认为两天过期，过期后请求会删除原有缓存   自动更新缓存">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义NSURLProtocol实现UIWebView缓存机制">
+<meta property="og:url" content="http://jake.gift/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="近期正在研究UIWebView加载网页的缓存的实现，比较常见的是使用自定义的NSURLProtocol进行拦截处理。根据网上的资料，结合试验和自己的理解做个记录。 介绍介绍下我产出的YJURLProtocol完成的功能    功能 支持 说明     缓存数据 是 将整个request缓存下来，以及其response   设置过期时间 是 默认为两天过期，过期后请求会删除原有缓存   自动更新缓存">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义NSURLProtocol实现UIWebView缓存机制">
+<meta name="twitter:description" content="近期正在研究UIWebView加载网页的缓存的实现，比较常见的是使用自定义的NSURLProtocol进行拦截处理。根据网上的资料，结合试验和自己的理解做个记录。 介绍介绍下我产出的YJURLProtocol完成的功能    功能 支持 说明     缓存数据 是 将整个request缓存下来，以及其response   设置过期时间 是 默认为两天过期，过期后请求会删除原有缓存   自动更新缓存">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-自定义NSURLProtocol实现UIWebView缓存机制" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/" class="article-date">
+      <time datetime="2017-07-14T02:08:43.000Z" itemprop="datePublished">2017-07-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义NSURLProtocol实现UIWebView缓存机制
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>近期正在研究UIWebView加载网页的缓存的实现，比较常见的是使用自定义的NSURLProtocol进行拦截处理。根据网上的资料，结合试验和自己的理解做个记录。</p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p><strong>介绍下我产出的YJURLProtocol完成的功能</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">功能</th>
+<th style="text-align:center">支持</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">缓存数据</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">将整个request缓存下来，以及其response</td>
+</tr>
+<tr>
+<td style="text-align:center">设置过期时间</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">默认为两天过期，过期后请求会删除原有缓存</td>
+</tr>
+<tr>
+<td style="text-align:center">自动更新缓存</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">间隔时间超过1min的请求，加载页面后异步更新缓存</td>
+</tr>
+</tbody>
+</table>
+<p>UIWebView缓存使用机制：</p>
+<ul>
+<li>两个相同的请求时间相隔在60s之内，直接使用缓存，不进行异步更新缓存</li>
+<li>两个相同的请求相隔60s+但是没有过期，使用缓存加载页面后，1min后进行异步更新缓存并刷新页面</li>
+<li>缓存命中但是时间已经是两天前，则删除缓存走网络数据</li>
+</ul>
+<a id="more"></a>
+<h2 id="NSURLProtocol"><a href="#NSURLProtocol" class="headerlink" title="NSURLProtocol"></a>NSURLProtocol</h2><h3 id="什么是NSURLPrototol-（NSURLProtocol什么的我都懂，我要直接看🌰）"><a href="#什么是NSURLPrototol-（NSURLProtocol什么的我都懂，我要直接看🌰）" class="headerlink" title="什么是NSURLPrototol （NSURLProtocol什么的我都懂，我要直接看🌰）"></a>什么是NSURLPrototol （<a href="#example">NSURLProtocol什么的我都懂，我要直接看🌰</a>）</h3><p>Apple的<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html#//apple_ref/doc/uid/10000165-BCICJDHA" target="_blank" rel="external">URL Loading System</a>的核心是<code>NSURL</code>类，<code>NSURL</code>提供给app要访问资源的地址，<code>NSURLRequest</code>对象再额外添加HTTP headers， body之类的信息，然后<code>URL Loading System</code>提供<code>NSURLSession</code>和<code>NSURLConnection</code>的各种子类方法去执行这个请求。</p>
+<p>请求返回的数据会有两分部分，metadata 和 data。metadata被包括在<code>NSURLResponse</code>对象中，它会提供MIME type，和 text encoding。 data的数据是NSData类型。</p>
+<p>在以上过程之后，URL Loading System通过NSURLRequest下载了信息之后，它将会创建一个NSURLProtocol子类的对象。</p>
+<blockquote>
+<p>Note: Remember that Objective-C doesn’t actually have abstract classes as a first class citizen. It’s only by definition and documentation that a class is marked as abstract.</p>
+</blockquote>
+<p>千万不能直接实例化NSURLProtocol, 必须要继承NSURLProtocol,在子类中创建NSURLResponse处理response。</p>
+<h3 id="使用NSURLProtocol能做什么"><a href="#使用NSURLProtocol能做什么" class="headerlink" title="使用NSURLProtocol能做什么"></a>使用NSURLProtocol能做什么</h3><ul>
+<li><p>为网络请求提供自定义的Response</p>
+<p>  可以在网络调试的时候，发起网络请求后进行自定义返回数据调试自己的APP </p>
+</li>
+<li><p>调过网络请求，加载本地数据</p>
+<p>  某些情况下，发起的请求并没有去请求网络的必要，可以修改使用本地的数据。（自定义webView的缓存就是如此实现）</p>
+</li>
+<li><p>重定向网络请求</p>
+<p>  可以将请求重定向到某个代理服务器，不需要通过iOS给用户弹出授权窗口</p>
+</li>
+<li><p>修改Request的User-agent</p>
+<p>  如果你的一个页面是分不同的设备返回数据的，那么可以在这里设置自定的user-agent，来达到你的需求。</p>
+</li>
+<li><p>使用自己的网络协议</p>
+<p>  可以替换使用自己实现的网络协议，比如有些建立在UDP之上的协议。</p>
+</li>
+</ul>
+<h3 id="NSURLProtocol的使用"><a href="#NSURLProtocol的使用" class="headerlink" title="NSURLProtocol的使用"></a>NSURLProtocol的使用</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="built_in">NSURLProtocol</span> registerClass:[JakeyURLProtocol <span class="keyword">class</span>]];</div></pre></td></tr></table></figure>
+<p>以上代码表示，你已经向URL Loading System注册了自己的NSURLProtocol子类，这个子类将有机会处理每一个发送到URL Loading System的请求。</p>
+<h4 id="在NSURLProtocol的子类实现文件中："><a href="#在NSURLProtocol的子类实现文件中：" class="headerlink" title="在NSURLProtocol的子类实现文件中："></a>在NSURLProtocol的子类实现文件中：</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">BOOL</span>)canInitWithRequest:(<span class="built_in">NSURLRequest</span> *)request &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>重载以上代码，返回YES。表示此子类注册之后将使用此子类处理所有的请求，返回NO则仍然使用URL Loading System的默认protocol处理请求。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这是个抽象方法，子类必须提供实现方法。此方法可用于修改request，添加一个header等</span></div><div class="line">+ (<span class="built_in">NSURLRequest</span> *)canonicalRequestForRequest:(<span class="built_in">NSURLRequest</span> *)request &#123;</div><div class="line">    <span class="keyword">return</span> request;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//用于判断你的自定义reqeust是否相同，这里返回默认实现即可。它的主要应用场景是某些直接使用缓存而非再次请求网络的地方。</span></div><div class="line">+ (<span class="built_in">BOOL</span>)requestIsCacheEquivalent:(<span class="built_in">NSURLRequest</span> *)a toRequest:(<span class="built_in">NSURLRequest</span> *)b &#123;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> requestIsCacheEquivalent:a toRequest:b];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//开始请求</span></div><div class="line">- (<span class="keyword">void</span>)startLoading &#123;</div><div class="line">    <span class="keyword">self</span>.connection = [<span class="built_in">NSURLConnection</span> connectionWithRequest:<span class="keyword">self</span>.request delegate:<span class="keyword">self</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//请求结束</span></div><div class="line">- (<span class="keyword">void</span>)stopLoading &#123;</div><div class="line">    [<span class="keyword">self</span>.connection cancel];</div><div class="line">    <span class="keyword">self</span>.connection = <span class="literal">nil</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="自定义NSURLProtocol实现UIWebView缓存机制"><a href="#自定义NSURLProtocol实现UIWebView缓存机制" class="headerlink" title="自定义NSURLProtocol实现UIWebView缓存机制"></a><span id="example">自定义NSURLProtocol实现UIWebView缓存机制</span></h2><p>开始请求之后，将此请求标记为已处理</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)startLoading &#123;</div><div class="line">	<span class="built_in">NSMutableURLRequest</span> *newRequest = [<span class="keyword">self</span>.request mutableCopy];</div><div class="line">    [<span class="built_in">NSURLProtocol</span> setProperty:@YES forKey:kHandledKey inRequest:newRequest];</div><div class="line">    <span class="keyword">self</span>.connection = [<span class="built_in">NSURLConnection</span> connectionWithRequest:newRequest delegate:<span class="keyword">self</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>判断请求是否已经被处理过，避免循环被处理</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">+ (<span class="built_in">BOOL</span>)canInitWithRequest:(<span class="built_in">NSURLRequest</span> *)request &#123;</div><div class="line">    <span class="built_in">NSString</span> *scheme = request.URL.scheme;</div><div class="line">    <span class="keyword">if</span> ([scheme caseInsensitiveCompare:<span class="string">@"http"</span>]==<span class="built_in">NSOrderedSame</span>||[scheme caseInsensitiveCompare:<span class="string">@"https"</span>]==<span class="built_in">NSOrderedSame</span>) &#123;</div><div class="line">        <span class="keyword">if</span> ([<span class="built_in">NSURLProtocol</span> propertyForKey:kHandledKey inRequest:request]) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>自定义YJCacheResponse对象，内容包含内容如下代码</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">YJCachedResponse</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSData</span> *data;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> *url;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> *mimeType;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> *encoding;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>, <span class="keyword">readonly</span>) <span class="built_in">NSURLResponse</span> *response;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> 初始化封装的YJResponse对象</span></div><div class="line"><span class="comment"> </span></div><div class="line"><span class="comment"> @param data 请求结果数据</span></div><div class="line"><span class="comment"> @param response</span></div><div class="line"><span class="comment"> @param timeInterval 缓存过期时间</span></div><div class="line"><span class="comment"> @return 封装的YJResponse对象</span></div><div class="line"><span class="comment"> */</span></div><div class="line">- (<span class="keyword">instancetype</span>)initWithData:(<span class="built_in">NSData</span> *)data response:(<span class="built_in">NSURLResponse</span> *)response limiteTime:(<span class="built_in">NSTimeInterval</span>)timeInterval;</div><div class="line"></div><div class="line"><span class="comment">//检查缓存是否过期 0 ：已过期 ,   1 ： 需更新缓存,   2 ：无需更新缓存</span></div><div class="line">- (CacheStatus)isCacheEffective;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>在开始请求<code>- (void)startLoading</code>方法中，判断是走缓存还是使用网络请求数据</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- (<span class="keyword">void</span>)startLoading &#123;</div><div class="line">    <span class="built_in">NSString</span> *docPath = [<span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>) firstObject];</div><div class="line">    <span class="keyword">self</span>.cachedFilePath = [docPath stringByAppendingPathComponent:md5(<span class="keyword">self</span>.request.URL.absoluteString)];</div><div class="line">    <span class="comment">//在缓存表中获取当前request是否有缓存</span></div><div class="line">    YJCachedResponse *cachedResponse = [<span class="keyword">self</span> cachedResponseForCurrentRequest];</div><div class="line">    <span class="keyword">if</span> (cachedResponse) &#123;</div><div class="line">        <span class="keyword">switch</span> ([cachedResponse isCacheEffective]) &#123;</div><div class="line">            <span class="keyword">case</span> OutOfDate:</div><div class="line">                [<span class="keyword">self</span> useNetData];</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> UpdateNeedLess: </div><div class="line">                [<span class="keyword">self</span> useCacheData:cachedResponse];</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> UpdateNeeded: </div><div class="line">                [<span class="keyword">self</span> useCacheData:cachedResponse];</div><div class="line">                <span class="comment">//1秒钟之后重新请求，更新缓存</span></div><div class="line">                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="number">1</span> * <span class="built_in">NSEC_PER_SEC</span>)), dispatch_get_main_queue(), ^&#123;</div><div class="line">                    [<span class="keyword">self</span> useNetData];</div><div class="line">                &#125;);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        [<span class="keyword">self</span> useNetData];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在NSURLConnectionDelegate方法中进行Response保存和赋值</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- (<span class="keyword">void</span>)connection:(<span class="built_in">NSURLConnection</span> *)connection didReceiveResponse:(<span class="built_in">NSURLResponse</span> *)response &#123;</div><div class="line">    [<span class="keyword">self</span>.client URLProtocol:<span class="keyword">self</span> didReceiveResponse:response cacheStoragePolicy:<span class="built_in">NSURLCacheStorageNotAllowed</span>];</div><div class="line">    </div><div class="line">    <span class="keyword">self</span>.response = response;</div><div class="line">    <span class="keyword">self</span>.mutableData = [[<span class="built_in">NSMutableData</span> alloc] init];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)connection:(<span class="built_in">NSURLConnection</span> *)connection didReceiveData:(<span class="built_in">NSData</span> *)data &#123;</div><div class="line">    [<span class="keyword">self</span>.client URLProtocol:<span class="keyword">self</span> didLoadData:data];</div><div class="line">    [<span class="keyword">self</span>.mutableData appendData:data];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)connectionDidFinishLoading:(<span class="built_in">NSURLConnection</span> *)connection &#123;</div><div class="line">    [<span class="keyword">self</span>.client URLProtocolDidFinishLoading:<span class="keyword">self</span>];</div><div class="line">    [<span class="keyword">self</span> saveCachedResponse];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="以上只列出部分关键逻辑代码，详细实现请下载demo查看源码"><a href="#以上只列出部分关键逻辑代码，详细实现请下载demo查看源码" class="headerlink" title="以上只列出部分关键逻辑代码，详细实现请下载demo查看源码"></a>以上只列出部分关键逻辑代码，详细实现请下载<a href="https://github.com/HuyangJake/YJURLProtocol" target="_blank" rel="external">demo</a>查看源码</h4><h3 id="问题缺陷"><a href="#问题缺陷" class="headerlink" title="问题缺陷"></a>问题缺陷</h3><ul>
+<li>一个网站会有些网络请求地址跟时间戳或者其他随机字符相关，缓存机制会缓存下来，并且之后一直没有机会命中它们，没有办法自动删除这些缓存，会造成内存浪费。</li>
+</ul>
+<p>因本人水平有限，文中有什么不正确之处，还请指出，不胜感谢！</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://www.raywenderlich.com/59982/nsurlprotocol-tutorial" target="_blank" rel="external">https://www.raywenderlich.com/59982/nsurlprotocol-tutorial</a></p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年07月14日 - 10时08分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/" title="自定义NSURLProtocol实现UIWebView缓存机制">http://jake.gift/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/07/17/Hi！CALayer我们聊聊/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Hi！CALayer我们聊聊
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/03/小程序视图层/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小程序视图层</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLProtocol"><span class="toc-number"></span> <span class="toc-text">NSURLProtocol</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是NSURLPrototol-（NSURLProtocol什么的我都懂，我要直接看🌰）"><span class="toc-number">1.</span> <span class="toc-text">什么是NSURLPrototol （NSURLProtocol什么的我都懂，我要直接看🌰）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用NSURLProtocol能做什么"><span class="toc-number">2.</span> <span class="toc-text">使用NSURLProtocol能做什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSURLProtocol的使用"><span class="toc-number">3.</span> <span class="toc-text">NSURLProtocol的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#在NSURLProtocol的子类实现文件中："><span class="toc-number">3.1.</span> <span class="toc-text">在NSURLProtocol的子类实现文件中：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义NSURLProtocol实现UIWebView缓存机制"><span class="toc-number"></span> <span class="toc-text">自定义NSURLProtocol实现UIWebView缓存机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#以上只列出部分关键逻辑代码，详细实现请下载demo查看源码"><span class="toc-number">0.1.</span> <span class="toc-text">以上只列出部分关键逻辑代码，详细实现请下载demo查看源码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题缺陷"><span class="toc-number">1.</span> <span class="toc-text">问题缺陷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/07/17/Hi！CALayer我们聊聊/" title="上一篇: Hi！CALayer我们聊聊">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/06/03/小程序视图层/" title="下一篇: 小程序视图层">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

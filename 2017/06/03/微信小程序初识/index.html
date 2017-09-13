@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>微信小程序初识 | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
+<meta name="keywords" content="学习笔记,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序初识">
+<meta property="og:url" content="http://jake.gift/2017/06/03/微信小程序初识/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/app.json%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序初识">
+<meta name="twitter:description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
+<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/app.json%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-微信小程序初识" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/03/微信小程序初识/" class="article-date">
+      <time datetime="2017-06-03T06:20:19.000Z" itemprop="datePublished">2017-06-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微信小程序初识
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。</p>
+<h3 id="目录初始"><a href="#目录初始" class="headerlink" title="目录初始"></a>目录初始</h3><p>小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。</p>
+<a id="more"></a>
+<h4 id="app-js"><a href="#app-js" class="headerlink" title="app.js"></a>app.js</h4><p>app.js是小程序的脚本代码。我们可以在这个文件中监听并处理小程序的生命周期函数、声明全局变量。调用框架提供的丰富的 API。</p>
+<h4 id="app-json"><a href="#app-json" class="headerlink" title="app.json"></a>app.json</h4><p>app.json 是对整个小程序的全局配置。我们可以在这个文件中配置小程序是由哪些页面组成，配置小程序的窗口背景色，配置导航条样式，配置默认标题。注意该文件不可添加任何注释。</p>
+<p>下面是一个包含所有配置项的app.json文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"pages"</span>: [</div><div class="line">    <span class="string">"pages/index/index"</span>,</div><div class="line">    <span class="string">"pages/logs/index"</span></div><div class="line">  ],</div><div class="line">  <span class="string">"window"</span>: &#123;</div><div class="line">    <span class="string">"navigationBarTitleText"</span>: <span class="string">"Demo"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="string">"tabBar"</span>: &#123;</div><div class="line">    <span class="string">"list"</span>: [&#123;</div><div class="line">      <span class="string">"pagePath"</span>: <span class="string">"pages/index/index"</span>,</div><div class="line">      <span class="string">"text"</span>: <span class="string">"首页"</span></div><div class="line">    &#125;, &#123;</div><div class="line">      <span class="string">"pagePath"</span>: <span class="string">"pages/logs/logs"</span>,</div><div class="line">      <span class="string">"text"</span>: <span class="string">"日志"</span></div><div class="line">    &#125;]</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"networkTimeout"</span>: &#123;</div><div class="line">    <span class="string">"request"</span>: <span class="number">10000</span>,</div><div class="line">    <span class="string">"downloadFile"</span>: <span class="number">10000</span></div><div class="line">  &#125;,</div><div class="line">  <span class="string">"debug"</span>: <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://ojam5z7vg.bkt.clouddn.com/app.json%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" alt=""></p>
+<h5 id="pages"><a href="#pages" class="headerlink" title="pages"></a>pages</h5><p>pages中为所有的页面，第一项为小程序的初始页面</p>
+<h5 id="window"><a href="#window" class="headerlink" title="window"></a>window</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"window"</span>:&#123;</div><div class="line">    <span class="string">"navigationBarBackgroundColor"</span>: <span class="string">"#ffffff"</span>,  <span class="comment">//导航栏背景色</span></div><div class="line">    <span class="string">"navigationBarTextStyle"</span>: <span class="string">"black"</span>,          <span class="comment">//导航栏标题颜色，仅支持 black/white</span></div><div class="line">    <span class="string">"navigationBarTitleText"</span>: <span class="string">"微信接口功能演示"</span>, <span class="comment">//导航栏标题文字内容</span></div><div class="line">    <span class="string">"backgroundColor"</span>: <span class="string">"#eeeeee"</span>,              <span class="comment">//窗口背景色</span></div><div class="line">    <span class="string">"backgroundTextStyle"</span>: <span class="string">"light"</span>,            <span class="comment">//下拉背景字体、loading 图的样式，仅支持 dark/light</span></div><div class="line">    <span class="string">"enablePullDownRefresh"</span>: <span class="string">"true"</span>            <span class="comment">//是否开启下拉刷新</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="tabbar"><a href="#tabbar" class="headerlink" title="tabbar"></a>tabbar</h5><p>Tip：</p>
+<ul>
+<li>当设置 position 为 top 时，将不会显示 icon</li>
+<li>tabBar 是一个数组，只能配置最少2个、最多5个 tab，tab 按数组的顺序排序。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="string">"tabBar"</span>: &#123;</div><div class="line">	<span class="string">"color"</span>: <span class="string">"#F8F8F8"</span>,          			<span class="comment">//tab上文字默认颜色</span></div><div class="line">	<span class="string">"selectedColor"</span>: <span class="string">"#ffffff"</span>,		        <span class="comment">//tab上文字选择后的颜色</span></div><div class="line">	<span class="string">"backgroundColor"</span>: <span class="string">"#ffffff"</span>,			<span class="comment">//tab的背景色</span></div><div class="line">	<span class="string">"borderStyle"</span>: <span class="string">"black"</span>,					<span class="comment">//（非必填）tabbar上边框的颜色， 仅支持 black/white</span></div><div class="line">	<span class="string">"position"</span>: <span class="string">"top"</span>,						<span class="comment">//（非必填） bottom、top(默认为top)</span></div><div class="line">    <span class="string">"list"</span>: [&#123;</div><div class="line">      <span class="string">"pagePath"</span>: <span class="string">"pages/index/index"</span>,</div><div class="line">      <span class="string">"text"</span>: <span class="string">"首页"</span>,</div><div class="line">      <span class="string">"iconPath"</span>: <span class="string">""</span>,              <span class="comment">//（非必填）图片路径，icon 大小限制为40kb，建议尺寸为 81px * 81px，当 postion 为 top 时，此参数无效</span></div><div class="line">      <span class="string">"selectedIconPath"</span>: <span class="string">""</span>      <span class="comment">//（非必填）选择后的图片路径 ，同上</span></div><div class="line">    &#125;, &#123;</div><div class="line">      <span class="string">"pagePath"</span>: <span class="string">"pages/logs/logs"</span>,</div><div class="line">      <span class="string">"text"</span>: <span class="string">"日志"</span></div><div class="line">    &#125;]</div><div class="line">  &#125;,</div></pre></td></tr></table></figure>
+<h5 id="networkTimeout"><a href="#networkTimeout" class="headerlink" title="networkTimeout"></a>networkTimeout</h5><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">必填</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">request</td>
+<td style="text-align:center">Number</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">wx.request的超时时间，单位毫秒，默认为：60000</td>
+</tr>
+<tr>
+<td style="text-align:center">connectSocket</td>
+<td style="text-align:center">Number</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">wx.connectSocket的超时时间，单位毫秒，默认为：60000</td>
+</tr>
+<tr>
+<td style="text-align:center">uploadFile</td>
+<td style="text-align:center">Number</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">wx.uploadFile的超时时间，单位毫秒，默认为：60000</td>
+</tr>
+<tr>
+<td style="text-align:center">downloadFile</td>
+<td style="text-align:center">Number</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">wx.downloadFile的超时时间，单位毫秒，默认为：60000</td>
+</tr>
+</tbody>
+</table>
+<h4 id="app-wxss"><a href="#app-wxss" class="headerlink" title="app.wxss"></a>app.wxss</h4><p>app.wxss 是整个小程序的公共样式表。我们可以在页面组件的 class 属性上直接使用 app.wxss 中声明的样式规则。</p>
+<h3 id="页面"><a href="#页面" class="headerlink" title="页面"></a>页面</h3><p>小程序的每个页面都有自己所属的 .js .json .wxss文件还有 .wxml文件，前面三者同全局的文件作用相同，只是在这个页面它们的优先级会更高，比如page自己的样式会覆盖全局的样式。.wxml文件是这个页面的布局文件。</p>
+<p>每个页面的这四个后缀的文件，小程序要求要有相同的路径的文件名。</p>
+<p>某个页面的page.json文件中会覆盖跟app.json相同的配置，只能设置window相关的配置。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">navigationBarBackgroundColor</td>
+<td style="text-align:center">HexColor</td>
+<td style="text-align:center">#000000</td>
+<td style="text-align:center">导航栏背景颜色，如”#000000”</td>
+</tr>
+<tr>
+<td style="text-align:center">navigationBarTextStyle</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">white</td>
+<td style="text-align:center">导航栏标题颜色，仅支持 black/white</td>
+</tr>
+<tr>
+<td style="text-align:center">navigationBarTitleText</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">导航栏标题文字内容</td>
+</tr>
+<tr>
+<td style="text-align:center">backgroundColor</td>
+<td style="text-align:center">HexColor</td>
+<td style="text-align:center">#ffffff</td>
+<td style="text-align:center">窗口的背景色</td>
+</tr>
+<tr>
+<td style="text-align:center">backgroundTextStyle</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dark</td>
+<td style="text-align:center">下拉背景字体、loading 图的样式，仅支持 dark/light</td>
+</tr>
+<tr>
+<td style="text-align:center">enablePullDownRefresh</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">是否开启下拉刷新，详见页面相关事件处理函数。</td>
+</tr>
+<tr>
+<td style="text-align:center">disableScroll</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">设置为 true 则页面整体不能上下滚动；只在 page.json 中有效，无法在 app.json 中设置该项</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"navigationBarBackgroundColor"</span>: <span class="string">"#ffffff"</span>,</div><div class="line">  <span class="string">"navigationBarTextStyle"</span>: <span class="string">"black"</span>,</div><div class="line">  <span class="string">"navigationBarTitleText"</span>: <span class="string">"微信接口功能演示"</span>,</div><div class="line">  <span class="string">"backgroundColor"</span>: <span class="string">"#eeeeee"</span>,</div><div class="line">  <span class="string">"backgroundTextStyle"</span>: <span class="string">"light"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/06/03/微信小程序初识/">微信小程序初识</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年06月03日 - 14时20分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/03/微信小程序初识/" title="微信小程序初识">http://jake.gift/2017/06/03/微信小程序初识/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/06/03/微信小程序初识/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/06/03/小程序逻辑层/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          小程序逻辑层
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Apple Debugging---使用LLDB替换方法为自定义的block</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录初始"><span class="toc-number">1.</span> <span class="toc-text">目录初始</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#app-js"><span class="toc-number">1.1.</span> <span class="toc-text">app.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#app-json"><span class="toc-number">1.2.</span> <span class="toc-text">app.json</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#pages"><span class="toc-number">1.2.1.</span> <span class="toc-text">pages</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#window"><span class="toc-number">1.2.2.</span> <span class="toc-text">window</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#tabbar"><span class="toc-number">1.2.3.</span> <span class="toc-text">tabbar</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#networkTimeout"><span class="toc-number">1.2.4.</span> <span class="toc-text">networkTimeout</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#app-wxss"><span class="toc-number">1.3.</span> <span class="toc-text">app.wxss</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#页面"><span class="toc-number">2.</span> <span class="toc-text">页面</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/06/03/小程序逻辑层/" title="上一篇: 小程序逻辑层">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/" title="下一篇: Apple Debugging---使用LLDB替换方法为自定义的block">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

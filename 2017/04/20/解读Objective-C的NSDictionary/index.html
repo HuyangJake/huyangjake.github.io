@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>解读Objective-C的NSDictionary | ColdCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NSDistionary是非常熟悉常用的一个Foundation中的类，最显著的几个特点是：  以键值对存储数据 存储的数据具有唯一性 数据无序  我们这次不是讲NSDictionary或NSMutableDictionary的方法，这些在Apple API Reference中查询即可了解啦~我们来探索下NSDictionary的内部">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解读Objective-C的NSDictionary">
+<meta property="og:url" content="http://jake.gift/2017/04/20/解读Objective-C的NSDictionary/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="NSDistionary是非常熟悉常用的一个Foundation中的类，最显著的几个特点是：  以键值对存储数据 存储的数据具有唯一性 数据无序  我们这次不是讲NSDictionary或NSMutableDictionary的方法，这些在Apple API Reference中查询即可了解啦~我们来探索下NSDictionary的内部">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://jpkc.nwu.edu.cn/sjjg/study_online/book/8/4_2.files/image001.gif">
+<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解读Objective-C的NSDictionary">
+<meta name="twitter:description" content="NSDistionary是非常熟悉常用的一个Foundation中的类，最显著的几个特点是：  以键值对存储数据 存储的数据具有唯一性 数据无序  我们这次不是讲NSDictionary或NSMutableDictionary的方法，这些在Apple API Reference中查询即可了解啦~我们来探索下NSDictionary的内部">
+<meta name="twitter:image" content="http://jpkc.nwu.edu.cn/sjjg/study_online/book/8/4_2.files/image001.gif">
+  
+    <link rel="alternative" href="/atom.xml" title="ColdCode" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: false,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="/img/head.jpg" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Jakey_yang</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+        
+        
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/tags/iOS/">iOS</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                            
+                                <a class="fl weibo" target="_blank" href="#" title="weibo">weibo</a>
+                            
+                                <a class="fl twitter" target="_blank" href="#" title="twitter">twitter</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://onevcat.com/#blog">onevcat</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.sunnyxx.com/">sunnyxx</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.cnbang.net/">bang</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.devtang.com/">唐巧</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/88a056103c02/latest_articles">没故事的卓同学</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://casatwy.com/">Casa Taloyum</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://nianxi.net/">念茜</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucida.me/blog/developer-reading-list/">程序员读书清单</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">2年小猿人，沉浸于Objective-C，Swift       感冒JavaScript，python   坐标：杭州   邮箱：huyangjake@163.com</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Jakey_yang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img src="/img/head.jpg" class="js-avatar" style="width: 100%; height: 100%; opacity: 1;">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Jakey_yang</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">托起一片绿叶，走向更远的远方</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/tags/iOS/">iOS</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/学习笔记/">学习笔记</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/huyangjake" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+                    
+                        <a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/b64617df987a" title="jianshu">jianshu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-解读Objective-C的NSDictionary" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/20/解读Objective-C的NSDictionary/" class="article-date">
+      <time datetime="2017-04-20T03:27:20.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解读Objective-C的NSDictionary
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>NSDistionary是非常熟悉常用的一个Foundation中的类，最显著的几个特点是：</p>
+<ul>
+<li>以键值对存储数据</li>
+<li>存储的数据具有唯一性</li>
+<li>数据无序</li>
+</ul>
+<p>我们这次不是讲NSDictionary或NSMutableDictionary的方法，这些在<a href="https://developer.apple.com/reference/foundation/nsdictionary?language=objc" target="_blank" rel="external">Apple API Reference</a>中查询即可了解啦~<br>我们来探索下NSDictionary的内部</p>
+<a id="more"></a>
+<h3 id="Apple文档的启示"><a href="#Apple文档的启示" class="headerlink" title="Apple文档的启示"></a>Apple文档的启示</h3><p>苹果貌似并不推荐我们去继承<code>NSDictionary</code>来使用其子类（苹果已经实现的子类：<code>NSMutableDictionary</code>除外）</p>
+<blockquote>
+<p>Before making a custom class of NSDictionary, investigate <strong>NSMapTable</strong> and the corresponding Core Foundation type, <strong>CFDictionary</strong>. Because NSDictionary and CFDictionary are “toll-free bridged,” you can substitute a CFDictionary object for a NSDictionary object in your code (with appropriate casting). Although they are corresponding types, CFDictionary and NSDictionary do not have identical interfaces or implementations, and you can sometimes do things with CFDictionary that you cannot easily do with NSDictionary.</p>
+<p>If the behavior you want to add supplements that of the existing class, you could write a category on NSDictionary. Keep in mind, however, that this category will be in effect for all instances of NSDictionary that you use, and this might have unintended consequences. Alternatively, you could use composition to achieve the desired behavior.</p>
+</blockquote>
+<p><em>大致意思是让我们想要给<code>NSDictionary</code>添加新功能就使用分类，不要继承子类。如果打算要继承<code>NSDictionary</code>，则需要好好研究下<code>NSMapTable</code>和相对应的Core Foundation类型：<code>CFDictionary</code></em></p>
+<p><code>CFDictionary</code>是Core Foundation中的字典，和<code>NSDictionary</code>可以无代价转换，两者可以互相调用对方的方法创建和释放。可以使用<code>CFDictionary</code>来实现<code>NSDictionary</code>不容易实现的功能。·</p>
+<p>另外苹果推荐让我们研究的<a href="https://developer.apple.com/reference/foundation/nsmaptable?language=objc" target="_blank" rel="external"><code>NSMapTable</code></a>具体是什么呢?</p>
+<blockquote>
+<p>The NSMapTable class is a mutable collection modeled after NSDictionary</p>
+</blockquote>
+<p>看到这句话刚开始我有点不解，NSMapTable竟是模仿NSDictionary的一个可变得集合，那跟NSMutableDictionary有什么不同啊？</p>
+<p>NSMapTable与NSDictionary的几个不同点是：</p>
+<ul>
+<li>可以weak的方式持有对象，当持有的对象的引用计数为0的时候，该对象会自动从集合中移除</li>
+<li>key 和 value在输入的时候都可以copy，使用指针对做isEqual或者hashing对比</li>
+<li>可以包含任何指针，不再仅仅局限于Objective-C的对象</li>
+</ul>
+<p>NSMapTable的初始化就可以指定 key 和 value 的持有方式</p>
+<p>苹果提供了几个便捷的工厂方法<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//key strong， value strong</span></div><div class="line">+ (<span class="built_in">NSMapTable</span>&lt;KeyType, ObjectType&gt; *)strongToStrongObjectsMapTable <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_8, <span class="number">6</span>_0);</div><div class="line"><span class="comment">//key weak， value strong</span></div><div class="line">+ (<span class="built_in">NSMapTable</span>&lt;KeyType, ObjectType&gt; *)weakToStrongObjectsMapTable <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_8, <span class="number">6</span>_0); <span class="comment">// entries are not necessarily purged right away when the weak key is reclaimed</span></div><div class="line"><span class="comment">//key strong， value weak</span></div><div class="line">+ (<span class="built_in">NSMapTable</span>&lt;KeyType, ObjectType&gt; *)strongToWeakObjectsMapTable <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_8, <span class="number">6</span>_0);</div><div class="line"><span class="comment">//key weak， value weak</span></div><div class="line">+ (<span class="built_in">NSMapTable</span>&lt;KeyType, ObjectType&gt; *)weakToWeakObjectsMapTable <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_8, <span class="number">6</span>_0); <span class="comment">// entries are not necessarily purged right away when the weak key or object is reclaimed</span></div></pre></td></tr></table></figure></p>
+<p>或者像这样指定：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//还可以指定NSMapTableCopyIn(添加前进行copy) ， 或者NSMapTableObjectPointerPersonality（使用指针去hashing）</span></div><div class="line"> <span class="built_in">NSMapTable</span> *mapTable = [<span class="built_in">NSMapTable</span> mapTableWithKeyOptions:<span class="built_in">NSMapTableStrongMemory</span> valueOptions:<span class="built_in">NSMapTableWeakMemory</span>];</div><div class="line"> </div><div class="line"> <span class="comment">//需要一个对象到对象的映射集合，可以使用如下的mapTable</span></div><div class="line"> </div><div class="line"> <span class="built_in">NSMapTable</span> *objectToObjectMapping = [<span class="built_in">NSMapTable</span> mapTableWithStrongToStrongObjects];</div></pre></td></tr></table></figure>
+<p>同样类推，<a href="https://developer.apple.com/reference/foundation/nshashtable?language=objc" target="_blank" rel="external">NSHashTable</a>是对NSSet的模仿和衍生，扩展的功能与NSMapTable相同</p>
+<h3 id="抛两个问题🙈"><a href="#抛两个问题🙈" class="headerlink" title="抛两个问题🙈"></a>抛两个问题🙈</h3><h5 id="Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？"><a href="#Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？" class="headerlink" title="Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？"></a>Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？</h5><p>直接先回答问题：因为存储的数量很多后hash表会出现比较多的冲突，解决大量冲突会占用大量CPU资源，造成效率低下。</p>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="external">hash表</a>是什么？跟NSDictionary又有什么关系？</p>
+<p>NSDictionary是使用hash表来实现key和value之间的映射和存储的。</p>
+<p>hash表的基本思想是：将key作为关键字，放到hash函数ƒ(k)中计算得到结果为hash地址，然后将value值的地址存储到hash表中的ƒ(key)的hash地址中。</p>
+<p>当关键字集合很大的时候，不同的关键字可能会通过hash函数映射到hash表的同一地址上。key1 ≠ key2, ƒ(key1) = ƒ(key2),这种情况称为冲突。冲突是不可避免的，只能通过改善哈希函数来减少冲突。（构造哈希函数方法请参考<a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="external">这里</a>或查找其他资料）</p>
+<p>然而有冲突必定是要解决的，不然新的值怎么存储到哈希表中呢。<br>处理冲突主要有（查看原文请移步底部参考链接：哈希表）：</p>
+<ul>
+<li><strong>开放定址法</strong><ul>
+<li>线性探测</li>
+<li>平方探测</li>
+<li>伪随机探测</li>
+</ul>
+</li>
+<li><p><strong>单独链表法</strong></p>
+<p>  将散列到同一个存储位置的所有元素保存在一个链表中。实现时，一种策略是散列表同一位置的所有冲突结果都是用栈存放的，新元素被插入到表的前端还是后端完全取决于怎样方便。<br>  <img src="http://jpkc.nwu.edu.cn/sjjg/study_online/book/8/4_2.files/image001.gif" alt=""></p>
+</li>
+<li><p><strong>再哈希</strong></p>
+<p>  上一次哈希计算发生冲突后，使用另外的哈希函数进行哈希计算知道冲突不再发生</p>
+</li>
+<li><p><strong>建立公共溢出区</strong></p>
+<p>  为冲突的哈希地址单独建立一块区域，所有冲突的哈希地址都存放在此区域中</p>
+</li>
+</ul>
+<p>到这里也就可以推断出，如果在NSDictionary存取时出现效率低下的情况，那么很可能是： 1.频繁的扩容 2.冲突过多</p>
+<h5 id="Q：NSMapTable是怎样的结构呢？"><a href="#Q：NSMapTable是怎样的结构呢？" class="headerlink" title="Q：NSMapTable是怎样的结构呢？"></a>Q：NSMapTable是怎样的结构呢？</h5><p><strong>先来看看NSMapTable的结构</strong>(代码来自于cocotron)<br>NSMapTable是一个key－value的容器，下面是NSMapTable的部分代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</div><div class="line">   <span class="built_in">NSMapTable</span>        *table;</div><div class="line">   <span class="built_in">NSInteger</span>                i;</div><div class="line">   <span class="keyword">struct</span> _NSMapNode *j;</div><div class="line">&#125; <span class="built_in">NSMapEnumerator</span>;</div></pre></td></tr></table></figure>
+<p>上述结构体描述了遍历一个NSMapTable时的一个指针对象，其中包含table对象自身的指针，计数值，和节点指针。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</div><div class="line">   <span class="built_in">NSUInteger</span> (*hash)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">   <span class="built_in">BOOL</span> (*isEqual)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">const</span> <span class="keyword">void</span> *,<span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">   <span class="keyword">void</span> (*<span class="keyword">retain</span>)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">   <span class="keyword">void</span> (*release)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">void</span> *);</div><div class="line">   <span class="built_in">NSString</span>  *(*describe)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">   <span class="keyword">const</span> <span class="keyword">void</span> *notAKeyMarker;</div><div class="line">&#125; <span class="built_in">NSMapTableKeyCallBacks</span>;</div></pre></td></tr></table></figure>
+<p>上述结构体中存放的是几个函数指针，用于计算key的hash值，判断key是否相等，retain，release操作。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</div><div class="line">   <span class="keyword">void</span>       (*<span class="keyword">retain</span>)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">   <span class="keyword">void</span>       (*release)(<span class="built_in">NSMapTable</span> *table,<span class="keyword">void</span> *);</div><div class="line">   <span class="built_in">NSString</span>  *(*describe)(<span class="built_in">NSMapTable</span> *table, <span class="keyword">const</span> <span class="keyword">void</span> *);</div><div class="line">&#125; <span class="built_in">NSMapTableValueCallBacks</span>;</div></pre></td></tr></table></figure>
+<p>上述存放的三个函数指针，定义在对nsmaptable插入一对key－value时，对value对象的操作。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSMapTable</span> : <span class="title">NSObject</span> </span>&#123;</div><div class="line">   <span class="built_in">NSMapTableKeyCallBacks</span>   *keyCallBacks;</div><div class="line">   <span class="built_in">NSMapTableValueCallBacks</span> *valueCallBacks;</div><div class="line">   <span class="built_in">NSUInteger</span>             count;</div><div class="line">   <span class="built_in">NSUInteger</span>             nBuckets;</div><div class="line">   <span class="keyword">struct</span> _NSMapNode  **buckets;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面是NSMtabtable真正的描述，可以看出来NSMapTable是一个哈希＋链表的数据结构(也就是使用Hash表中的单链表法解决冲突)，因此在NSMapTable中插入或者删除一对对象时</p>
+<p>寻找的时间是O（1）＋O（m），m最坏时可能为n。</p>
+<p> O（1）：为对key进行hash得到bucket的位置<br> O（m）：遍历该bucket后面冲突的value，通过链表连接起来。</p>
+<p>因此：NSDictionary中的key Value遍历时是无序的，至如按照什么样的顺序，跟hash函数相关。NSMapTable使用NSObject的哈希函数。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-(<span class="built_in">NSUInteger</span>)hash &#123;</div><div class="line">   <span class="keyword">return</span> (<span class="built_in">NSUInteger</span>)<span class="keyword">self</span>&gt;&gt;<span class="number">4</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述是NSObject的哈希值的计算方式，简单通过移位实现。右移4位，左边补0.<br>因为对象大多存于堆中，地址相差4位应该很正常。</p>
+<p>参考：</p>
+<p><a href="http://www.isaced.com/post-235.html" target="_blank" rel="external">NSMapTable: more than an NSDictionary for weak pointers</a></p>
+<p><a href="https://developer.apple.com/reference/foundation/nsmaptable?language=objc" target="_blank" rel="external">Apple API Reference - NSMapTable</a></p>
+<p><a href="https://developer.apple.com/reference/foundation/nshashtable?language=objc" target="_blank" rel="external">Apple API Reference - NSHashTable</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="external">维基百科 - 哈希表</a>(需要翻下墙，也可以问下度娘)</p>
+<p><a href="http://ibloodline.com/articles/2016/07/11/NSDictionary.html" target="_blank" rel="external">关于NSDictionary</a></p>
+<p><a href="http://www.cnblogs.com/doudouyoutang/p/4379068.html" target="_blank" rel="external">NSDictionary 的内部实现</a></p>
+<p><em>《Objective-C高级编程：iOS与OS X多线程和内存管理》 ARC的实现</em></p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jakey_yang 的个人博客">Jakey_yang</a></p>
+        <p><span>发布时间:</span>2017年04月20日 - 11时27分</p>
+        <p><span>最后更新:</span>2017年09月13日 - 22时31分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/20/解读Objective-C的NSDictionary/" title="解读Objective-C的NSDictionary">http://jake.gift/2017/04/20/解读Objective-C的NSDictionary/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://jake.gift/2017/04/20/解读Objective-C的NSDictionary/　　作者: Jakey_yang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/04/28/多睡觉多读书/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          多睡觉多读书
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/29/removeFromSuperView浅谈/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">removeFromSuperView浅谈</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apple文档的启示"><span class="toc-number">1.</span> <span class="toc-text">Apple文档的启示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#抛两个问题🙈"><span class="toc-number">2.</span> <span class="toc-text">抛两个问题🙈</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？"><span class="toc-number">2.0.1.</span> <span class="toc-text">Q：上千的对象存储到NSDictionary时，出现效率低下的问题是什么原因？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Q：NSMapTable是怎样的结构呢？"><span class="toc-number">2.0.2.</span> <span class="toc-text">Q：NSMapTable是怎样的结构呢？</span></a></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'huyangjake',
+      repo: 'BlogComments',
+      oauth: {
+        client_id: '465fc53423145e17a447',
+        client_secret: '4c8103f9a678b2e4546912bd02111ddf33c49f24',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/28/多睡觉多读书/" title="上一篇: 多睡觉多读书">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/03/29/removeFromSuperView浅谈/" title="下一篇: removeFromSuperView浅谈">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/19/iOS隐式动画/">iOS隐式动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/Hi！CALayer我们聊聊/">Hi！CALayer我们聊聊</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">自定义NSURLProtocol实现UIWebView缓存机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序视图层/">小程序视图层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/小程序逻辑层/">小程序逻辑层</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/微信小程序初识/">微信小程序初识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">Apple Debugging---使用LLDB替换方法为自定义的block</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/">Apple Debugging---开始使用LLDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/方向/">方向</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/一次版本发布的启示/">一次版本发布的启示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/多睡觉多读书/">多睡觉多读书</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/解读Objective-C的NSDictionary/">解读Objective-C的NSDictionary</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/29/removeFromSuperView浅谈/">removeFromSuperView浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/H5跳转Native路由机制的探索/">H5跳转Native路由机制的探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/JSPatch遇上Swift/">JSPatch遇上Swift</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Swift和Objective-C的数组转换/">Swift和Objective-C的数组转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Using-Swift-with-Cocoa-and-Objective-C笔记-ONE/">Using Swift With Cocoa and Objective-C笔记_ONE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/">Swift的weak Unowned Unowned(unsafe)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/cookie-in-iOS/">Cookie in iOS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/Objective-C中的装饰模式/">Objective-C中的装饰模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/04/继承与代理-Decorate-Pattern/">继承与代理--Decorate Pattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/29/知识传送门/">知识传送门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/JSPatch学习分享/">JSPatch学习分享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/Objective-C-isa指针/">Objective-C Isa指针</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-二/">JSPatch学习笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/JSPatch学习笔记-一/">JSPatch学习笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/iOS10新特性适配总结/">iOS10新特性适配总结</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 Jakey_yang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 109;
+            var backgroundimg = "url(/background/bg-" + backgroundnum +".jpg)";
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
