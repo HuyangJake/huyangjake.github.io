@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习笔记," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -95,7 +95,6 @@
 
 
 <meta name="description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
-<meta name="keywords" content="学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Apple Debugging---开始使用LLDB">
 <meta property="og:url" content="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/index.html">
@@ -103,7 +102,7 @@
 <meta property="og:description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pic2.zhimg.com/e3a51869c1a65e3cb56378470b5af695_b.jpg">
-<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta property="og:updated_time" content="2017-10-06T07:20:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Apple Debugging---开始使用LLDB">
 <meta name="twitter:description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
@@ -223,12 +222,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            关于
+            标签
           </a>
         </li>
       
@@ -243,12 +242,22 @@
         </li>
       
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
             
-            标签
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -324,6 +333,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -454,12 +496,6 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
-          
-        </div>
       
 
       
@@ -597,7 +633,7 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习笔记,JavaScript," />
+  <meta name="keywords" content="JavaScript," />
 
 
 
@@ -95,7 +95,7 @@
 
 
 <meta name="description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
-<meta name="keywords" content="学习笔记,JavaScript">
+<meta name="keywords" content="JavaScript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序初识">
 <meta property="og:url" content="http://jake.gift/2017/06/03/微信小程序初识/index.html">
@@ -103,7 +103,7 @@
 <meta property="og:description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/app.json%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">
-<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta property="og:updated_time" content="2017-10-06T07:13:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序初识">
 <meta name="twitter:description" content="开始了解小程序啦，近期要准备修改一个小程序，添加两个自定义的功能，记录下学习过程中的体会。 目录初始小程序最关键也是必不可少的是 app.js、app.json、app.wxss 这三个。其中，.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。">
@@ -223,12 +223,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            关于
+            标签
           </a>
         </li>
       
@@ -243,12 +243,22 @@
         </li>
       
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
             
-            标签
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -324,6 +334,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -463,6 +506,7 @@
 </tbody>
 </table>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"navigationBarBackgroundColor"</span>: <span class="string">"#ffffff"</span>,</div><div class="line">  <span class="string">"navigationBarTextStyle"</span>: <span class="string">"black"</span>,</div><div class="line">  <span class="string">"navigationBarTitleText"</span>: <span class="string">"微信接口功能演示"</span>,</div><div class="line">  <span class="string">"backgroundColor"</span>: <span class="string">"#eeeeee"</span>,</div><div class="line">  <span class="string">"backgroundTextStyle"</span>: <span class="string">"light"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -496,8 +540,6 @@
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
           
             <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
@@ -639,7 +681,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
