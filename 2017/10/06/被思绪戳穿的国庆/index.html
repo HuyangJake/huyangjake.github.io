@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习笔记," />
+  <meta name="keywords" content="随笔," />
 
 
 
@@ -94,20 +94,18 @@
 
 
 
-<meta name="description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
-<meta name="keywords" content="学习笔记">
+<meta name="description" content="我一直觉得自己是一个对过去记忆很不敏感的人，写这段文字的时候在回想着往年的国庆在哪。粗粗一想有印象地只有大二的时候跟两个同学一起骑车去穷游的经历。 我现在不太喜欢旅游，没有向往哪里特别想去某个地方旅游的想法。今年的国庆长假，有几个老友相约出游，却也提不起兴趣，之后相互也没有再响应出游计划也就不了了之，最后相互一句 “下次” 一溜而过。 曾曾经也是向往过一群朋友出游，还有跟女朋友一起旅游。现在没有了">
+<meta name="keywords" content="随笔">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Apple Debugging---开始使用LLDB">
-<meta property="og:url" content="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/index.html">
+<meta property="og:title" content="被思绪戳穿的国庆">
+<meta property="og:url" content="http://jake.gift/2017/10/06/被思绪戳穿的国庆/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
+<meta property="og:description" content="我一直觉得自己是一个对过去记忆很不敏感的人，写这段文字的时候在回想着往年的国庆在哪。粗粗一想有印象地只有大二的时候跟两个同学一起骑车去穷游的经历。 我现在不太喜欢旅游，没有向往哪里特别想去某个地方旅游的想法。今年的国庆长假，有几个老友相约出游，却也提不起兴趣，之后相互也没有再响应出游计划也就不了了之，最后相互一句 “下次” 一溜而过。 曾曾经也是向往过一群朋友出游，还有跟女朋友一起旅游。现在没有了">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://pic2.zhimg.com/e3a51869c1a65e3cb56378470b5af695_b.jpg">
-<meta property="og:updated_time" content="2017-09-13T14:31:10.000Z">
+<meta property="og:updated_time" content="2017-10-06T07:04:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Apple Debugging---开始使用LLDB">
-<meta name="twitter:description" content="Getting around RootlessOS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限： /System /bin /sbin /usr (except /usr/local) 只有Apple自身签名的软件（含命令行工具）可以。 Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密">
-<meta name="twitter:image" content="https://pic2.zhimg.com/e3a51869c1a65e3cb56378470b5af695_b.jpg">
+<meta name="twitter:title" content="被思绪戳穿的国庆">
+<meta name="twitter:description" content="我一直觉得自己是一个对过去记忆很不敏感的人，写这段文字的时候在回想着往年的国庆在哪。粗粗一想有印象地只有大二的时候跟两个同学一起骑车去穷游的经历。 我现在不太喜欢旅游，没有向往哪里特别想去某个地方旅游的想法。今年的国庆长假，有几个老友相约出游，却也提不起兴趣，之后相互也没有再响应出游计划也就不了了之，最后相互一句 “下次” 一溜而过。 曾曾经也是向往过一群朋友出游，还有跟女朋友一起旅游。现在没有了">
 
 
 
@@ -136,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/"/>
+  <link rel="canonical" href="http://jake.gift/2017/10/06/被思绪戳穿的国庆/"/>
 
 
 
 
 
-  <title>Apple Debugging---开始使用LLDB | ColdCode</title>
+  <title>被思绪戳穿的国庆 | ColdCode</title>
   
 
 
@@ -285,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/">
+    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/10/06/被思绪戳穿的国庆/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey_yang">
@@ -302,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Apple Debugging---开始使用LLDB</h1>
+          <h1 class="post-title" itemprop="name headline">被思绪戳穿的国庆</h1>
         
 
         <div class="post-meta">
@@ -314,8 +312,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-23T23:43:58+08:00">
-                2017-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-06T14:03:31+08:00">
+                2017-10-06
               </time>
             
 
@@ -324,6 +322,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -352,76 +372,13 @@
       
 
       
-        <h3 id="Getting-around-Rootless"><a href="#Getting-around-Rootless" class="headerlink" title="Getting around Rootless"></a>Getting around Rootless</h3><p>OS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限：</p>
-<pre><code>/System
-/bin
-/sbin
-/usr (except /usr/local)
-只有Apple自身签名的软件（含命令行工具）可以。
-</code></pre><p>Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密码点击确定来直接切换到root做一些违法的事情。也可以防止黑客黑了一个用户然后就有root权限可以肆意妄为的情况，不过对于真正的黑客来说</p>
-<p><img src="https://pic2.zhimg.com/e3a51869c1a65e3cb56378470b5af695_b.jpg" alt=""></p>
-<h3 id="Disabling-Rootless"><a href="#Disabling-Rootless" class="headerlink" title="Disabling Rootless"></a>Disabling Rootless</h3><p>在电脑的Recovery Mode，打开终端输入 </p>
-<pre><code>csrutil disable; reboot
-</code></pre><p>电脑会重启，此时电脑就禁用了Rootless，可以调试系统级别的应用。</p>
-<a id="more"></a>
-<p>可以使用命令：</p>
-<pre><code>lldb -n Finder
-</code></pre><p> 看到类似以下信息就表示成功</p>
-<pre><code>Process XXX stoped
-.
-.
-.
-</code></pre><h3 id="Attaching-LLDB-to-Xcode"><a href="#Attaching-LLDB-to-Xcode" class="headerlink" title="Attaching LLDB to Xcode"></a>Attaching LLDB to Xcode</h3><p> 使用<code>lldb</code> attach 到最常用的工具Xcode！</p>
-<p>方式一：</p>
-<pre><code>lldb file /Applications/Xcode.app/Contents/MacOS/Xcode
-</code></pre><p>方式二：</p>
-<pre><code>lldb -n Xcode  //需要Xcode在运行状态
-</code></pre><p>方式三：</p>
-<pre><code>pgrep -x Xcode  //需要Xcode在运行状态
-lldb -p 89921 //89921为Xcode的PID
-</code></pre><p>方式四：(attaching 一个将会运行的程序)</p>
-<pre><code>lldb -n Finder -w
-
-pkill Finder
-</code></pre><p> 运行程序：</p>
-<pre><code>process lanuch -e /dev/ttys004 --
-</code></pre><p>这里的<code>ttys004</code>是shell中的某个tab的唯一id</p>
-<hr>
-<h4 id="运行程序时可以携带的参数："><a href="#运行程序时可以携带的参数：" class="headerlink" title="运行程序时可以携带的参数："></a>运行程序时可以携带的参数：</h4><ul>
-<li>通过<code>-w</code>参数改变运行程序的目录：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -w /Applications</div></pre></td></tr></table></figure>
-<ul>
-<li>也可以直接将参数加到程序后面：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -- /Applications</div></pre></td></tr></table></figure>
-<ul>
-<li><code>-X</code>参数让 <code>shell</code> 接受任何格式参数，比如下面这种 <code>~</code> 字符</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -X true -- ~/Desktop</div></pre></td></tr></table></figure>
-<p>ps： <code>run</code> 命令是上面 <code>process launch -X true --</code> 的简写</p>
-<p>可以直接  <code>run ~/Desktop</code></p>
-<ul>
-<li><code>-o</code> 命令让LLDB输出到指定的文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -o /tmp/ls_output.txt -- /Applications</div></pre></td></tr></table></figure>
-<ul>
-<li><code>-i</code> 命令可以从外部文件读取数据，这在不想stdin的状况下很有用（还没有体会到😌 ）</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -i /tmp/wc_input.txt</div><div class="line"></div><div class="line">等同于</div><div class="line">wc &lt; /tmp/wc_input.txt  //wc为当前lldb的target</div></pre></td></tr></table></figure>
-<ul>
-<li><code>-n</code> 命令告诉LLDB不要创建stdin</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process launch -n</div></pre></td></tr></table></figure>
-<hr>
-<p> 按<code>Ctrl + C</code>可以暂停debugger， 添加一个断点：</p>
-<pre><code class="shell">breakpoint set -n &quot;-[NSView hitTest:]&quot;    
-continue //断点后继续执行
-po $rdi // 查看RDI CPU register    
-//修改一个断点，添加一个触发条件
-breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
-</code></pre>
-<p>内容出处：<br><strong>《Advanced Apple Debugging &amp; Reverse Engineering》</strong></p>
+        <p>我一直觉得自己是一个对过去记忆很不敏感的人，写这段文字的时候在回想着往年的国庆在哪。粗粗一想有印象地只有大二的时候跟两个同学一起骑车去穷游的经历。</p>
+<p>我现在不太喜欢旅游，没有向往哪里特别想去某个地方旅游的想法。今年的国庆长假，有几个老友相约出游，却也提不起兴趣，之后相互也没有再响应出游计划也就不了了之，最后相互一句 “下次” 一溜而过。</p>
+<h4 id="曾"><a href="#曾" class="headerlink" title="曾"></a>曾</h4><p>曾经也是向往过一群朋友出游，还有跟女朋友一起旅游。现在没有了向往，遇到一次出游的机会我甚至会评估好久这样的一段旅行有什么意义。多数都激不起我心中的波澜，因为几次曾经的经历让我的心境不再为它们所颤动。曾经听一个人说理性的自己和感性的自己这样的概念，这两个自己做出来的决定是截然不同的，没有波澜的自己当然都是理性的。冷淡的日子安静的自己，宁愿回家待7天。</p>
+<h4 id="十年"><a href="#十年" class="headerlink" title="十年"></a>十年</h4><p>十年 这个词，对我来说曾一直是很庞大的量级，这次竟被我爸轻易地用在了我身上。以往听到这个词后面跟的话，都不在我的记忆范围内，但是这回…十年前的那些我都历历在目。只记得几年前，却不曾想已经是十年前。</p>
+<h4 id="变"><a href="#变" class="headerlink" title="变"></a>变</h4><p>听说我回家之前几个表妹已经回来过又走了，而且还是抱着自己刚出生的孩子来的。堂弟也带着的他女朋友跟他妈妈正打麻将。我姐姐的双胞胎这个月底也要出生了。我？ 我现在一头黄发，满嘴胡渣。一直默默地耕耘着自己的未来，一回头发现周围的未来已来。当然也有不变得，经过10多年，乡下的样貌倒改变不是很大，还是有儿时的感觉。</p>
+<h4 id="寂"><a href="#寂" class="headerlink" title="寂"></a>寂</h4><p>在家我选择了电脑，历年长此以往。我不知道在成长过程中，电脑是不是对性格的养成有助攻。它给了逃避的港湾？我只是觉得它更有意义。我给人的印象就跟电脑关联在了一起。出去玩，我也可以玩得很好。但往往不想，或许用一个字概括 “宅” ？</p>
+<h4 id="结"><a href="#结" class="headerlink" title="结"></a>结</h4><p>看了两天的《权利的游戏》，准备开始代码一波。然后整理思绪，继续耕耘我的世界。</p>
 
       
     </div>
@@ -442,7 +399,7 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/" title="Apple Debugging---开始使用LLDB">http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/</a>
+    <a href="http://jake.gift/2017/10/06/被思绪戳穿的国庆/" title="被思绪戳穿的国庆">http://jake.gift/2017/10/06/被思绪戳穿的国庆/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -457,7 +414,7 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
       
         <div class="post-tags">
           
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
           
         </div>
       
@@ -470,8 +427,8 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/11/方向/" rel="next" title="方向">
-                <i class="fa fa-chevron-left"></i> 方向
+              <a href="/2017/07/19/iOS隐式动画/" rel="next" title="iOS隐式动画">
+                <i class="fa fa-chevron-left"></i> iOS隐式动画
               </a>
             
           </div>
@@ -479,10 +436,6 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/" rel="prev" title="Apple Debugging---使用LLDB替换方法为自定义的block">
-                Apple Debugging---使用LLDB替换方法为自定义的block <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -643,7 +596,7 @@ breakpoint modify 1 -c &quot;(BOOL)[$rdi isKindOfClass:[NSTextView class]]&quot;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Getting-around-Rootless"><span class="nav-number">1.</span> <span class="nav-text">Getting around Rootless</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Disabling-Rootless"><span class="nav-number">2.</span> <span class="nav-text">Disabling Rootless</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attaching-LLDB-to-Xcode"><span class="nav-number">3.</span> <span class="nav-text">Attaching LLDB to Xcode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行程序时可以携带的参数："><span class="nav-number">3.1.</span> <span class="nav-text">运行程序时可以携带的参数：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#曾"><span class="nav-number">1.</span> <span class="nav-text">曾</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十年"><span class="nav-number">2.</span> <span class="nav-text">十年</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变"><span class="nav-number">3.</span> <span class="nav-text">变</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#寂"><span class="nav-number">4.</span> <span class="nav-text">寂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结"><span class="nav-number">5.</span> <span class="nav-text">结</span></a></li></ol></div>
             
 
           </div>
