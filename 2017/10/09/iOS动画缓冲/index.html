@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="随笔," />
+  <meta name="keywords" content="iOS," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="大神博客传送门 onevcat 喵神 王巍 sunnyxx 孙源 bang 没故事的卓同学 Casa Taloyum 唐巧  学习平台传送门 swifter.tips Objc中国 泊学 swiftv objc.io Swift学习指引 Google Interview University FreeCodeCamp  iOS干货传送门 iOS 下关于 MD5 的那个坑 Xcode下调试神器——C">
-<meta name="keywords" content="随笔">
+<meta name="description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="知识传送门">
-<meta property="og:url" content="http://jake.gift/2016/12/29/知识传送门/index.html">
+<meta property="og:title" content="iOS动画缓冲">
+<meta property="og:url" content="http://jake.gift/2017/10/09/iOS动画缓冲/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="大神博客传送门 onevcat 喵神 王巍 sunnyxx 孙源 bang 没故事的卓同学 Casa Taloyum 唐巧  学习平台传送门 swifter.tips Objc中国 泊学 swiftv objc.io Swift学习指引 Google Interview University FreeCodeCamp  iOS干货传送门 iOS 下关于 MD5 的那个坑 Xcode下调试神器——C">
+<meta property="og:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-06T07:14:31.000Z">
+<meta property="og:updated_time" content="2017-10-09T15:38:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="知识传送门">
-<meta name="twitter:description" content="大神博客传送门 onevcat 喵神 王巍 sunnyxx 孙源 bang 没故事的卓同学 Casa Taloyum 唐巧  学习平台传送门 swifter.tips Objc中国 泊学 swiftv objc.io Swift学习指引 Google Interview University FreeCodeCamp  iOS干货传送门 iOS 下关于 MD5 的那个坑 Xcode下调试神器——C">
+<meta name="twitter:title" content="iOS动画缓冲">
+<meta name="twitter:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://jake.gift/2016/12/29/知识传送门/"/>
+  <link rel="canonical" href="http://jake.gift/2017/10/09/iOS动画缓冲/"/>
 
 
 
 
 
-  <title>知识传送门 | ColdCode</title>
+  <title>iOS动画缓冲 | ColdCode</title>
   
 
 
@@ -293,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jake.gift/2016/12/29/知识传送门/">
+    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/10/09/iOS动画缓冲/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey_yang">
@@ -310,7 +310,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">知识传送门</h1>
+          <h1 class="post-title" itemprop="name headline">iOS动画缓冲</h1>
         
 
         <div class="post-meta">
@@ -322,8 +322,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-29T09:11:11+08:00">
-                2016-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T23:28:26+08:00">
+                2017-10-09
               </time>
             
 
@@ -345,8 +345,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
                   </a>
                 </span>
 
@@ -382,35 +393,26 @@
       
 
       
-        <h3 id="大神博客传送门"><a href="#大神博客传送门" class="headerlink" title="大神博客传送门"></a>大神博客传送门</h3><ul>
-<li><a href="https://onevcat.com/#blog" target="_blank" rel="external">onevcat 喵神 王巍</a></li>
-<li><a href="http://blog.sunnyxx.com/" target="_blank" rel="external">sunnyxx 孙源</a></li>
-<li><a href="http://blog.cnbang.net/" target="_blank" rel="external">bang</a></li>
-<li><a href="http://www.jianshu.com/users/88a056103c02/latest_articles" target="_blank" rel="external">没故事的卓同学</a></li>
-<li><a href="http://casatwy.com/" target="_blank" rel="external">Casa Taloyum</a></li>
-<li><a href="http://blog.devtang.com/" target="_blank" rel="external">唐巧</a></li>
+        <h4 id="Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><a href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。" class="headerlink" title="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"></a>Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</h4><h3 id="CAMediaTimingFunction"><a href="#CAMediaTimingFunction" class="headerlink" title="CAMediaTimingFunction"></a>CAMediaTimingFunction</h3><p>设置缓冲方程式首先需要设置<code>CAAnimation</code>的<code>timingFunction</code>属性，是<code>CAMediaTimingFunction</code>类的一个对象。</p>
+<p>CAMediaTimingFunction的工厂方法：<code>+timingFunctionWithName:</code> 的参数常量如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">kCAMediaTimingFunctionLinear </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseIn </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseOut </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseInEaseOut</div><div class="line"></div><div class="line">kCAMediaTimingFunctionDefault</div></pre></td></tr></table></figure>
+<ul>
+<li><p><code>kCAMediaTimingFunctionLinear</code>（线性计时函数） 是 <code>CAAnimation</code> 的 <code>timingFunction</code> 属性的默认函数。</p>
+</li>
+<li><p><code>kCAMediaTimingFunctionEaseIn</code> 常量创建了一个慢慢加速然后突然停止的方法。</p>
+</li>
+<li><p><code>kCAMediaTimingFunctionEaseOut</code> 则恰恰相反，它以一个全速开始，然后慢慢减速停止。</p>
+</li>
+<li><p><code>kCAMediaTimingFunctionEaseInEaseOut</code> 创建了一个慢慢加速然后再慢慢减速的过程。</p>
+</li>
+<li><p>最后还有一个 <code>kCAMediaTimingFunctionDefault</code> ，它和 <code>kCAMediaTimingFunctionEaseInEaseOut</code> 很类似，但是加速和减速的过程都稍微有些慢。</p>
+</li>
 </ul>
-<h3 id="学习平台传送门"><a href="#学习平台传送门" class="headerlink" title="学习平台传送门"></a>学习平台传送门</h3><ul>
-<li><a href="http://swifter.tips/" target="_blank" rel="external">swifter.tips</a></li>
-<li><a href="https://www.objccn.io/" target="_blank" rel="external">Objc中国</a></li>
-<li><a href="https://boxueio.com/" target="_blank" rel="external">泊学</a></li>
-<li><a href="http://www.swiftv.cn/" target="_blank" rel="external">swiftv</a></li>
-<li><a href="https://www.objc.io/" target="_blank" rel="external">objc.io</a></li>
-<li><a href="http://www.swiftguide.cn/" target="_blank" rel="external">Swift学习指引</a></li>
-<li><a href="https://github.com/jwasham/google-interview-university/blob/master/README-cn.md" target="_blank" rel="external">Google Interview University</a></li>
-<li><a href="https://www.freecodecamp.com/" target="_blank" rel="external">FreeCodeCamp</a></li>
-</ul>
-<h3 id="iOS干货传送门"><a href="#iOS干货传送门" class="headerlink" title="iOS干货传送门"></a>iOS干货传送门</h3><ol>
-<li><a href="http://qiufeng.me/md5" target="_blank" rel="external">iOS 下关于 MD5 的那个坑</a></li>
-<li><a href="http://qiufeng.me/xcodedebug_chisel" target="_blank" rel="external">Xcode下调试神器——Chisel</a></li>
-<li><a href="https://github.com/CocoaChina-editors/Welcome-to-Swift/blob/master/Using%20Swift%20with%20Cocoa%20and%20Objective-C/03Mix%20and%20Match/Swift%20and%20Objective-C%20in%20the%20Same%20Project.md" target="_blank" rel="external">Swift和Objective混编攻略</a></li>
-<li><a href="https://my.oschina.net/jeans/blog/541750" target="_blank" rel="external">Swift中编写单例的正确方式</a></li>
-<li><a href="http://www.ifun.cc/blog/2014/02/22/ioskai-fa-zhi-xibji-qiao-jie-shao/" target="_blank" rel="external">xib的全方位使用技巧</a></li>
-</ol>
-<h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul>
-<li><a href="http://lucida.me/blog/developer-reading-list/" target="_blank" rel="external">程序员书单</a></li>
-</ul>
-
+<p><strong>当创建显式的CAAnimation，kCAMediaTimingFunctionDefault并不是默认选项</strong></p>
+<p><strong>在UIView的动画中，kCAMediaTimingFunctionEaseInEaseOut 相对应的常量是默认效果</strong></p>
+<h3 id="缓冲和关键帧动画"><a href="#缓冲和关键帧动画" class="headerlink" title="缓冲和关键帧动画"></a>缓冲和关键帧动画</h3><p><code>CAKeyframeAnimation</code>有一个NSArray类型的<code>timingFunctions</code>属性，我们可以用它来对每次动画的步骤指定不同的计时函数。但是指定函数的个数一定要等于<code>keyframes</code>数组的元素个数减一，因为它是描述每一帧之间动画速度的函数。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">IBAction</span>)changeColor</div><div class="line">&#123;</div><div class="line">    <span class="comment">//create a keyframe animation</span></div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animation];</div><div class="line">    animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">    animation.duration = <span class="number">2.0</span>;</div><div class="line">    animation.values = @[</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor ];</div><div class="line">    <span class="comment">//add timing function</span></div><div class="line">    <span class="built_in">CAMediaTimingFunction</span> *fn = [<span class="built_in">CAMediaTimingFunction</span> functionWithName: kCAMediaTimingFunctionEaseIn];</div><div class="line">    animation.timingFunctions = @[fn, fn, fn];</div><div class="line">    <span class="comment">//apply animation to layer</span></div><div class="line">    [<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="自定义缓冲动画"><a href="#自定义缓冲动画" class="headerlink" title="自定义缓冲动画"></a>自定义缓冲动画</h3>
       
     </div>
     
@@ -430,7 +432,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://jake.gift/2016/12/29/知识传送门/" title="知识传送门">http://jake.gift/2016/12/29/知识传送门/</a>
+    <a href="http://jake.gift/2017/10/09/iOS动画缓冲/" title="iOS动画缓冲">http://jake.gift/2017/10/09/iOS动画缓冲/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -445,7 +447,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
         </div>
       
@@ -458,8 +460,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/23/JSPatch学习分享/" rel="next" title="JSPatch学习分享">
-                <i class="fa fa-chevron-left"></i> JSPatch学习分享
+              <a href="/2017/10/06/被思绪戳穿的国庆/" rel="next" title="被思绪戳穿的国庆">
+                <i class="fa fa-chevron-left"></i> 被思绪戳穿的国庆
               </a>
             
           </div>
@@ -467,10 +469,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/01/04/继承与代理-Decorate-Pattern/" rel="prev" title="继承与代理--Decorate Pattern">
-                继承与代理--Decorate Pattern <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -631,7 +629,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#大神博客传送门"><span class="nav-number">1.</span> <span class="nav-text">大神博客传送门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习平台传送门"><span class="nav-number">2.</span> <span class="nav-text">学习平台传送门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS干货传送门"><span class="nav-number">3.</span> <span class="nav-text">iOS干货传送门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#书籍"><span class="nav-number">4.</span> <span class="nav-text">书籍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><span class="nav-number">1.</span> <span class="nav-text">Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAMediaTimingFunction"><span class="nav-number"></span> <span class="nav-text">CAMediaTimingFunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲和关键帧动画"><span class="nav-number"></span> <span class="nav-text">缓冲和关键帧动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义缓冲动画"><span class="nav-number"></span> <span class="nav-text">自定义缓冲动画</span></a></div>
             
 
           </div>
