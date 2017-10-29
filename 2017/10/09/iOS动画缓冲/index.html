@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
+<meta name="description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS动画缓冲">
 <meta property="og:url" content="http://jake.gift/2017/10/09/iOS动画缓冲/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
+<meta property="og:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-09T15:38:46.000Z">
+<meta property="og:updated_time" content="2017-10-29T15:24:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS动画缓冲">
-<meta name="twitter:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。 CAMediaTimingFunction的工厂方法：+timingFunctionWithName: 的参数常量如下： 123456">
+<meta name="twitter:description" content="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。CAMediaTimingFunction设置缓冲方程式首先需要设置CAAnimation的timingFunction属性，是CAMediaTimingFunction类的一个对象。">
 
 
 
@@ -393,8 +393,7 @@
       
 
       
-        <h4 id="Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><a href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。" class="headerlink" title="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"></a>Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</h4><h3 id="CAMediaTimingFunction"><a href="#CAMediaTimingFunction" class="headerlink" title="CAMediaTimingFunction"></a>CAMediaTimingFunction</h3><p>设置缓冲方程式首先需要设置<code>CAAnimation</code>的<code>timingFunction</code>属性，是<code>CAMediaTimingFunction</code>类的一个对象。</p>
-<p>CAMediaTimingFunction的工厂方法：<code>+timingFunctionWithName:</code> 的参数常量如下：</p>
+        <h4 id="Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><a href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。" class="headerlink" title="Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"></a>Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</h4><h3 id="CAMediaTimingFunction"><a href="#CAMediaTimingFunction" class="headerlink" title="CAMediaTimingFunction"></a>CAMediaTimingFunction</h3><p>设置缓冲方程式首先需要设置<code>CAAnimation</code>的<code>timingFunction</code>属性，是<code>CAMediaTimingFunction</code>类的一个对象。<br><a id="more"></a><br>CAMediaTimingFunction的工厂方法：<code>+timingFunctionWithName:</code> 的参数常量如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">kCAMediaTimingFunctionLinear </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseIn </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseOut </div><div class="line"></div><div class="line">kCAMediaTimingFunctionEaseInEaseOut</div><div class="line"></div><div class="line">kCAMediaTimingFunctionDefault</div></pre></td></tr></table></figure>
 <ul>
 <li><p><code>kCAMediaTimingFunctionLinear</code>（线性计时函数） 是 <code>CAAnimation</code> 的 <code>timingFunction</code> 属性的默认函数。</p>
@@ -412,7 +411,8 @@
 <p><strong>在UIView的动画中，kCAMediaTimingFunctionEaseInEaseOut 相对应的常量是默认效果</strong></p>
 <h3 id="缓冲和关键帧动画"><a href="#缓冲和关键帧动画" class="headerlink" title="缓冲和关键帧动画"></a>缓冲和关键帧动画</h3><p><code>CAKeyframeAnimation</code>有一个NSArray类型的<code>timingFunctions</code>属性，我们可以用它来对每次动画的步骤指定不同的计时函数。但是指定函数的个数一定要等于<code>keyframes</code>数组的元素个数减一，因为它是描述每一帧之间动画速度的函数。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">IBAction</span>)changeColor</div><div class="line">&#123;</div><div class="line">    <span class="comment">//create a keyframe animation</span></div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animation];</div><div class="line">    animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">    animation.duration = <span class="number">2.0</span>;</div><div class="line">    animation.values = @[</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor ];</div><div class="line">    <span class="comment">//add timing function</span></div><div class="line">    <span class="built_in">CAMediaTimingFunction</span> *fn = [<span class="built_in">CAMediaTimingFunction</span> functionWithName: kCAMediaTimingFunctionEaseIn];</div><div class="line">    animation.timingFunctions = @[fn, fn, fn];</div><div class="line">    <span class="comment">//apply animation to layer</span></div><div class="line">    [<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="自定义缓冲动画"><a href="#自定义缓冲动画" class="headerlink" title="自定义缓冲动画"></a>自定义缓冲动画</h3>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>《iOS核心动画》章节 缓冲</p>
+
       
     </div>
     
@@ -469,6 +469,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/25/1024/" rel="prev" title="1024">
+                1024 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -572,7 +576,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -629,7 +633,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><span class="nav-number">1.</span> <span class="nav-text">Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAMediaTimingFunction"><span class="nav-number"></span> <span class="nav-text">CAMediaTimingFunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲和关键帧动画"><span class="nav-number"></span> <span class="nav-text">缓冲和关键帧动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义缓冲动画"><span class="nav-number"></span> <span class="nav-text">自定义缓冲动画</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Core-Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。"><span class="nav-number">1.</span> <span class="nav-text">Core Animation内嵌了一系列标准函数来模拟物体在运动中的加速和减速。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAMediaTimingFunction"><span class="nav-number"></span> <span class="nav-text">CAMediaTimingFunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲和关键帧动画"><span class="nav-number"></span> <span class="nav-text">缓冲和关键帧动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></div>
             
 
           </div>
