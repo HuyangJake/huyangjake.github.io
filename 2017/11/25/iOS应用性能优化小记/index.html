@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="性能，移动应用最直观的体验就是界面是否流畅。在编程过程中大家或多或少总有遇到过关于提高应用性能的操作，比如简单的“异步线程加载图片”，“圆角绘制优化”，“懒加载视图”，“缓存图片”，“避免日期格式转换”等等，都是在把耗时耗资源的操作分散到其他时机执行，或者避免执行。也就是让UI主线程只执行轻量的任务以保证界面的流畅。而本文要讲的是只能在主线程中执行的动画性能的优化。 动画过程是流畅对最直观的体现，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-26T09:04:55.000Z">
+<meta property="og:updated_time" content="2017-11-26T09:08:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS应用性能优化小记">
 <meta name="twitter:description" content="性能，移动应用最直观的体验就是界面是否流畅。在编程过程中大家或多或少总有遇到过关于提高应用性能的操作，比如简单的“异步线程加载图片”，“圆角绘制优化”，“懒加载视图”，“缓存图片”，“避免日期格式转换”等等，都是在把耗时耗资源的操作分散到其他时机执行，或者避免执行。也就是让UI主线程只执行轻量的任务以保证界面的流畅。而本文要讲的是只能在主线程中执行的动画性能的优化。 动画过程是流畅对最直观的体现，">
@@ -384,11 +384,9 @@
       
         <p>性能，移动应用最直观的体验就是界面是否流畅。在编程过程中大家或多或少总有遇到过关于提高应用性能的操作，比如简单的“异步线程加载图片”，“圆角绘制优化”，“懒加载视图”，“缓存图片”，“避免日期格式转换”等等，都是在把耗时耗资源的操作分散到其他时机执行，或者避免执行。也就是让UI主线程只执行轻量的任务以保证界面的流畅。而本文要讲的是只能在主线程中执行的动画性能的优化。</p>
 <p>动画过程是流畅对最直观的体现，而动画效果对设备的硬件资源有一定的要求。针对现代iOS设备来说，造成应用性能的下降在于资源的过度消耗。这里的“资源”指的是什么呢？<br><a id="more"></a></p>
-<h3 id="CPU-amp-GPU"><a href="#CPU-amp-GPU" class="headerlink" title="CPU &amp; GPU"></a>CPU &amp; GPU</h3><p>关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理 器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原 因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。</p>
-<p>总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常 用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因， 我们想尽可能把屏幕渲染的工作交给硬件去处理。问题在于GPU并没有无限制处理 性能，而且一旦资源用完的话，性能就会开始下降了（即使CPU并没有完全占用）</p>
+<h3 id="CPU-amp-GPU"><a href="#CPU-amp-GPU" class="headerlink" title="CPU &amp; GPU"></a>CPU &amp; GPU</h3><p>关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原 因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。<br>总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常 用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因， 我们想尽可能把屏幕渲染的工作交给硬件去处理。问题在于GPU并没有无限制处理 性能，而且一旦资源用完的话，性能就会开始下降了（即使CPU并没有完全占用）</p>
 <p><strong>大多数动画性能优化都是关于智能利用GPU和CPU，使得它们都不会超出负荷。</strong> 于是我们首先需要知道Core Animation是如何在这两个处理器之间分配工作的。</p>
-<h4 id="一段动画的六个阶段（延伸阅读）"><a href="#一段动画的六个阶段（延伸阅读）" class="headerlink" title="一段动画的六个阶段（延伸阅读）"></a>一段动画的六个阶段（延伸阅读）</h4><p>其实iOS系统中到处充满着动画，双击Home键出来了应用切换界面、下拉出现通知中心，打开任何App时过程，都是动画在装饰着这些操作。还有在编程的时候，任意的UIView动画都默认包含着Core Animation实现的0.25秒的隐式动画。Core Animation 处在iOS的核心地位。</p>
-<p>当运行一段动画的时，这个过程会被分离为四个阶段：</p>
+<h4 id="一段动画的六个阶段（延伸阅读）"><a href="#一段动画的六个阶段（延伸阅读）" class="headerlink" title="一段动画的六个阶段（延伸阅读）"></a>一段动画的六个阶段（延伸阅读）</h4><p>其实iOS系统中到处充满着动画，双击Home键出来了应用切换界面、下拉出现通知中心，打开任何App时过程，都是动画在装饰着这些操作。还有在编程的时候，任意的UIView动画都默认包含着Core Animation实现的0.25秒的隐式动画。Core Animation 处在iOS的核心地位。<br>当运行一段动画的时，这个过程会被分离为四个阶段：</p>
 <ol>
 <li>布局 - 这是准备你的视图/图层的层级关系，以及设置图层属性（位置，背景 色，边框等等）的阶段</li>
 <li>显示 - 这是图层的寄宿图片被绘制的阶段。绘制有可能涉及你的<code>-drawReact:</code> 和 <code>drawLayer:inContext:</code>方法的调用路径。</li>
@@ -485,6 +483,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/27/机器学习-统计基础-研究方法入门/" rel="prev" title="机器学习-统计基础-研究方法入门">
+                机器学习-统计基础-研究方法入门 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -588,7 +590,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -599,7 +601,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -610,7 +612,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
