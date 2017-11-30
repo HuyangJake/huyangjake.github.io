@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Mashing Learning," />
 
 
 
@@ -94,17 +94,23 @@
 
 
 
-<meta name="description" content="Swizzling with block injection要在lldb中使用Objective-C的runtime，可以通过导入头文件来获得运行时的各种黑色科技。 po @import Foundation">
+<meta name="description" content="概念记录频率 （frequency）直方图的分布下图是正偏斜分布  一共有四种分布方式  正态分布(normal distribution) 偏斜分布(skewed) 双峰分布(bimodal) 均匀分布 (uniform)  正态分布的 均值、中位数、众数都相等">
+<meta name="keywords" content="Mashing Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Apple Debugging---使用LLDB替换方法为自定义的block">
-<meta property="og:url" content="http://jake.gift/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/index.html">
+<meta property="og:title" content="机器学习-统计基础-数据可视化">
+<meta property="og:url" content="http://jake.gift/2017/11/30/机器学习-统计基础-数据可视化/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="Swizzling with block injection要在lldb中使用Objective-C的runtime，可以通过导入头文件来获得运行时的各种黑色科技。 po @import Foundation">
+<meta property="og:description" content="概念记录频率 （frequency）直方图的分布下图是正偏斜分布  一共有四种分布方式  正态分布(normal distribution) 偏斜分布(skewed) 双峰分布(bimodal) 均匀分布 (uniform)  正态分布的 均值、中位数、众数都相等">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-06T07:20:16.000Z">
+<meta property="og:image" content="http://jake.gift/images/article/086AD10ECF24B6FC803C01526FD0EF3F.jpg">
+<meta property="og:image" content="http://jake.gift/images/article/ED3CB73EBE627AE0EF415BDA5564829D.jpg">
+<meta property="og:image" content="http://jake.gift/images/article/C78399F86FCC1AB5725B9F56E7A03C27.jpg">
+<meta property="og:image" content="http://jake.gift/images/article/4849F4578F6ED3E808CB072E3C2A0B7F.jpg">
+<meta property="og:updated_time" content="2017-11-30T06:44:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Apple Debugging---使用LLDB替换方法为自定义的block">
-<meta name="twitter:description" content="Swizzling with block injection要在lldb中使用Objective-C的runtime，可以通过导入头文件来获得运行时的各种黑色科技。 po @import Foundation">
+<meta name="twitter:title" content="机器学习-统计基础-数据可视化">
+<meta name="twitter:description" content="概念记录频率 （frequency）直方图的分布下图是正偏斜分布  一共有四种分布方式  正态分布(normal distribution) 偏斜分布(skewed) 双峰分布(bimodal) 均匀分布 (uniform)  正态分布的 均值、中位数、众数都相等">
+<meta name="twitter:image" content="http://jake.gift/images/article/086AD10ECF24B6FC803C01526FD0EF3F.jpg">
 
 
 
@@ -133,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://jake.gift/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/"/>
+  <link rel="canonical" href="http://jake.gift/2017/11/30/机器学习-统计基础-数据可视化/"/>
 
 
 
 
 
-  <title>Apple Debugging---使用LLDB替换方法为自定义的block | ColdCode</title>
+  <title>机器学习-统计基础-数据可视化 | ColdCode</title>
   
 
 
@@ -292,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/">
+    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/11/30/机器学习-统计基础-数据可视化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey_yang">
@@ -309,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Apple Debugging---使用LLDB替换方法为自定义的block</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习-统计基础-数据可视化</h1>
         
 
         <div class="post-meta">
@@ -321,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-25T22:26:02+08:00">
-                2017-05-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T14:38:56+08:00">
+                2017-11-30
               </time>
             
 
@@ -344,18 +350,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
-                    <span itemprop="name">猿猿养成记</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/猿猿养成记/学习笔记/" itemprop="url" rel="index">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
                     <span itemprop="name">学习笔记</span>
                   </a>
                 </span>
@@ -392,30 +387,28 @@
       
 
       
-        <h3 id="Swizzling-with-block-injection"><a href="#Swizzling-with-block-injection" class="headerlink" title="Swizzling with block injection"></a>Swizzling with block injection</h3><p>要在<code>lldb</code>中使用Objective-C的runtime，可以通过导入头文件来获得运行时的各种黑色科技。</p>
-<pre><code>po @import Foundation
-</code></pre><a id="more"></a>
-<p>在控制台输入<code>po</code></p>
-<pre><code>（lldb) po 
-Enter expressions, then terminate with an empty line to evaluate:
-    1:
-</code></pre><p>然后可输入多行代码，就像在Xcode中写代码一样。在编写完毕后，回车空一行，再回车代码就会被执行了。下面是一个例子：</p>
-<pre><code>1: @import Cocoa; 
-  2: id $class = [NSObject class]; 
-  3: SEL $sel = @selector(init); 
- 4: void *$method = (void *)class_getInstanceMethod($class , $sel); 
-  5: IMP $oldImp = (IMP)method_getImplementation($method); 
-
-id (^$block)(id) = ^id(id object) { 
-    if ((BOOL)[object isKindOfClass:[NSView class]]) {
-         fprintf(stderr, &quot;%s\n&quot;, (char *)[[[object class] description] UTF8String]); 
-    } 
-    return object;
-}
-IMP $newImp = (IMP)imp_implementationWithBlock($block);
-method_setImplementation($method, $newImp);
-</code></pre><p>至此，NSObject的init方法就被替换为了上述代码中的block，<code>LLDB</code>中有一个bug，在block中执行IMPS就会崩溃。</p>
-<p>内容来自：<strong>《Advanced Apple Debugging &amp; Reverse Engineering》</strong></p>
+        <h3 id="概念记录"><a href="#概念记录" class="headerlink" title="概念记录"></a>概念记录</h3><h4 id="频率-（frequency）"><a href="#频率-（frequency）" class="headerlink" title="频率 （frequency）"></a>频率 （<em>frequency</em>）</h4><h4 id="直方图的分布"><a href="#直方图的分布" class="headerlink" title="直方图的分布"></a>直方图的分布</h4><p>下图是<strong>正偏斜分布</strong></p>
+<p><img src="../../../../images/article/086AD10ECF24B6FC803C01526FD0EF3F.jpg" alt="IMAGE"></p>
+<p>一共有四种分布方式</p>
+<ul>
+<li>正态分布(<em>normal distribution</em>)</li>
+<li>偏斜分布(<em>skewed</em>)</li>
+<li>双峰分布(<em>bimodal</em>)</li>
+<li>均匀分布 (<em>uniform</em>)</li>
+</ul>
+<p><strong>正态分布的 均值、中位数、众数都相等</strong><br><a id="more"></a></p>
+<h4 id="直方图的组距-bin-size"><a href="#直方图的组距-bin-size" class="headerlink" title="直方图的组距(bin size)"></a>直方图的组距(<em>bin size</em>)</h4><p>直方图每一条的宽度</p>
+<p>直方图的横坐标有：</p>
+<ol>
+<li>Numerical 数值型</li>
+<li>Categorical 类别型</li>
+</ol>
+<h4 id="众数-（mode）"><a href="#众数-（mode）" class="headerlink" title="众数 （mode）"></a>众数 （<em>mode</em>）</h4><p>在样本中出现次数最多的数<br>不易收到组距的影响<br>众数是最常见的得分 </p>
+<h4 id="均值-（mean）"><a href="#均值-（mean）" class="headerlink" title="均值 （mean）"></a>均值 （<em>mean</em>）</h4><p><img src="../../../../images/article/ED3CB73EBE627AE0EF415BDA5564829D.jpg" alt="IMAGE"></p>
+<p>□ 分布中的所有分值都影响平均值<br>□ 平均值可用公式来描述<br>□ 同一个总体中的多个样本会有相似的平均值<br>□ 一个样本的平均值可以用来推论其所在的总体<br>□ 如果向数据集中添加一个极值，它的平均值会发生改变</p>
+<p>不容易收到组距的影响</p>
+<h4 id="中位数-median"><a href="#中位数-median" class="headerlink" title="中位数 (median)"></a>中位数 (<em>median</em>)</h4><p>中位数需要去除异常值，然后排序<br>计算公式<br><img src="../../../../images/article/C78399F86FCC1AB5725B9F56E7A03C27.jpg" alt="IMAGE"><br>不容易受异常值的影响<br>不容易收到组距的影响</p>
+<h4 id="excle表格计算平均值"><a href="#excle表格计算平均值" class="headerlink" title="excle表格计算平均值"></a>excle表格计算平均值</h4><p><img src="../../../../images/article/4849F4578F6ED3E808CB072E3C2A0B7F.jpg" alt="IMAGE"></p>
 
       
     </div>
@@ -436,7 +429,7 @@ method_setImplementation($method, $newImp);
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://jake.gift/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/" title="Apple Debugging---使用LLDB替换方法为自定义的block">http://jake.gift/2017/05/25/Apple-debugging-使用LLDB替换方法为自定义的block/</a>
+    <a href="http://jake.gift/2017/11/30/机器学习-统计基础-数据可视化/" title="机器学习-统计基础-数据可视化">http://jake.gift/2017/11/30/机器学习-统计基础-数据可视化/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -449,6 +442,12 @@ method_setImplementation($method, $newImp);
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Mashing-Learning/" rel="tag"># Mashing Learning</a>
+          
+        </div>
+      
 
       
       
@@ -458,8 +457,8 @@ method_setImplementation($method, $newImp);
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/23/Apple-Debugging-开始使用LLDB/" rel="next" title="Apple Debugging---开始使用LLDB">
-                <i class="fa fa-chevron-left"></i> Apple Debugging---开始使用LLDB
+              <a href="/2017/11/27/机器学习-统计基础-研究方法入门/" rel="next" title="机器学习-统计基础-研究方法入门">
+                <i class="fa fa-chevron-left"></i> 机器学习-统计基础-研究方法入门
               </a>
             
           </div>
@@ -467,10 +466,6 @@ method_setImplementation($method, $newImp);
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/03/微信小程序初识/" rel="prev" title="微信小程序初识">
-                微信小程序初识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -631,7 +626,7 @@ method_setImplementation($method, $newImp);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Swizzling-with-block-injection"><span class="nav-number">1.</span> <span class="nav-text">Swizzling with block injection</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念记录"><span class="nav-number">1.</span> <span class="nav-text">概念记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#频率-（frequency）"><span class="nav-number">1.1.</span> <span class="nav-text">频率 （frequency）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直方图的分布"><span class="nav-number">1.2.</span> <span class="nav-text">直方图的分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直方图的组距-bin-size"><span class="nav-number">1.3.</span> <span class="nav-text">直方图的组距(bin size)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#众数-（mode）"><span class="nav-number">1.4.</span> <span class="nav-text">众数 （mode）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#均值-（mean）"><span class="nav-number">1.5.</span> <span class="nav-text">均值 （mean）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中位数-median"><span class="nav-number">1.6.</span> <span class="nav-text">中位数 (median)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#excle表格计算平均值"><span class="nav-number">1.7.</span> <span class="nav-text">excle表格计算平均值</span></a></li></ol></li></ol></div>
             
 
           </div>
