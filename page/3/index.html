@@ -293,6 +293,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/05/23/Apple-Debugging-开始使用LLDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jakey_yang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/23/Apple-Debugging-开始使用LLDB/" itemprop="url">Apple Debugging---开始使用LLDB</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-23T23:43:58+08:00">
+                2017-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="Getting-around-Rootless"><a href="#Getting-around-Rootless" class="headerlink" title="Getting around Rootless"></a>Getting around Rootless</h3><p>OS X 10.11 中引入的 Rootless，即使是root用户，也无法对以下路径有写和执行的权限：</p>
+<pre><code>/System
+/bin
+/sbin
+/usr (except /usr/local)
+只有Apple自身签名的软件（含命令行工具）可以。
+</code></pre><p>Apple的Rootless机制虽然保护了系统的安全，防止了大部分恶意软件想通过单纯的引导用户，输入自己的密码点击确定来直接切换到root做一些违法的事情。也可以防止黑客黑了一个用户然后就有root权限可以肆意妄为的情况，不过对于真正的黑客来说</p>
+<p><img src="https://pic2.zhimg.com/e3a51869c1a65e3cb56378470b5af695_b.jpg" alt=""></p>
+<h3 id="Disabling-Rootless"><a href="#Disabling-Rootless" class="headerlink" title="Disabling Rootless"></a>Disabling Rootless</h3><p>在电脑的Recovery Mode，打开终端输入 </p>
+<pre><code>csrutil disable; reboot
+</code></pre><p>电脑会重启，此时电脑就禁用了Rootless，可以调试系统级别的应用。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/23/Apple-Debugging-开始使用LLDB/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/05/11/方向/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1313,160 +1480,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/01/20/Swift和Objective-C的数组转换/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jakey_yang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ColdCode">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/20/Swift和Objective-C的数组转换/" itemprop="url">Swift和Objective-C的数组转换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-20T10:45:57+08:00">
-                2017-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
-                    <span itemprop="name">猿猿养成记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <ol>
-<li>当我们在 Objective-C 代码中使用 Swift 类或者协议时，接入的API会将全部所有类型的Swift数组代替为NSArray。</li>
-<li>Swift 的编译器会在接入 Objective-C APIs 的时候将NSArray类替换成AnyObject[]</li>
-<li>若我们将一个NSArray对象传递给Swift的API并要求数组元素为一个新的类型，运行时就会产生错误。</li>
-<li>如果 Swift API 返回一个不能被转换为NSArray类型的 Swift 数组，错误也会随之产生。</li>
-</ol>
-<blockquote>
-<p>如果某个对象是 Objective-C 或者 Swift 类的实例，或者这个对象可以转换成另一种类型，那么这个对象则属于AnyObject类型的对象  <em>例如，一个Int[]类型的 Swift 数组包含Int结构的元素。Int类型并不是一个类的实例，但由于Int类型转换成了NSNumber类，Int类型属于AnyObject类型的。</em></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/20/Swift和Objective-C的数组转换/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1517,7 +1530,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
