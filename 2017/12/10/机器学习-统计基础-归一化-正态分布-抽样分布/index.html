@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Mash Learning," />
 
 
 
@@ -94,17 +94,21 @@
 
 
 
-<meta name="description" content="记录生活工作">
+<meta name="description" content="归一化概念记录Z值原始值跟均值之间相差几个标准差 公式 z = (x - μ) / σ可以将数据归一化 标准正态分布平均值为0， 标准差为1">
+<meta name="keywords" content="Mash Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="方向">
-<meta property="og:url" content="http://jake.gift/2017/05/11/方向/index.html">
+<meta property="og:title" content="机器学习-统计基础-归一化&amp;正态分布&amp;抽样分布">
+<meta property="og:url" content="http://jake.gift/2017/12/10/机器学习-统计基础-归一化-正态分布-抽样分布/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="记录生活工作">
+<meta property="og:description" content="归一化概念记录Z值原始值跟均值之间相差几个标准差 公式 z = (x - μ) / σ可以将数据归一化 标准正态分布平均值为0， 标准差为1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-06T07:09:56.000Z">
+<meta property="og:image" content="http://jake.gift/images/article/3C26B517B4215C3A09CF44247AD681BD.jpg">
+<meta property="og:image" content="https://s3.amazonaws.com/udacity-hosted-downloads/ZTable.jpg">
+<meta property="og:updated_time" content="2017-12-10T03:05:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="方向">
-<meta name="twitter:description" content="记录生活工作">
+<meta name="twitter:title" content="机器学习-统计基础-归一化&amp;正态分布&amp;抽样分布">
+<meta name="twitter:description" content="归一化概念记录Z值原始值跟均值之间相差几个标准差 公式 z = (x - μ) / σ可以将数据归一化 标准正态分布平均值为0， 标准差为1">
+<meta name="twitter:image" content="http://jake.gift/images/article/3C26B517B4215C3A09CF44247AD681BD.jpg">
 
 
 
@@ -133,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://jake.gift/2017/05/11/方向/"/>
+  <link rel="canonical" href="http://jake.gift/2017/12/10/机器学习-统计基础-归一化-正态分布-抽样分布/"/>
 
 
 
 
 
-  <title>方向 | ColdCode</title>
+  <title>机器学习-统计基础-归一化&正态分布&抽样分布 | ColdCode</title>
   
 
 
@@ -292,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/05/11/方向/">
+    <link itemprop="mainEntityOfPage" href="http://jake.gift/2017/12/10/机器学习-统计基础-归一化-正态分布-抽样分布/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey_yang">
@@ -309,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">方向</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习-统计基础-归一化&正态分布&抽样分布</h1>
         
 
         <div class="post-meta">
@@ -321,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T11:26:32+08:00">
-                2017-05-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T11:00:54+08:00">
+                2017-12-10
               </time>
             
 
@@ -344,8 +348,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
                   </a>
                 </span>
 
@@ -381,7 +385,23 @@
       
 
       
-        
+        <h3 id="归一化概念记录"><a href="#归一化概念记录" class="headerlink" title="归一化概念记录"></a>归一化概念记录</h3><h4 id="Z值"><a href="#Z值" class="headerlink" title="Z值"></a>Z值</h4><p>原始值跟均值之间相差几个标准差</p>
+<p>公式 <code>z = (x - μ) / σ</code>可以将数据归一化</p>
+<h4 id="标准正态分布"><a href="#标准正态分布" class="headerlink" title="标准正态分布"></a>标准正态分布</h4><p>平均值为0， 标准差为1 </p>
+<a id="more"></a>
+<h3 id="正态分布概念记录"><a href="#正态分布概念记录" class="headerlink" title="正态分布概念记录"></a>正态分布概念记录</h3><h4 id="概率密度函数（PDF）"><a href="#概率密度函数（PDF）" class="headerlink" title="概率密度函数（PDF）"></a>概率密度函数（<em>PDF</em>）</h4><p>概率密度函数曲线下的面积是1，因为它是用分布数据的相对频率（比例）来绘制数据模型的</p>
+<h4 id="概率密度函数的百分位"><a href="#概率密度函数的百分位" class="headerlink" title="概率密度函数的百分位"></a>概率密度函数的百分位</h4><p>选中一个X值如果小于等于该值的概率是80%，那么就称X是第80个百分位</p>
+<h4 id="概率"><a href="#概率" class="headerlink" title="概率"></a>概率</h4><p><img src="../../../../images/article/3C26B517B4215C3A09CF44247AD681BD.jpg" width="300px"></p>
+<h4 id="Z-表格"><a href="#Z-表格" class="headerlink" title="Z 表格"></a>Z 表格</h4><p><img src="https://s3.amazonaws.com/udacity-hosted-downloads/ZTable.jpg" alt=""><br><a href="https://s3.amazonaws.com/udacity-hosted-downloads/ZTable.jpg" target="_blank" rel="external">点击查看大图</a></p>
+<p><strong>在计算的时候需要善于使用技巧，使用正态分布左右对称， 和几个特定的点的概率可以加快计算的速度。</strong></p>
+<h3 id="抽样分布概念记录"><a href="#抽样分布概念记录" class="headerlink" title="抽样分布概念记录"></a>抽样分布概念记录</h3><h4 id="样本均值分布"><a href="#样本均值分布" class="headerlink" title="样本均值分布"></a>样本均值分布</h4><p>从总体中取出多个样本分别计算出均值的分布</p>
+<h4 id="所有样本均值的标准差（SE）（Standard-deviation-of-distribution-of-Sample-means）"><a href="#所有样本均值的标准差（SE）（Standard-deviation-of-distribution-of-Sample-means）" class="headerlink" title="所有样本均值的标准差（SE）（Standard deviation of distribution of Sample means）"></a>所有样本均值的标准差（<em>SE</em>）（<em>Standard deviation of distribution of Sample means</em>）</h4><p>样本量 n</p>
+<p>总体的标准差 <code>sigma</code> σ</p>
+<p><strong>σ / √n = SE</strong></p>
+<p>均值的标准偏差等于总体标准偏差除以样本量的平方根</p>
+<h4 id="中心极限定理-The-Central-Limit-Theorern"><a href="#中心极限定理-The-Central-Limit-Theorern" class="headerlink" title="中心极限定理(The Central Limit Theorern)"></a>中心极限定理(<em>The Central Limit Theorern</em>)</h4><p>对于均值分布，其中每个均值都是样本量为n的均值，该分布的标准差就等于总体标准差除以平方根n</p>
+<p>抽样分布总是趋近于正态分布<br>抽样分布的均值跟总体的均值相同</p>
+
       
     </div>
     
@@ -401,7 +421,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://jake.gift/2017/05/11/方向/" title="方向">http://jake.gift/2017/05/11/方向/</a>
+    <a href="http://jake.gift/2017/12/10/机器学习-统计基础-归一化-正态分布-抽样分布/" title="机器学习-统计基础-归一化&正态分布&抽样分布">http://jake.gift/2017/12/10/机器学习-统计基础-归一化-正态分布-抽样分布/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -414,6 +434,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Mash-Learning/" rel="tag"># Mash Learning</a>
+          
+        </div>
+      
 
       
       
@@ -423,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/03/一次版本发布的启示/" rel="next" title="一次版本发布的启示">
-                <i class="fa fa-chevron-left"></i> 一次版本发布的启示
+              <a href="/2017/12/03/一个48小时的周末/" rel="next" title="一个48小时的周末">
+                <i class="fa fa-chevron-left"></i> 一个48小时的周末
               </a>
             
           </div>
@@ -432,10 +458,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/23/Apple-Debugging-开始使用LLDB/" rel="prev" title="Apple Debugging---开始使用LLDB">
-                Apple Debugging---开始使用LLDB <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -514,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -577,6 +608,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化概念记录"><span class="nav-number">1.</span> <span class="nav-text">归一化概念记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Z值"><span class="nav-number">1.1.</span> <span class="nav-text">Z值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标准正态分布"><span class="nav-number">1.2.</span> <span class="nav-text">标准正态分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正态分布概念记录"><span class="nav-number">2.</span> <span class="nav-text">正态分布概念记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概率密度函数（PDF）"><span class="nav-number">2.1.</span> <span class="nav-text">概率密度函数（PDF）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#概率密度函数的百分位"><span class="nav-number">2.2.</span> <span class="nav-text">概率密度函数的百分位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#概率"><span class="nav-number">2.3.</span> <span class="nav-text">概率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Z-表格"><span class="nav-number">2.4.</span> <span class="nav-text">Z 表格</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽样分布概念记录"><span class="nav-number">3.</span> <span class="nav-text">抽样分布概念记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样本均值分布"><span class="nav-number">3.1.</span> <span class="nav-text">样本均值分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有样本均值的标准差（SE）（Standard-deviation-of-distribution-of-Sample-means）"><span class="nav-number">3.2.</span> <span class="nav-text">所有样本均值的标准差（SE）（Standard deviation of distribution of Sample means）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中心极限定理-The-Central-Limit-Theorern"><span class="nav-number">3.3.</span> <span class="nav-text">中心极限定理(The Central Limit Theorern)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
