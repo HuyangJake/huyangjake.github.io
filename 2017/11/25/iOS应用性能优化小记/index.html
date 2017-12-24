@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="性能，移动应用最直观的体验就是界面是否流畅。在编程过程中大家或多或少总有遇到过关于提高应用性能的操作，比如简单的“异步线程加载图片”，“圆角绘制优化”，“懒加载视图”，“缓存图片”，“避免日期格式转换”等等，都是在把耗时耗资源的操作分散到其他时机执行，或者避免执行。也就是让UI主线程只执行轻量的任务以保证界面的流畅。而本文要讲的是只能在主线程中执行的动画性能的优化。 动画过程是流畅对最直观的体现，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-26T09:08:15.000Z">
+<meta property="og:updated_time" content="2017-12-24T14:41:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS应用性能优化小记">
 <meta name="twitter:description" content="性能，移动应用最直观的体验就是界面是否流畅。在编程过程中大家或多或少总有遇到过关于提高应用性能的操作，比如简单的“异步线程加载图片”，“圆角绘制优化”，“懒加载视图”，“缓存图片”，“避免日期格式转换”等等，都是在把耗时耗资源的操作分散到其他时机执行，或者避免执行。也就是让UI主线程只执行轻量的任务以保证界面的流畅。而本文要讲的是只能在主线程中执行的动画性能的优化。 动画过程是流畅对最直观的体现，">
@@ -393,7 +393,7 @@
 <li>准备 - 这是Core Animation准备发送动画数据到渲染服务的阶段。这同时也是 Core Animation将要执行一些别的事务例如解码动画过程中将要显示的图片的 时间点。</li>
 <li>提交 - 这是最后的阶段，Core Animation打包所有图层和动画属性，然后通过 IPC（内部处理通信）发送到渲染服务进行显示。</li>
 </ol>
-<p>上面的阶段只是发生在我们的应用程序内，在动画展示早屏幕上之前还有更多的操作。一旦打包的图层和动画到达渲染服务进程，他们会被反序列化来形 成另一个叫做渲染树的图层树（在第一章“图层树”中提到过）。使用这个树状结 构，渲染服务对动画的每一帧做出如下工作：</p>
+<p>上面的阶段只是发生在我们的应用程序内，在动画展示早屏幕上之前还有更多的操作。一旦打包的图层和动画到达渲染服务进程，他们会被反序列化来形 成另一个叫做渲染树的图层树。使用这个树状结 构，渲染服务对动画的每一帧做出如下工作：</p>
 <ul>
 <li>对所有的图层属性计算中间值，设置OpenGL几何形状（纹理化的三角形）来执行渲染</li>
 <li>在屏幕上渲染可见的三角形 </li>
@@ -411,7 +411,7 @@
 </li>
 </ul>
 <h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4><p>大多数工作在Core Animation的CPU都发生在动画开始之前。但是他会延迟动画开始的时间，让你的界面看起来会比较迟钝。</p>
-<p>一下的CPU操作都会延迟动画的开始时间：</p>
+<p>以下的CPU操作都会延迟动画的开始时间：</p>
 <ul>
 <li><p>布局计算 - 如果你的视图层级过于复杂，当视图呈现或者修改的时候，计算图 层帧率就会消耗一部分时间。特别是使用iOS6的自动布局机制尤为明显，它应 该是比老版的自动调整逻辑加强了CPU的工作。</p>
 </li>
@@ -590,7 +590,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
