@@ -420,7 +420,7 @@
 <h3 id="Demo展示"><a href="#Demo展示" class="headerlink" title="Demo展示"></a>Demo展示</h3><p><a href="https://github.com/HuyangJake/JSPatchTestDemo" target="_blank" rel="external">demo地址</a></p>
 <p>疑问：热修复都需要重启App后才能生效吗？</p>
 <p>demo 中对以上疑问有实现，具体的原理理解下一节  <code>方法替换</code></p>
-<p>对demo代码的具体解释请看 <a href="http://jake.gift/2016/12/19/JSPatch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/">这里</a></p>
+<p>对demo代码的具体解释请看 <a href="http://jake.gift/2016/12/19/JSPatch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C/" target="_blank" rel="external">这里</a></p>
 <h3 id="方法替换"><a href="#方法替换" class="headerlink" title="方法替换"></a>方法替换</h3><p>OC上，每个类底层都是这样一个结构体：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> objc_class &#123;  </div><div class="line">     Class isa;  </div><div class="line">     Class super_class;    </div><div class="line">     <span class="keyword">const</span> <span class="keyword">char</span> *name;   </div><div class="line">     <span class="keyword">long</span> version;  </div><div class="line">     <span class="keyword">long</span> info;   </div><div class="line">     <span class="keyword">long</span> instance_size;  </div><div class="line">     <span class="keyword">struct</span> objc_ivar_list *ivars;  </div><div class="line">     <span class="keyword">struct</span> objc_method_list **methodLists;  <span class="comment">/*方法链表*/</span>  </div><div class="line">     <span class="keyword">struct</span> objc_cache *cache;  </div><div class="line">     <span class="keyword">struct</span> objc_protocol_list *protocols;     </div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 <p>其中 methodList 方法链表里存储的是 Method 类型：</p>
@@ -667,7 +667,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -689,7 +689,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
