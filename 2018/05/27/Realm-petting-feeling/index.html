@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="先来段代码欣赏下 1234567891011121314let myDog = Dog()myDog.name = &quot;Fido&quot;myDog.age = 1try! realm.write &amp;#123;    realm.add(myDog)&amp;#125;let myPuppy = realm.objects(Dog.self).filter(&quot;age == 1&quot;).firsttry! realm.w">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-27T03:58:10.109Z">
+<meta property="og:updated_time" content="2018-05-27T04:01:02.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Realm 质感记录">
 <meta name="twitter:description" content="先来段代码欣赏下 1234567891011121314let myDog = Dog()myDog.name = &quot;Fido&quot;myDog.age = 1try! realm.write &amp;#123;    realm.add(myDog)&amp;#125;let myPuppy = realm.objects(Dog.self).filter(&quot;age == 1&quot;).firsttry! realm.w">
@@ -476,7 +476,7 @@
 <p>上面的Dog对象中的owners属性中将包含所有拥有这个Dog对象的Person对象。</p>
 <hr>
 <h3 id="Notifications"><a href="#Notifications" class="headerlink" title="Notifications"></a>Notifications</h3><h4 id="Realm-Notification"><a href="#Realm-Notification" class="headerlink" title="Realm Notification"></a>Realm Notification</h4><p>通知返回的是这个通知的token，一旦token被释放了，就意味着这个通知也被注销了。</p>
-<p>一旦有相关的写操作没提交，无论在什么线程上的写操作，通知将会异步地被触发，此时可以进行UI的刷新。</p>
+<p>一旦有相关的写操作被提交，无论在什么线程上的写操作，通知将会异步地被触发，此时可以进行UI的刷新。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Observe Realm Notifications</span></div><div class="line"><span class="keyword">let</span> token = realm.observe &#123; notification, realm <span class="keyword">in</span></div><div class="line">    viewController.updateUI()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// later</span></div><div class="line">token.invalidate()</div></pre></td></tr></table></figure>
 <p>在通知的block中进行数据库的写操作将会抛出异常，可以使用<code>Realm.isInWriteTransaction</code>来区分当前是否处于写的事务中。</p>
 <p>注意通知所在的线程将于注册通知时所处的线程相同。如果不是在主线程注册的通知，则需要给该线程启动一个run loop。因为通知的传递需要依靠run loop，当一个run loop中有其他的任务在执行，那么realm的通知可能会被延迟，因此会有多个写操作事务合并到同一个通知中。</p>
