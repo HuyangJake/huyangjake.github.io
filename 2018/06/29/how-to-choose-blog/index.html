@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="随笔," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="都说程序员比较闷，但若看了程序员的博客，那可能看法就不一样了。这也是为什么本文的标题叫异次元世界。  同一个世界的我们心中飘荡着不同的宇宙  个人博客，是多样化的存在。每个人对它赋予的使命会不一样，它对于个人的意义也会有差别。对程序员这个群体而言，博客有着一种别样的亲和力。互联网是因分享而生，而程序员作为互联网中的土著民，更是贡献榜的中流砥柱。新的知识将不断地涌入，极客精神是一大动力来源，博客(文">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员的异次元世界---个人博客">
+<meta property="og:url" content="http://huyangjie.com/2018/06/29/how-to-choose-blog/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="都说程序员比较闷，但若看了程序员的博客，那可能看法就不一样了。这也是为什么本文的标题叫异次元世界。  同一个世界的我们心中飘荡着不同的宇宙  个人博客，是多样化的存在。每个人对它赋予的使命会不一样，它对于个人的意义也会有差别。对程序员这个群体而言，博客有着一种别样的亲和力。互联网是因分享而生，而程序员作为互联网中的土著民，更是贡献榜的中流砥柱。新的知识将不断地涌入，极客精神是一大动力来源，博客(文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://25.io/mou/img/1.png">
+<meta property="og:image" content="http://macdown.uranusjr.com/static/images/macdown-demo.png">
+<meta property="og:image" content="https://cdn.sspai.com/attachment/origin/2015/12/05/296716.jpg">
+<meta property="og:image" content="http://happenapps.com/images/quiver/screenshot1.png">
+<meta property="og:image" content="http://huyangjie.com/2018/06/29/how-to-choose-blog/media/15312410528004.jpg">
+<meta property="og:image" content="http://huyangjie.com/2018/06/29/how-to-choose-blog/media/15312409270050.jpg">
+<meta property="og:image" content="http://huyangjie.com/2018/06/29/how-to-choose-blog/media/15312430346030.jpg">
+<meta property="og:image" content="http://img0.imgtn.bdimg.com/it/u=3051411635,4190306723&fm=11&gp=0.jpg">
+<meta property="og:image" content="http://img.esoyu.com/ico/201710/02171630_cb17a00459.png">
+<meta property="og:updated_time" content="2018-07-10T17:28:04.193Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序员的异次元世界---个人博客">
+<meta name="twitter:description" content="都说程序员比较闷，但若看了程序员的博客，那可能看法就不一样了。这也是为什么本文的标题叫异次元世界。  同一个世界的我们心中飘荡着不同的宇宙  个人博客，是多样化的存在。每个人对它赋予的使命会不一样，它对于个人的意义也会有差别。对程序员这个群体而言，博客有着一种别样的亲和力。互联网是因分享而生，而程序员作为互联网中的土著民，更是贡献榜的中流砥柱。新的知识将不断地涌入，极客精神是一大动力来源，博客(文">
+<meta name="twitter:image" content="http://25.io/mou/img/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://huyangjie.com/2018/06/29/how-to-choose-blog/"/>
+
+
+
+
+
+  <title>程序员的异次元世界---个人博客 | ColdCode</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ColdCode</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">托起一片绿叶，走向更远的远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://huyangjie.com/2018/06/29/how-to-choose-blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">程序员的异次元世界---个人博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-29T23:16:37+08:00">
+                2018-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/29/how-to-choose-blog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/29/how-to-choose-blog/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>都说程序员比较闷，但若看了程序员的博客，那可能看法就不一样了。这也是为什么本文的标题叫异次元世界。</p>
+<blockquote>
+<p>同一个世界的我们心中飘荡着不同的宇宙</p>
+</blockquote>
+<p>个人博客，是多样化的存在。每个人对它赋予的使命会不一样，它对于个人的意义也会有差别。<br>对程序员这个群体而言，博客有着一种别样的亲和力。互联网是因分享而生，而程序员作为互联网中的土著民，更是贡献榜的中流砥柱。新的知识将不断地涌入，极客精神是一大动力来源，博客(文字描述)往往是其传播的载体。在自己的领土上讲述属于自己的语言，还能有比这更有亲和力的事吗？</p>
+<p>写一篇博文是在讲一个故事，一个好的故事不仅能讲出真相，并且能让别人都原意且听得懂。讲故事的是作者，文章也就是作者心中宇宙的缩影。</p>
+<p>因此想要了解一个人的内心宇宙，那就去看他的博客。说不定雄赳赳的外表下是一颗少女心。</p>
+<h2 id="正篇"><a href="#正篇" class="headerlink" title="正篇"></a>正篇</h2><p>选择什么博客系统？</p>
+<p>现在简单实用的博客系统很多，也有人完全自己写了一个系统，这个其实见仁见智。我比较喜欢的是简约风格，但是一定要支持<code>MarkDown</code>语法来编辑文章。因为作为大部分为技术输出的地方，需要用户能清晰地看清文章表达的思想和逻辑，这就不适合有太多其他的干扰，而<code>MarkDown</code>对程序员很友好，简单，不用太在意样式，写代码片段和公式都很方便。</p>
+<h3 id="平台博客系统"><a href="#平台博客系统" class="headerlink" title="平台博客系统"></a>平台博客系统</h3><h4 id="简书"><a href="#简书" class="headerlink" title="简书"></a>简书</h4><p>简单，注重内容。支持MarkDown，对程序员比较友好。有比较多的技术圈，存在一些技术大牛。</p>
+<h4 id="博客园-amp-CSDN"><a href="#博客园-amp-CSDN" class="headerlink" title="博客园 &amp; CSDN"></a>博客园 &amp; CSDN</h4><p>国内比较老牌的一些技术社区</p>
+<h4 id="知乎"><a href="#知乎" class="headerlink" title="知乎"></a>知乎</h4><h4 id="SegmentFault"><a href="#SegmentFault" class="headerlink" title="SegmentFault"></a>SegmentFault</h4><p>风格类似国外的Stack Overflow，最像技术的社区，但是人气不高。</p>
+<h4 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h4><hr>
+<h3 id="独立博客系统"><a href="#独立博客系统" class="headerlink" title="独立博客系统"></a>独立博客系统</h3><h4 id="WordPress"><a href="#WordPress" class="headerlink" title="WordPress"></a>WordPress</h4><p>大而全的博客系统，很多网站都是基于这个系统进行开发的。它拥有数据量庞大的插件来支持其强大的功能。类似于正统建站博客系统的风格。</p>
+<h4 id="OctoPress"><a href="#OctoPress" class="headerlink" title="OctoPress"></a>OctoPress</h4><h4 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h4><h4 id="Ghost"><a href="#Ghost" class="headerlink" title="Ghost"></a>Ghost</h4><h4 id="Jekyll"><a href="#Jekyll" class="headerlink" title="Jekyll"></a>Jekyll</h4><hr>
+<h3 id="编辑工具"><a href="#编辑工具" class="headerlink" title="编辑工具"></a>编辑工具</h3><p>工欲善其事，必先利其器。虽然我只是写写文字，贴贴图片，但如果能把写作之外的事情尽可能地简化，精力都放在写作上，那也不失为一大快事。</p>
+<p>我写文章使用的都是<code>MarkDown</code>所以这里推荐的都是带<code>MarkDown</code>编辑功能的工具。</p>
+<blockquote>
+<p>每个工具都带有用来创造它的那种精神。——海森堡《物理学与哲学》</p>
+</blockquote>
+<h4 id="Mou"><a href="#Mou" class="headerlink" title="Mou"></a>Mou</h4><p>这个是我第一个使用的<code>MarkDown</code>编辑器，就喜欢它的轻便，和清新的风格，又能导出PDF，HTML之类。当时我用它写博客，写周报导出HTML贴到邮件上，让邮件变得贼有范。</p>
+<p><img src="http://25.io/mou/img/1.png" alt=""></p>
+<p>但是随着OSX升级，Mou不再支持OS X10.11以上的系统了。一度非常地伤心，但是系统是爸爸，只好说再见。</p>
+<p><em>软件官网：<a href="http://25.io/mou/" target="_blank" rel="external">http://25.io/mou/</a></em><br>现在好像在预发1.0版本，应该会支持到最新的MacOS了。半价预售中，15刀。-_- 贵还是挺贵的 (后来知道Mou是个跳票王，Twitter上是15年说要发布1.0版本了)</p>
+<h4 id="StackEdit"><a href="#StackEdit" class="headerlink" title="StackEdit"></a>StackEdit</h4><p>这是一个开源的在线markdown编辑器，在我升级了系统没得用Mou后，我也用过一段时间。总体感觉就是，在线的总是没有本地的应用体验好。预发支持倒是挺全的，甚至可以写 UML 图表。<br>支持从本地打开，在线同步存储支持DropBox， GoogleDrive</p>
+<p>要自己的服务器上搭建一个免费的编辑器倒是个不错的选择</p>
+<p><em>编辑器地址：<a href="https://stackedit.io/editor" target="_blank" rel="external">https://stackedit.io/editor</a></em></p>
+<p><em>GitHub仓库：<a href="https://github.com/benweet/stackedit" target="_blank" rel="external">https://github.com/benweet/stackedit</a></em></p>
+<h4 id="MacDown"><a href="#MacDown" class="headerlink" title="MacDown"></a>MacDown</h4><p>MacDown很长的一段时间都扮演着我的救世主，到现在我也还有时候会用到它。<br>MacDown长得可以说跟Mou非常像了，只不过长得是黑白脸<br><img src="http://macdown.uranusjr.com/static/images/macdown-demo.png" alt=""></p>
+<p>从作者的描述来看，他是Mou的重度用户，因为Mou没有再更新所以决定自己来写一个并同时致敬Mou。同时因为开源也发展得很快。</p>
+<blockquote>
+<p>MacDown is an open source Markdown editor for OS X, released under the MIT License. The author stole the idea from Chen Luo’s Mou so that people can make crappy clones.</p>
+</blockquote>
+<p><em>软件官网：<a href="http://macdown.uranusjr.com/" target="_blank" rel="external">http://macdown.uranusjr.com/</a></em><br><em>GitHub仓库：<a href="https://github.com/MacDownApp/macdown" target="_blank" rel="external">https://github.com/MacDownApp/macdown</a></em></p>
+<hr>
+<h3 id="碰撞"><a href="#碰撞" class="headerlink" title="碰撞"></a>碰撞</h3><p>慢慢地，我开始想，我平时记录笔记是否能够跟我的博客MarkDown写作习惯结合起来，但又不想让文件散散落落。我开始往结构化管理文档的方面去探索（后来我才发现我是在寻找 笔记软件 和 写作软件 的碰撞）。在写博客之前，我也有记录笔记的习惯，用的一直是印象笔记，里面记录了我刚学习iOS时的风风雨雨。但后来慢慢演变为看到好的文章，浏览器的印象笔记插件Clip一下，微博上看到好文，@印象笔记，慢慢我的印象笔记本成了“好物”垃圾场。<br>印象笔记还有国内的有道云笔记之类有一个共同特征：它们不希望用户离开它们的体系，所以不允许内容从内部脱离框架传播。以至于我们笔记的传播分享，只能是在笔记本软件内部，并且是注册用户之间。而且…还不支持MarkDown。<br>因此我打算跳出来，尝试了一段时间微软的OneNote，文档管理的方式别具一格，但还是传统的笔记软件的模式。<br>直到有一天…</p>
+<p>一支为技术而生的弓箭射入我的眼帘</p>
+<p><img src="https://cdn.sspai.com/attachment/origin/2015/12/05/296716.jpg" alt=""></p>
+<hr>
+<h4 id="Quiver"><a href="#Quiver" class="headerlink" title="Quiver"></a>Quiver</h4><p>slog就是： <em>The Programmer’s NoteBook</em><br>看来是主打程序员群体了，我还是挺认同的。</p>
+<p><img src="http://happenapps.com/images/quiver/screenshot1.png" alt=""></p>
+<p>Quiver上手还是非常容易，简单易懂。除了MacDown上的功能之外它拥有的最大的几个特点：</p>
+<ol>
+<li><p>文章以Cell为单位组装，每个Cell可以设置自己的编辑模式如下图:<br><img src="media/15312410528004.jpg" alt="-w365"><br>还特地贴心地拎出了Code Cell， 这个中Cell模式是这个应用的核心。</p>
+</li>
+<li><p>文章使用本地的数据库，对文章进行归档分类，可以将数据库文件备份。我使用云网盘同步本地的数据库文件，也相当于将文章实时备份云端吧。</p>
+</li>
+<li>有演示模式全屏展示</li>
+</ol>
+<p>这个是我现在自己配置的主题：<br><img src="media/15312409270050.jpg" alt="-w1228"></p>
+<p>除了了Mac版本，Quiver还有iOS版的（免费），但是只是支持从DropBox和支持WebDAV的网盘中读取备份的Quiver数据库进行浏览文章。</p>
+<p><em>软件官网：<a href="http://happenapps.com/" target="_blank" rel="external">http://happenapps.com/</a></em></p>
+<h4 id="MWeb"><a href="#MWeb" class="headerlink" title="MWeb"></a>MWeb</h4><p>刚开始接触这个是因为它上了少数派的首页推荐，同时也在AppStore的推荐榜上看到了它。于是就来体验下它的过人之处，一上手发现MWeb的功能设计得..太多了，无从下手。迷茫了一段时间之后，我开始疯狂地爱上了它。现在MWeb是我最喜欢使用的写作软件。</p>
+<p>MWeb最大的优势是对静态博客的写作支持得非常到位。<br>随手列几个我最喜欢的功能：</p>
+<ul>
+<li>支持文档库(自建数据库) 和 外部文档模式（博客系统文档库）</li>
+<li>文档库可以生成静态页面<ul>
+<li>我使用这个功能将静态页面放在本地的tomcat服务上，相当于有了一个本地的笔记小博客。放到自己服务器上就可以当做自己的博客啦。具体使用可以参考<a href="https://zh.mweb.im/sync-webistes-to-github-or-ftp-zh.html" target="_blank" rel="external">把生成的静态网站发布到github或FTP</a></li>
+</ul>
+</li>
+<li>支持图床一键上传</li>
+<li>支持一键发布静态博客（支持脚本发布）</li>
+</ul>
+<p>这篇文章就是使用MWeb进行编辑发布的<br><img src="media/15312430346030.jpg" alt="-w1382"></p>
+<p>MWeb也有iOS版本，专业版￥60。可以在iOS版上进行写作，甚至发布文章。</p>
+<p><em>软件官网：<a href="https://zh.mweb.im/" target="_blank" rel="external">https://zh.mweb.im/</a></em>  现在MWeb 3刚发布，还处于半价￥60销售中</p>
+<hr>
+<p>最后附上一个表格对比下</p>
+<table>
+<thead>
+<tr>
+<th>产品名</th>
+<th>优势</th>
+<th>劣势</th>
+<th>价格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mou</td>
+<td>轻便清新</td>
+<td>很久没跟新，暂不支持<code>MacOS</code> 10.11以上</td>
+<td>$15（半价预售）</td>
+</tr>
+<tr>
+<td>StackEdit</td>
+<td>在线编辑随时随地</td>
+<td>响应略慢，存储不方便</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>MacDown</td>
+<td>轻便</td>
+<td>黑白脸不好看(当然也有主题)</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>Quiver</td>
+<td>文件归档</td>
+<td>中文检索功能略不足</td>
+<td>￥68</td>
+</tr>
+<tr>
+<td>MWeb</td>
+<td>静态博客发布神器</td>
+<td>在我眼中不存在</td>
+<td>￥60（半价促销中）</td>
+</tr>
+</tbody>
+</table>
+<p>其他的写作软件还有接触过<br><a href="https://ulysses.app/" target="_blank" rel="external">Ulysses</a><br><img src="http://img0.imgtn.bdimg.com/it/u=3051411635,4190306723&fm=11&gp=0.jpg" width="100"></p>
+<p><a href="http://www.bear-writer.com/" target="_blank" rel="external">Bear</a><br><img src="http://img.esoyu.com/ico/201710/02171630_cb17a00459.png" width="100"></p>
+<p>也是用户量非常多的两款应用，由于我使用体验不够多就不进行分析。但是可以确定的是此两款应用体验上也是属于非常优秀的，只是我已经心有所属。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jakey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://huyangjie.com/2018/06/29/how-to-choose-blog/" title="程序员的异次元世界---个人博客">http://huyangjie.com/2018/06/29/how-to-choose-blog/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/27/Realm-petting-feeling/" rel="next" title="Realm 质感记录">
+                <i class="fa fa-chevron-left"></i> Realm 质感记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jakey" />
+          <p class="site-author-name" itemprop="name">Jakey</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录生活工作</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正篇"><span class="nav-number">1.</span> <span class="nav-text">正篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平台博客系统"><span class="nav-number">1.1.</span> <span class="nav-text">平台博客系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简书"><span class="nav-number">1.1.1.</span> <span class="nav-text">简书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#博客园-amp-CSDN"><span class="nav-number">1.1.2.</span> <span class="nav-text">博客园 & CSDN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#知乎"><span class="nav-number">1.1.3.</span> <span class="nav-text">知乎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SegmentFault"><span class="nav-number">1.1.4.</span> <span class="nav-text">SegmentFault</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Medium"><span class="nav-number">1.1.5.</span> <span class="nav-text">Medium</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立博客系统"><span class="nav-number">1.2.</span> <span class="nav-text">独立博客系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WordPress"><span class="nav-number">1.2.1.</span> <span class="nav-text">WordPress</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OctoPress"><span class="nav-number">1.2.2.</span> <span class="nav-text">OctoPress</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hexo"><span class="nav-number">1.2.3.</span> <span class="nav-text">Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ghost"><span class="nav-number">1.2.4.</span> <span class="nav-text">Ghost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jekyll"><span class="nav-number">1.2.5.</span> <span class="nav-text">Jekyll</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑工具"><span class="nav-number">1.3.</span> <span class="nav-text">编辑工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mou"><span class="nav-number">1.3.1.</span> <span class="nav-text">Mou</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StackEdit"><span class="nav-number">1.3.2.</span> <span class="nav-text">StackEdit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MacDown"><span class="nav-number">1.3.3.</span> <span class="nav-text">MacDown</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碰撞"><span class="nav-number">1.4.</span> <span class="nav-text">碰撞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Quiver"><span class="nav-number">1.4.1.</span> <span class="nav-text">Quiver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MWeb"><span class="nav-number">1.4.2.</span> <span class="nav-text">MWeb</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jakey</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://coldreading-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://huyangjie.com/2018/06/29/how-to-choose-blog/';
+          this.page.identifier = '2018/06/29/how-to-choose-blog/';
+          this.page.title = '程序员的异次元世界---个人博客';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://coldreading-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
