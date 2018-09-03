@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/15359053297417.jpg">
 <meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/15359397140219.jpg">
-<meta property="og:updated_time" content="2018-09-03T04:33:58.394Z">
+<meta property="og:updated_time" content="2018-09-03T04:36:02.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在iOS中运行Python">
 <meta name="twitter:description" content="在iOS设备中运行python脚本？那不就意味着可以在手机上跑爬虫，可以使用各种牛逼哄哄的python库了吗。 这个标题对我很有吸引力，曾经就有见到过在iOS平台上的python编译器(很多iOS上python的IDE，如Python3IDE)，可以执行输入的python语和本地的python文件。 当然我想要的不是像这篇文章说的用python编写一整个iOS程序，而只是在iOS应用中嵌入pyth">
@@ -388,6 +388,7 @@
 <p>这个标题对我很有吸引力，曾经就有见到过在iOS平台上的python编译器(很多iOS上python的IDE，如<a href="https://itunes.apple.com/cn/app/python3ide/id1357215444?mt=8" target="_blank" rel="external">Python3IDE</a>)，可以执行输入的python语和本地的python文件。</p>
 <p>当然我想要的不是像<a href="https://segmentfault.com/a/1190000004945692" target="_blank" rel="external">这篇文章</a>说的用python编写一整个iOS程序，而只是在iOS应用中嵌入python文件执行非UI的逻辑，也就是说只需要在项目中嵌入一个python的编译环境。</p>
 <p>面对市场上这么多的iOS版python编译器，首先可以确定的是，针对iOS端的python编译库是存在的。我关心的问题是，能否支持python项目化的编译，能否导入丰富的三方库。那就动手一试咯</p>
+<a id="more"></a>
 <hr>
 <h3 id="小目标"><a href="#小目标" class="headerlink" title="小目标"></a>小目标</h3><p>七牛的iOS平台SDK有这样一个特点，上传文件的时候需要生成token，但是生成token的逻辑在客户端的SDK中不存在，只能通过调用服务端的SDK才能获得。<br>于是我们的小目标就诞生了：在iOS端上调用七牛python服务端SDK来生成token给客户端的七牛SDK使用。</p>
 <hr>
