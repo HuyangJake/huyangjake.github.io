@@ -102,14 +102,14 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="需求近期工作需求一个展示任务进度的动画，通过填充现有进度图的方式展示，并且有里程碑的节点需要配合数据进行暂停。好吧，文字讲得我自己都很难理解，来看一下效果吧。  红色的填充为当前的进度，验证登录阶段到导入账单阶段（导入阶段到完成）是有一个里程碑的节点的，所以需要通过数据来控制进度，让红色的进度条暂停在某一个位置等待数据。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/gif/animation.gif">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E9%81%AE%E7%BD%A9%E5%9B%BE%E5%B1%82.png">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/maskAnimation.png-blog">
-<meta property="og:updated_time" content="2017-11-12T16:32:15.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/gif/animation.gif">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E9%81%AE%E7%BD%A9%E5%9B%BE%E5%B1%82.png">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/maskAnimation.png-blog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.512Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个简易遮罩进度动画">
 <meta name="twitter:description" content="需求近期工作需求一个展示任务进度的动画，通过填充现有进度图的方式展示，并且有里程碑的节点需要配合数据进行暂停。好吧，文字讲得我自己都很难理解，来看一下效果吧。  红色的填充为当前的进度，验证登录阶段到导入账单阶段（导入阶段到完成）是有一个里程碑的节点的，所以需要通过数据来控制进度，让红色的进度条暂停在某一个位置等待数据。">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/gif/animation.gif">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/gif/animation.gif">
 
 
 
@@ -408,10 +408,10 @@
 
       
         <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>近期工作需求一个展示任务进度的动画，通过填充现有进度图的方式展示，并且有里程碑的节点需要配合数据进行暂停。好吧，文字讲得我自己都很难理解，来看一下效果吧。</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/gif/animation.gif" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/gif/animation.gif" alt=""></p>
 <p>红色的填充为当前的进度，验证登录阶段到导入账单阶段（导入阶段到完成）是有一个里程碑的节点的，所以需要通过数据来控制进度，让红色的进度条暂停在某一个位置等待数据。<br><a id="more"></a></p>
 <h3 id="方案思考"><a href="#方案思考" class="headerlink" title="方案思考"></a>方案思考</h3><h4 id="1-动画部分"><a href="#1-动画部分" class="headerlink" title="1.动画部分"></a>1.动画部分</h4><p>展示一下层次结构，一切一目了然</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E9%81%AE%E7%BD%A9%E5%9B%BE%E5%B1%82.png" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E9%81%AE%E7%BD%A9%E5%9B%BE%E5%B1%82.png" alt=""></p>
 <p>简单的来讲：其实是有两个进度控制View，分别是灰色和红色，这里称红色的为maskView，灰色为bottomView。</p>
 <p>在结构层次图中可以意识到只要让maskView有个位移动画就可以满足我们的需求。<br><strong>注意</strong>：这个位移动画并不是<code>UIView</code>层面的动画，单纯移动整个maskView其实是会造成bottomView和maskView图标错位的现象，这并不是想要的效果。<br>正确的是对maskView<code>layer</code>的<code>maskLayer</code>层进行动画操作。</p>
 <p><strong>实现思路</strong>：让maskView的<code>maskLayer</code>初始位置在maskView的<code>frame</code>之外的左侧。动画开始之后让<code>maskLayer</code>慢慢向右移动，达到红色慢慢向右填充的效果。对<code>maskLayer</code>使用的动画可以是<code>CABasicAnimation</code> 或者<code>CAKeyframeAnimation</code>。此demo中使用关键帧动画 <code>CAKeyframeAnimation</code></p>
@@ -486,7 +486,7 @@
 <h5 id="2-5-从当前进度值快速完成动画"><a href="#2-5-从当前进度值快速完成动画" class="headerlink" title="2.5 从当前进度值快速完成动画"></a>2.5 从当前进度值快速完成动画</h5><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//  提前结束动画</span></div><div class="line">- (<span class="keyword">void</span>)animationAdvancedFinished</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">self</span> resumeLayer];</div><div class="line">    </div><div class="line">    <span class="built_in">CGFloat</span> duration = _advancedFinishDuring;</div><div class="line">    <span class="built_in">NSArray</span> *values = @[[<span class="built_in">NSValue</span> valueWithCGPoint:_lastPresentPosition],</div><div class="line">                        [<span class="built_in">NSValue</span> valueWithCGPoint:<span class="built_in">CGPointMake</span>(<span class="number">0</span>, <span class="number">0</span>)]];</div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">    animation.values = values;</div><div class="line">    animation.duration = duration;</div><div class="line">    animation.delegate = <span class="keyword">self</span>;</div><div class="line">    <span class="comment">//提前结束动画完成之后保留mask层的位置信息，保持动画完成时的样式</span></div><div class="line">    animation.fillMode = kCAFillModeForwards;</div><div class="line">    animation.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line">    [_maskLayer addAnimation:animation forKey:<span class="string">@"AdvancedMaskAnimation"</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上面代码片段中的<code>_advancedFinishDuring</code>动画时间，是根据触发快速完成动画时的进度值百分比 乘以 快速完成动画所需要的总时间计算出来的。下面是计算的一个例子：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)verifySuccess &#123;</div><div class="line">    [<span class="keyword">self</span> resumeLayer];</div><div class="line">    <span class="keyword">self</span>.status = Importing;</div><div class="line">    <span class="keyword">self</span>.displayLink.paused = <span class="literal">NO</span>;</div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.loginSuccessTime) &#123;</div><div class="line">        <span class="keyword">self</span>.loginSuccessTime = <span class="keyword">self</span>.currentTime;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">self</span>.advancedFinishDuring = ((-_lastPresentPosition.x) / <span class="built_in">CGRectGetWidth</span>(<span class="keyword">self</span>.frame)) * kGeneralCacheCompleteTime;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p> <strong>至此进度控制就可以的需求就可以使用以上的关键方法完成了</strong>, 查看完成的逻辑可以下载demo查看<br>  <a href="https://github.com/HuyangJake/SimpleMaskAnimation" target="_blank" rel="external">Demo地址</a><br> <img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/maskAnimation.png-blog" alt="demo"></p>
+<p> <strong>至此进度控制就可以的需求就可以使用以上的关键方法完成了</strong>, 查看完成的逻辑可以下载demo查看<br>  <a href="https://github.com/HuyangJake/SimpleMaskAnimation" target="_blank" rel="external">Demo地址</a><br> <img src="http://qiniu.huyangjie.cn/coldreading/jpg/maskAnimation.png-blog" alt="demo"></p>
 <h3 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h3><ul>
 <li>进度控制部分的超时跟maskLayer位置的对应关系比较生硬</li>
 </ul>

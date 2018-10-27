@@ -102,15 +102,15 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="背景项目中用到了本地登录存储cookie，再进行webView请求时间带上cookie的功能。不是很清晰逻辑，于是学习了解了下iOS中cookie的使用，做个小结。跳过概念直接看使用🌰">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie%E9%A6%96%E9%83%A81.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie%E9%A6%96%E9%83%A82.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie2%E9%A6%96%E9%83%A8.png-blog">
-<meta property="og:updated_time" content="2017-10-06T07:15:37.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie%E9%A6%96%E9%83%A81.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie%E9%A6%96%E9%83%A82.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie2%E9%A6%96%E9%83%A8.png-blog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.517Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cookie in iOS">
 <meta name="twitter:description" content="背景项目中用到了本地登录存储cookie，再进行webView请求时间带上cookie的功能。不是很清晰逻辑，于是学习了解了下iOS中cookie的使用，做个小结。跳过概念直接看使用🌰">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog">
 
 
 
@@ -417,12 +417,12 @@
 </ul>
 <p>会话 cookie 和持久 cookie 之间唯一的区别就是它们的过期时间。</p>
 <p><strong>cookie如何工作</strong></p>
-<p>cookie 中包含了一个由 名字 = 值 （name=value） 这样的信息构成的任意列表，并通过 Set-Cookie 或 Set-Cookie2 HTTP 响应（扩 展）首部将其贴到用户身上去。<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog" alt="cookie工作"></p>
+<p>cookie 中包含了一个由 名字 = 值 （name=value） 这样的信息构成的任意列表，并通过 Set-Cookie 或 Set-Cookie2 HTTP 响应（扩 展）首部将其贴到用户身上去。<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/cookie%E5%B7%A5%E4%BD%9C.png-blog" alt="cookie工作"></p>
 <p><strong>cookie组成</strong><br>现在使用的 cookie 规范有两个不同的版本：cookies 版本 0（有时被称为 Netscape cookies） 和 cookies 版 本 1（RFC 2965） 。 cookies 版 本 1 是 对 cookies 版 本 0 的 扩 展，应用不如后者广泛。</p>
 <ul>
 <li><p><strong>cookie版本0</strong></p>
 <ul>
-<li><p>Set-Cookie 首部<br>Set-Cookie 首部有一个强制性的cookie名和cookie值。后面跟着可选的cookie 属性，中间由分号分隔。<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie%E9%A6%96%E9%83%A81.png-blog" alt=""><br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie%E9%A6%96%E9%83%A82.png-blog" alt=""></p>
+<li><p>Set-Cookie 首部<br>Set-Cookie 首部有一个强制性的cookie名和cookie值。后面跟着可选的cookie 属性，中间由分号分隔。<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie%E9%A6%96%E9%83%A81.png-blog" alt=""><br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie%E9%A6%96%E9%83%A82.png-blog" alt=""></p>
 </li>
 <li><p>cookie 0首部:</p>
 </li>
@@ -433,7 +433,7 @@
 <ul>
 <li><p><strong>cookie版本1</strong> </p>
 <ul>
-<li><p>Set-Cookie2首部<br>这个版本 1 标准引入了Set-Cookie2首部和Cookie2首部，但它也能于版本0进行交互操作。<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/setcookie2%E9%A6%96%E9%83%A8.png-blog" alt=""></p>
+<li><p>Set-Cookie2首部<br>这个版本 1 标准引入了Set-Cookie2首部和Cookie2首部，但它也能于版本0进行交互操作。<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/setcookie2%E9%A6%96%E9%83%A8.png-blog" alt=""></p>
 </li>
 <li><p>cookie 1首部:</p>
 </li>

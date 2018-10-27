@@ -102,15 +102,15 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（一期1~2周），天天工作量杠杠的（因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/hospitalFunctions.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/NativeScheme.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/SwitchPage.png-blog">
-<meta property="og:updated_time" content="2017-10-06T07:15:48.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/hospitalFunctions.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/NativeScheme.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/SwitchPage.png-blog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.509Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="H5跳转Native路由机制的探索">
 <meta name="twitter:description" content="公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（一期1~2周），天天工作量杠杠的（因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
 
 
 
@@ -449,13 +449,13 @@
 </li>
 </ul>
 <p>我们来看一张简单的流程图：    </p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog" alt=""></p>
 <p>APP启动程序先读取plist中的默认H5地址赋值到model，在请求tms配置文件之后，再获取tms中配置的H5地址赋值到model，这样可以保证每个H5地址都可以有值，并且都是我们所需要的最新的地址。如此，即使在线上，不用发版本我们的APP也可以自如地控制和更新每个功能模块跳转的H5页面内容。</p>
 <p>当然，每个H5地址需要什么参数还是得调用者自己知道，然后将参数赋值到URLCenter中。</p>
 <h5 id="NativeScheme方案"><a href="#NativeScheme方案" class="headerlink" title="NativeScheme方案 "></a><span id="NativeScheme">NativeScheme方案 </span></h5><p>取名叫NativeScheme，当然这个方案跟sheme有关，但也不仅仅是使用sheme。</p>
 <p>先说明这个方案最终达到的效果吧：</p>
 <p>APP中的部分功能模块点击跳转指向本地的哪个页面由服务端控制，不再需要本地固定。<br>可以随时切换功能模块跳转到对应的H5页面还是对应的Native页面，当然前提是这两者页面都有实现。</p>
-<p>例如：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/hospitalFunctions.png-blog" alt=""></p>
+<p>例如：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/hospitalFunctions.png-blog" alt=""></p>
 <p>在这样的功能块中，每个功能模块点击后通过服务器返回的NativeScheme判断跳转到本地的对应页面。</p>
 <p><strong>实现原理：</strong>    </p>
 <ul>
@@ -481,7 +481,7 @@
 </ul>
 <p>方案扩展使用：</p>
 <p>我们还可以在nativeScheme判读环节添加一个动态的节点(<em>根据需求</em>)，以实现点击功能块后是跳转到H5页面还是跳转本地的页面(<em>此逻辑不同于本章第三节 “SwitchPage方案”</em>)。可以给每个功能块分别添加 本地scheme地址 和 H5地址 两个字段，用于分别是跳向哪种界面。判断规则可以根据自己的需求来定。</p>
-<p>附上NativeScheme的简单流程图：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/NativeScheme.png-blog" alt=""></p>
+<p>附上NativeScheme的简单流程图：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/NativeScheme.png-blog" alt=""></p>
 <p><em>此方案部分参考：<a href="https://github.com/DarielChen/DCURLRouter" target="_blank" rel="external">https://github.com/DarielChen/DCURLRouter</a> 感谢作者</em></p>
 <h5 id="SwitchPage方案"><a href="#SwitchPage方案" class="headerlink" title="SwitchPage方案"></a><span id="SwitchPage">SwitchPage方案</span></h5><p>这套方案的存在，在某种意义上是一套线上的紧急备用方案—-当重构的Native页面出现问题，可以通过此方案将该Native页面替换为H5页面。此方案，可以说是对我们项目现状<br>比较适用，在其他项目中或许存在的意义没有那么大。但是这套原理可以拿来做参考，毕竟SwitchPage可以将任意一个Native页面替换为任意一个H5的页面。</p>
 <p><strong>实现原理</strong>：</p>
@@ -493,7 +493,7 @@
 <ul>
 <li>重写本地的Nativgation的push方法， 在此方法调用super之前，判断将要跳转的控制器名称在tms请求返回的数据中是否存在，如果存在则跳转webView控制器，不存在则按照原来方法跳转。（可结合NativeScheme方案使用，在URLRouter中实现此逻辑）</li>
 </ul>
-<p>附上简单流程图：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/SwitchPage.png-blog" alt=""></p>
+<p>附上简单流程图：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/SwitchPage.png-blog" alt=""></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不足：NativeScheme方案中的参数传递比较地生硬，若是需要跳转的Native控制器需要制定的参数需要额外处理，则无法通过shceme后带参数的方式在<code>URLRouter</code>中直接给要返回的控制器添加参数</p>
 <p>上面三套方案可以在项目中一起使用，相互之间不会影响，也可以单独使用其中的某一套方案。</p>
 <p>demo地址：<a href="">即将出现</a></p>

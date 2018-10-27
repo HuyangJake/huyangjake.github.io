@@ -102,14 +102,14 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="今天早上怀着惴惴不安的心情，点开了iTunes Connect，等待漫长的loading… 审核通过了！ 是不是我对Apple审核太敏感了？😂，只因为这个版本的发布因为审核被拖延好久了😕 刚好这段时间有在看《程序员的职业素养》这本书，结合这次的版本发布事故让我收获了新的体会。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect1.png-bigblog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect2.png-bigblog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect3.png-bigblog">
-<meta property="og:updated_time" content="2017-10-06T07:14:16.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect1.png-bigblog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect2.png-bigblog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect3.png-bigblog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.480Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一次版本发布的启示">
 <meta name="twitter:description" content="今天早上怀着惴惴不安的心情，点开了iTunes Connect，等待漫长的loading… 审核通过了！ 是不是我对Apple审核太敏感了？😂，只因为这个版本的发布因为审核被拖延好久了😕 刚好这段时间有在看《程序员的职业素养》这本书，结合这次的版本发布事故让我收获了新的体会。">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect1.png-bigblog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect1.png-bigblog">
 
 
 
@@ -413,13 +413,13 @@
 <p>刚好这段时间有在看<em>《程序员的职业素养》</em>这本书，结合这次的版本发布事故让我收获了新的体会。</p>
 <a id="more"></a>
 <h3 id="事故现场"><a href="#事故现场" class="headerlink" title="事故现场"></a>事故现场</h3><p>直接来看事故现场吧：</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect1.png-bigblog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect1.png-bigblog" alt=""></p>
 <p>25号提交版本，27号正常通过审核。当要发布的前一刻，测试姐姐告知我们<a href="#1"><font color="#E84C66">有个功能这个版本不需要上</font></a>，于是我们打算启用线上预埋的开关替换这版不需要上的功能的界面，从而正常上线当前等待发布区的版本。然而一切没有那么顺利，料想不到的是这个界面在预埋的处理中<a href="#2"><font color="#E84C66">参数没有正确处理</font></a>，导致了上述方案没法正常运行。</p>
 <p>只好撤下已经过审的版本，修改问题重新提交。也就是图中圈起来的这一步，也正是这一步开启了万恶的轮回。。。</p>
 <hr>
 <p>日子慢慢靠近五一假期，项目的上线时间倒没有要去凑节日这样的要求，只是如果在假期中出现线上什么问题，解决起来就没有那么高效，万一涉及到跟其他部门之间的配合修改，可就更加麻烦。毕竟小长假都在happy。</p>
 <p>没想到，戏剧性的出现了下图中的这出戏</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect2.png-bigblog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect2.png-bigblog" alt=""></p>
 <p>重新提交后的第二天，被Apple拒绝了。懵逼了，没有修改过其他代码，竟然前一天通过，这天就被拒绝，苹果爸爸果然强势。拒绝原因还让人无法拒绝，“APP的描述图片不符合规范”。这，，我们都已经用了两个版本了。好吧，让视觉大哥重新设计，运营重新提交了审核。现在也就希望五一期间正常上线就行了。</p>
 <p>假期第一天29号，仍然被拒。而且被拒原因升级了。Apple审核人员告知我们APP在启动的时候crash了😱，定位了他们提供的奔溃日志后发现，它貌似是平常我们crash收集列表中的一个小概率出现的bug，但是之前一直没有找到根源在哪。</p>
 <p>这次拿到的日志信息让我找到了奔溃处的代码，这是同事负责的模块。我找到可疑的地方，问了同事会不会出现我想象的错误导致崩溃，同事说不会，没有遇到过。<a href="#3"><font color="#E84C66">我想着毕竟是他的模块，就不多说了</font></a>，同事建议不修改再提交一次审核，我想着这个问题本也是概率出现时，说不定是审核人员运气太好遇到了。于是我们再次提交审核。。。</p>
@@ -428,7 +428,7 @@
 <hr>
 <p>按照之前怀疑过的思路继续往下查，我找到了确凿的证据，导致crash的地方果然是那里。</p>
 <p>我立马修改了代码重新提交审核，并发了testFlight让测试同学在针对性地点一点，自己也在紧张地review着，心里不断默念着：可不能再被拒绝了啊</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/iTunes_Connect3.png-bigblog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/iTunes_Connect3.png-bigblog" alt=""></p>
 <p>然而，折磨我的路口总是一个个不断出现。上午提交后，我在下午的review中发现了一个不大不小的问题，同事测试在iPad版本（因为Apple审核人员使用iPad进行测试）中发现了另外一个问题，让我<a href="#5"><font color="#E84C66">不得不重新撤回审核</font></a>，修改了问题代码重新提交。这样断断续续折腾了一天。</p>
 <p>终于在5.3，今天早上得到了一个好消息，磨人的审核。</p>
 <h3 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h3><p>红色字体的地方都是我感悟的触发点。</p>

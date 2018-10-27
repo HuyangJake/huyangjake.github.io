@@ -102,13 +102,13 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="CALayer和UIView最大的不同就是，CALayer不处理用户交互。因为它并不清楚具体的响应链。 1. iOS 和 MacOS 的坐标系统 点 —— 在iOS和Mac OS中最常见的坐标体系。点就像是虚拟的像素，也被称 作逻辑像素。在标准设备上，一个点就是一个像素，但是在Retina设备上，一 个点等于2*2个像素。iOS用点作为屏幕的坐标测算体系就是为了在Retina设备 和普通设备上能有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/contentsRect.png-bigblog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/contentsCenter.png-bigblog">
-<meta property="og:updated_time" content="2017-10-06T07:16:00.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/contentsRect.png-bigblog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/contentsCenter.png-bigblog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hi！CALayer我们聊聊">
 <meta name="twitter:description" content="CALayer和UIView最大的不同就是，CALayer不处理用户交互。因为它并不清楚具体的响应链。 1. iOS 和 MacOS 的坐标系统 点 —— 在iOS和Mac OS中最常见的坐标体系。点就像是虚拟的像素，也被称 作逻辑像素。在标准设备上，一个点就是一个像素，但是在Retina设备上，一 个点等于2*2个像素。iOS用点作为屏幕的坐标测算体系就是为了在Retina设备 和普通设备上能有">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/contentsRect.png-bigblog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/contentsRect.png-bigblog">
 
 
 
@@ -435,10 +435,10 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">layer.contentsScale = [<span class="built_in">UIScreen</span> mainScreen].scale;</div></pre></td></tr></table></figure>
 <h4 id="2-2-使用contentsRect实现image-sprites（图片拼合）"><a href="#2-2-使用contentsRect实现image-sprites（图片拼合）" class="headerlink" title="2.2 使用contentsRect实现image sprites（图片拼合）"></a>2.2 使用<code>contentsRect</code>实现image sprites（图片拼合）</h4><p>主要思想：载入一张包含很多小图的大图，然后通过<code>contentsRect</code>将大图中的小图分别展示到不同的视图层中。</p>
 <p>优点：图片的载入会更加快，提高了载入性能</p>
-<p>contentsRect的<code>{0, 0, 0.5, 0.5}</code>效果<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/contentsRect.png-bigblog" alt=""></p>
+<p>contentsRect的<code>{0, 0, 0.5, 0.5}</code>效果<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/contentsRect.png-bigblog" alt=""></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- (void)viewDidLoad </div><div class="line">&#123;</div><div class="line">  [super viewDidLoad]; //load sprite sheet</div><div class="line">  UIImage *image = [UIImage imageNamed:@&quot;Sprites.png&quot;];</div><div class="line">  //set igloo sprite</div><div class="line">  [self addSpriteImage:image withContentRect:CGRectMake(0, 0, 0.5, 0.5) toLayer:self.iglooView.layer];</div><div class="line">  //set cone sprite</div><div class="line">  [self addSpriteImage:image withContentRect:CGRectMake(0.5, 0, 0.5, 0.5) toLayer:self.coneView.layer];</div><div class="line">  //set anchor sprite</div><div class="line">  [self addSpriteImage:image withContentRect:CGRectMake(0, 0.5, 0.5, 0.5) toLayer:self.anchorView.layer];</div><div class="line">  //set spaceship sprite</div><div class="line">  [self addSpriteImage:image withContentRect:CGRectMake(0.5, 0.5, 0.5, 0.5) toLayer:self.shipView.layer];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="2-3-使用contentsCenter调整可拉伸区域的大小"><a href="#2-3-使用contentsCenter调整可拉伸区域的大小" class="headerlink" title="2.3 使用contentsCenter调整可拉伸区域的大小"></a>2.3 使用<code>contentsCenter</code>调整可拉伸区域的大小</h4><p>contentsCenter 其实是一个CGRect，它定义了一个固定的边框和一个在图 层上可拉伸的区域。</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/contentsCenter.png-bigblog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/contentsCenter.png-bigblog" alt=""></p>
 <p>除此之外还可以用IB来控制<code>contentsCenter</code>属性。 在视图的第四个检查器中，有一个<code>stretching</code>属性，简直不要太赞👍</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://zsisme.gitbooks.io/ios-/content/chapter2/the-contents-image.html" target="_blank" rel="external">《iOS 核心动画》</a>  感谢译者的付出！👍</p>
 

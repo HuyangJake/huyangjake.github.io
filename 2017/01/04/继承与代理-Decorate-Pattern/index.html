@@ -102,16 +102,16 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="场景写这篇文章的背景是在看casatwy的网络层架构代码时对子类继承和协议代理方的实现产生了疑惑，进行了探索。 问题问题情景：父类的方法列表中和协议中有同样的方法（代码如下），子类继承方法同时代理方也实现协议方法，那么当父类调用decoratePatternTest这个方法时具体的执行方是谁？子类同时是代理方和不是代理方分别有什么样的情况呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%89%B9%E7%82%B9.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%B1%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85java.io.png-blog">
-<meta property="og:updated_time" content="2017-10-06T07:12:20.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%89%B9%E7%82%B9.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%B1%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85java.io.png-blog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="继承与代理--Decorate Pattern">
 <meta name="twitter:description" content="场景写这篇文章的背景是在看casatwy的网络层架构代码时对子类继承和协议代理方的实现产生了疑惑，进行了探索。 问题问题情景：父类的方法列表中和协议中有同样的方法（代码如下），子类继承方法同时代理方也实现协议方法，那么当父类调用decoratePatternTest这个方法时具体的执行方是谁？子类同时是代理方和不是代理方分别有什么样的情况呢？">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog">
 
 
 
@@ -480,7 +480,7 @@
 </tbody>
 </table>
 <h3 id="关键"><a href="#关键" class="headerlink" title="关键"></a>关键</h3><p>其实问题的关键是在代理者的协议方法调用的时机。</p>
-<p><img src="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog" alt=""></p>
+<p><img src="http://qiniu.huyangjie.cn/clodreading/jpg/%E7%BB%A7%E6%89%BF%E4%B8%8E%E4%BB%A3%E7%90%86.png-blog" alt=""></p>
 <ul>
 <li><p>当子类继承了方法又是代理者，那么在父类方法中通过<code>（self != self.decotate）</code>来判断不用再去执行协议中的方法</p>
 </li>
@@ -508,10 +508,10 @@
 <h3 id="Decorate-Pattern-装饰者模式"><a href="#Decorate-Pattern-装饰者模式" class="headerlink" title="Decorate Pattern 装饰者模式"></a><strong>Decorate Pattern</strong> 装饰者模式</h3><blockquote>
 <p><strong>装饰者模式</strong>动态地将责任附件到对象上，若要扩展功能，装饰着提供了比继承更具有弹性的方案。</p>
 </blockquote>
-<h4 id="装饰者模式的设计原则："><a href="#装饰者模式的设计原则：" class="headerlink" title="装饰者模式的设计原则："></a>装饰者模式的设计原则：</h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99.png-blog" alt=""><br>可以随心为一个类扩展功能，但不允许对已经存在的代码进行修改。</p>
-<h4 id="装饰者模式的主要特点："><a href="#装饰者模式的主要特点：" class="headerlink" title="装饰者模式的主要特点："></a>装饰者模式的主要特点：</h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%89%B9%E7%82%B9.png-blog" alt=""></p>
-<h4 id="装饰者模式类图："><a href="#装饰者模式类图：" class="headerlink" title="装饰者模式类图："></a>装饰者模式类图：</h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%B1%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.png-blog" alt=""></p>
-<h4 id="实际的例子：java中常用的java-io类就存在着大量装饰者"><a href="#实际的例子：java中常用的java-io类就存在着大量装饰者" class="headerlink" title="实际的例子：java中常用的java.io类就存在着大量装饰者"></a>实际的例子：java中常用的java.io类就存在着大量装饰者</h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85java.io.png-blog" alt=""></p>
+<h4 id="装饰者模式的设计原则："><a href="#装饰者模式的设计原则：" class="headerlink" title="装饰者模式的设计原则："></a>装饰者模式的设计原则：</h4><p><img src="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99.png-blog" alt=""><br>可以随心为一个类扩展功能，但不允许对已经存在的代码进行修改。</p>
+<h4 id="装饰者模式的主要特点："><a href="#装饰者模式的主要特点：" class="headerlink" title="装饰者模式的主要特点："></a>装饰者模式的主要特点：</h4><p><img src="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%89%B9%E7%82%B9.png-blog" alt=""></p>
+<h4 id="装饰者模式类图："><a href="#装饰者模式类图：" class="headerlink" title="装饰者模式类图："></a>装饰者模式类图：</h4><p><img src="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E7%B1%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.png-blog" alt=""></p>
+<h4 id="实际的例子：java中常用的java-io类就存在着大量装饰者"><a href="#实际的例子：java中常用的java-io类就存在着大量装饰者" class="headerlink" title="实际的例子：java中常用的java.io类就存在着大量装饰者"></a>实际的例子：java中常用的java.io类就存在着大量装饰者</h4><p><img src="http://qiniu.huyangjie.cn/clodreading/jpg/%E8%A3%85%E9%A5%B0%E8%80%85java.io.png-blog" alt=""></p>
 <p>以上内容摘自《Head First设计模式》 第三章 装饰者模式 （79-107）</p>
 <p>对应到iOS中本文的场景：</p>
 <table>

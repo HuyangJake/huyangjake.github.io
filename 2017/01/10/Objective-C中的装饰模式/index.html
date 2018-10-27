@@ -102,17 +102,17 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="背景前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了《Objective-C编程之道：iOS设计模式解析》 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。 什么是装饰模式就描述概念而言，我觉得《Head First 设计模式》这本书通过各种例子阐述得要更加详细易懂。《Objective-C编程之道：iOS设计模式">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
-<meta property="og:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog">
-<meta property="og:updated_time" content="2017-10-06T07:17:48.000Z">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C中的装饰模式">
 <meta name="twitter:description" content="背景前段时间接触到了装饰模式，也做了基本的了解，但是还不是很清楚它在iOS开发中的实际运用，和合理的存在方式。这两天看了《Objective-C编程之道：iOS设计模式解析》 中的第16章，有了更加深的理解，结合自己的理解在这里做一下记录。 什么是装饰模式就描述概念而言，我觉得《Head First 设计模式》这本书通过各种例子阐述得要更加详细易懂。《Objective-C编程之道：iOS设计模式">
-<meta name="twitter:image" content="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog">
 
 
 
@@ -414,7 +414,7 @@
 <h3 id="什么是装饰模式"><a href="#什么是装饰模式" class="headerlink" title="什么是装饰模式"></a>什么是装饰模式</h3><p>就描述概念而言，我觉得<strong>《Head First 设计模式》</strong>这本书通过各种例子阐述得要更加详细易懂。<strong>《Objective-C编程之道：iOS设计模式解析》</strong>讲得更多是iOS开发中的使用和不同实现方式的对比。<br><a id="more"></a><br>标准的装饰模式有包括一个抽象的Component父类，它声明了一些操作，它具体的类讲进行重载以实现自己特定的操作。这个Component具体类是模式中的被装饰者，Component父类可以被细化为另一个叫做Decorator的抽象类，即装饰者抽象类。Decorator类中包含了一个Component的引用。Decorator的具体类为Component或者Decorator定义了几个扩展行为，并且会在自己的操作中内嵌Component操作。关系图见 <a href="#class map"><strong>装饰模式类图</strong></a></p>
 <p>Component定义了一些抽象操作，具体类将进行重载实现自己特定的操作。Decorator抽象类通过将一个Component（或Decorator）内嵌到Decorator对象，定义了扩展这个Component的实例的“装饰性”的行为。</p>
 <p>默认的operation方法只是想内嵌的Component发送一个消息，Decorator的具体实现类重载父类的operation，通过super把自己增加的行为扩展给Component的operation。如果只需要向Component添加一种职责，那可以省掉抽象的Decorator类，让具体的Decorator直接把请求转发给Component。那么这种方式就好像形成一种操作链，把一种行为加到另一种行为之上，如<a href="#class map"><strong>对象图</strong></a></p>
-<h4 id="装饰模式类图"><a href="#装饰模式类图" class="headerlink" title="装饰模式类图"></a><span id="class map">装饰模式类图</span></h4><p><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<h4 id="装饰模式类图"><a href="#装饰模式类图" class="headerlink" title="装饰模式类图"></a><span id="class map">装饰模式类图</span></h4><p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
 <h3 id="何时使用装饰模式"><a href="#何时使用装饰模式" class="headerlink" title="何时使用装饰模式"></a>何时使用装饰模式</h3><ul>
 <li><p>想要在不影响其他对象的情况下，以动态、透明的方式给单个对象添加职责。</p>
 </li>
@@ -431,7 +431,7 @@
 <p>第二种方式是使用了Objective-C的语言功能，通过分类向类添加行为，不必进行子类化，这并非标准的装饰模式结构，但是实现了装饰模式同样的需求。尽管使用分类来实现装饰模式跟原始风格有偏离，但是实现少量的装饰器的时候，它比真正子类方式更加轻量、更加容易。</p>
 <p>例子是使用装饰实现UIImage的滤镜功能 终于要见代码了~</p>
 <hr>
-<h4 id="真子类实现装饰"><a href="#真子类实现装饰" class="headerlink" title="真子类实现装饰"></a><span id="child">真子类实现装饰</span></h4><p>先看目录结构：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog" alt=""></p>
+<h4 id="真子类实现装饰"><a href="#真子类实现装饰" class="headerlink" title="真子类实现装饰"></a><span id="child">真子类实现装饰</span></h4><p>先看目录结构：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E7%9C%9F%E6%AD%A3%E5%AD%90%E7%B1%BB%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png-blog" alt=""></p>
 <p>Component抽象类是一个Protocol文件，</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ImageComponent</span> &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line"><span class="keyword">@optional</span></div><div class="line">- (<span class="keyword">void</span>)drawAsPatternInRect:(<span class="built_in">CGRect</span>)rect;</div><div class="line">- (<span class="keyword">void</span>)drawAtPoint:(<span class="built_in">CGPoint</span>)point;</div><div class="line">- (<span class="keyword">void</span>)drawAtPoint:(<span class="built_in">CGPoint</span>)ponit blendMode:(<span class="built_in">CGBlendMode</span>)blendMode alpha:(<span class="built_in">CGFloat</span>)alpha;</div><div class="line">- (<span class="keyword">void</span>)drawInRect:(<span class="built_in">CGRect</span>)rect;</div><div class="line">- (<span class="keyword">void</span>)drawInRect:(<span class="built_in">CGRect</span>)rect blendMode:(<span class="built_in">CGBlendMode</span>)blendMode alpha:(<span class="built_in">CGFloat</span>)alpha;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
 <p><code>UIImage_ImageComponent.h</code>是UIImage的一个Extension，让UIImage遵循ImageComponent协议。如此在装饰模式中UIImage类是ImageComponent抽象类的具体类，即UIImage是模式中的被装饰者。</p>
@@ -443,12 +443,12 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"avatar.jpg"</span>];</div><div class="line">    <span class="built_in">CGAffineTransform</span> rorateTransform = <span class="built_in">CGAffineTransformMakeRotation</span>(-M_PI / <span class="number">4</span>);</div><div class="line">    <span class="built_in">CGAffineTransform</span> translateTransform = <span class="built_in">CGAffineTransformMakeTranslation</span>(-image.size.width / <span class="number">2.0</span>, image.size.height / <span class="number">8.0</span>);</div><div class="line">    <span class="built_in">CGAffineTransform</span> finalTransform = <span class="built_in">CGAffineTransformConcat</span>(rorateTransform, translateTransform);</div><div class="line">    </div><div class="line">    <span class="keyword">id</span>&lt;ImageComponent&gt;transformdImage = [[ImageTransformFilter alloc] initWithImageComponent:image transform:finalTransform];</div><div class="line">    </div><div class="line">    <span class="keyword">id</span>&lt;ImageComponent&gt;finalImage = [[ImageShadowFliter alloc] initWithImageComponent:transformdImage];</div><div class="line">    </div><div class="line">    DecoratorView *decoratorView = [[DecoratorView alloc] initWithFrame:<span class="keyword">self</span>.view.frame];</div><div class="line">    [decoratorView setImage:finalImage];</div><div class="line">    [<span class="keyword">self</span>.view addSubview:decoratorView];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>由<code>DecoratorView</code>中的<code>drawRect：</code>调起UIImage的装饰</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">DecoratorView</span></span></div><div class="line">during animation.</div><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</div><div class="line">    [<span class="keyword">self</span>.image drawInRect:rect];</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
-<p><strong>类图如下:</strong><br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
-<p>各种ImageComponent对象可在运行时进行连接，如下图：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog" alt=""></p>
+<p><strong>类图如下:</strong><br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E6%AD%A3%E7%9C%9F%E5%AD%90%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<p>各种ImageComponent对象可在运行时进行连接，如下图：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/ImageComponent%E9%93%BE%E6%8E%A5.png-blog" alt=""></p>
 <hr>
 <h4 id="分类实现装饰"><a href="#分类实现装饰" class="headerlink" title="分类实现装饰"></a><span id="category">分类实现装饰</span></h4><p>分类方式实现就是平常开发中常见的使用，代码就不再一一列出</p>
-<p>类图如下：<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
-<p><code>BaseFilter</code>分类中定义了绘图的方法，<code>Transform</code>和<code>shadow</code>分类中可以调用<code>BaseFilter</code>分类中定义的方法来进行自己的绘制。他们也可以像真正子类化方式那样链接起来，来看对象图:<br><img src="http://ojam5z7vg.bkt.clouddn.com/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog" alt=""></p>
+<p>类图如下：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E5%88%86%E7%B1%BB%E7%B1%BB%E5%9B%BE.png-blog" alt=""></p>
+<p><code>BaseFilter</code>分类中定义了绘图的方法，<code>Transform</code>和<code>shadow</code>分类中可以调用<code>BaseFilter</code>分类中定义的方法来进行自己的绘制。他们也可以像真正子类化方式那样链接起来，来看对象图:<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/%E5%88%86%E7%B1%BB%E9%93%BE%E6%8E%A5%E5%AF%B9%E8%B1%A1%E5%9B%BE.png-blog" alt=""></p>
 <hr>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>装饰模式在Objective-C中有两种不同的实现方式，真正子类方式的实现使用一种较为结构化的方式链接各种装饰器，分类的方式更加简单和轻量，使用于现有类只需要少量装饰器的应用。</p>
 <p>参考：《Objective-C编程之道：iOS设计模式解析》第16章，（190-206）<br>demo地址：<a href="https://github.com/HuyangJake/DecoratorDemo.git" target="_blank" rel="external">GitHub</a></p>
