@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -39,7 +39,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -73,21 +73,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="iOS," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="iOS,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://o8ajh91ch.bkt.clouddn.com/QLNetworking_Download.png">
 <meta property="og:image" content="http://o8ajh91ch.bkt.clouddn.com/QLNetworking_download_save.png">
-<meta property="og:updated_time" content="2018-05-15T15:16:09.649Z">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.510Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AFNetworking 实现断点续传">
 <meta name="twitter:description" content="思路  从协议层面来说，断点续传的实现都是通过http头里面的Range来实现的。对于以前asi的实现和基于NSURLConnection的实现来说，我们都是通过手动保存当前大小然后填充到Range的策略来实现断点续传功能的。  NSURLSession内置了对于断点续传的api支持，主要是通过resumeData和tmp中间文件。在NSURLSession暂停时，其中间文件的相关信息被保存到re">
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="http://huyangjie.com/2018/05/15/breakpoint-resume-in-iOS/"/>
+  <link rel="canonical" href="http://huyangjie.com/2018/05/15/breakpoint-resume-in-iOS/">
 
 
 
@@ -171,7 +171,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -181,13 +181,13 @@
   <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">ColdCode</span>
         <span class="logo-line-after"><i></i></span>
@@ -217,7 +217,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -227,7 +227,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -237,7 +237,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -247,7 +247,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -257,7 +257,7 @@
         <li class="menu-item menu-item-sitemap">
           <a href="/2016/12/29/知识传送门/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
             
             站点地图
           </a>
@@ -267,7 +267,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -301,20 +301,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://huyangjie.com/2018/05/15/breakpoint-resume-in-iOS/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="ColdCode">
     </span>
 
@@ -355,8 +355,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2018/05/15/breakpoint-resume-in-iOS/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/15/breakpoint-resume-in-iOS/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/15/breakpoint-resume-in-iOS/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -393,7 +392,7 @@
 </ol>
 <p>目前来看，基于NSURLSession的断点续传主要有两个问题需要考虑：</p>
 <p>a. 程序退出（手动kill等）时需要自动保存resumeData，后续应用起来时再恢复之。</p>
-<p>b. iOS10里面的resumeData的保存有点问题，需要特别处理，可以参考此demo:<a href="https://github.com/HustHank/BackgroundDownloadDemo" target="_blank" rel="external">https://github.com/HustHank/BackgroundDownloadDemo</a>.</p>
+<p>b. iOS10里面的resumeData的保存有点问题，需要特别处理，可以参考此demo:<a href="https://github.com/HustHank/BackgroundDownloadDemo" target="_blank" rel="noopener">https://github.com/HustHank/BackgroundDownloadDemo</a>.</p>
 </blockquote>
 <a id="more"></a>
 <p>上述引用中的</p>
@@ -401,7 +400,7 @@
 <p>第1点是我们方案中离线点断续传的思路，不同的是我们使用的是基于<code>NSURLSession</code>的<code>AFNetworking</code>来实现这个逻辑（<code>AFNetworking</code>原生也不支持离线断点续传）。实现的方案跟引用中提到自动保存resumeData也不一致，我们使用文件流保存数据，没有取系统提供的resumeData使用。</p>
 <hr>
 <h3 id="设计流程"><a href="#设计流程" class="headerlink" title="设计流程"></a>设计流程</h3><p><img src="http://o8ajh91ch.bkt.clouddn.com/QLNetworking_Download.png" alt=""></p>
-<p><a href="http://o8ajh91ch.bkt.clouddn.com/QLNetworking_Download.pdf" target="_blank" rel="external">查看大图</a></p>
+<p><a href="http://o8ajh91ch.bkt.clouddn.com/QLNetworking_Download.pdf" target="_blank" rel="noopener">查看大图</a></p>
 <hr>
 <h3 id="文件保存逻辑"><a href="#文件保存逻辑" class="headerlink" title="文件保存逻辑"></a>文件保存逻辑</h3><p>断点续传有一个必要的逻辑：</p>
 <p><strong>在开始发起请求任务之前，在本地查找匹配的文件计算下载数据开始的位置。</strong></p>
@@ -428,10 +427,10 @@
 <li>后台下载</li>
 <li>下载文件的校验</li>
 </ul>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://my.oschina.net/snOS/blog/795412" target="_blank" rel="external">https://my.oschina.net/snOS/blog/795412</a></p>
-<p><a href="https://blog.csdn.net/u012198553/article/details/53613253" target="_blank" rel="external">https://blog.csdn.net/u012198553/article/details/53613253</a></p>
-<p><a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="external">https://github.com/AFNetworking/AFNetworking</a></p>
-<p><a href="https://www.jianshu.com/p/01390c7a4957" target="_blank" rel="external">https://www.jianshu.com/p/01390c7a4957</a></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://my.oschina.net/snOS/blog/795412" target="_blank" rel="noopener">https://my.oschina.net/snOS/blog/795412</a></p>
+<p><a href="https://blog.csdn.net/u012198553/article/details/53613253" target="_blank" rel="noopener">https://blog.csdn.net/u012198553/article/details/53613253</a></p>
+<p><a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="noopener">https://github.com/AFNetworking/AFNetworking</a></p>
+<p><a href="https://www.jianshu.com/p/01390c7a4957" target="_blank" rel="noopener">https://www.jianshu.com/p/01390c7a4957</a></p>
 
       
     </div>
@@ -552,7 +551,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -562,10 +561,8 @@
       
 
       <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Jakey" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Jakey">
           <p class="site-author-name" itemprop="name">Jakey</p>
            
               <p class="site-description motion-element" itemprop="description">记录生活工作</p>
@@ -576,7 +573,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -653,7 +650,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

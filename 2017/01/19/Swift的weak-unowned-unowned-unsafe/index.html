@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -39,7 +39,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -73,21 +73,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="iOS,Swift," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="iOS,Swift,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="ColdCode">
 <meta property="og:description" content="Swift同样也是用ARC管理内存，为了解决引用循环。同OC一样使用weak修饰对象，在weak引用指向的对象被释放之后，其自身会被置为nil也会被释放。 而在Swift中nil是Optional的专属，对于非可选类型，则使用无主引用：unowned  使用无主引用，你必须确保引用始终指向一个未销毁的实例。如果你试图在实例被销毁后，访问该实例的无主引用，会触发运行时错误。   安全无主引用unow">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-06T07:17:33.000Z">
+<meta property="og:updated_time" content="2018-10-27T06:33:11.526Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift的weak Unowned Unowned(unsafe)">
 <meta name="twitter:description" content="Swift同样也是用ARC管理内存，为了解决引用循环。同OC一样使用weak修饰对象，在weak引用指向的对象被释放之后，其自身会被置为nil也会被释放。 而在Swift中nil是Optional的专属，对于非可选类型，则使用无主引用：unowned  使用无主引用，你必须确保引用始终指向一个未销毁的实例。如果你试图在实例被销毁后，访问该实例的无主引用，会触发运行时错误。   安全无主引用unow">
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://huyangjie.com/2017/01/19/Swift的weak-unowned-unowned-unsafe/"/>
+  <link rel="canonical" href="http://huyangjie.com/2017/01/19/Swift的weak-unowned-unowned-unsafe/">
 
 
 
@@ -168,7 +168,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -178,13 +178,13 @@
   <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">ColdCode</span>
         <span class="logo-line-after"><i></i></span>
@@ -214,7 +214,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -224,7 +224,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -234,7 +234,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -244,7 +244,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -254,7 +254,7 @@
         <li class="menu-item menu-item-sitemap">
           <a href="/2016/12/29/知识传送门/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
             
             站点地图
           </a>
@@ -264,7 +264,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -298,20 +298,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://huyangjie.com/2017/01/19/Swift的weak-unowned-unowned-unsafe/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jakey">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="ColdCode">
     </span>
 
@@ -343,7 +343,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -354,7 +354,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
                   <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
                     <span itemprop="name">猿猿养成记</span>
                   </a>
@@ -374,8 +374,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2017/01/19/Swift的weak-unowned-unowned-unsafe/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/01/19/Swift的weak-unowned-unowned-unsafe/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/19/Swift的weak-unowned-unowned-unsafe/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -434,14 +433,14 @@
 </li>
 </ol>
 <p>场景3例子：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123; </div><div class="line">	<span class="keyword">let</span> name: <span class="type">String</span> </div><div class="line">	<span class="keyword">var</span> capitalCity: <span class="type">City</span>! </div><div class="line">	<span class="keyword">init</span>(name: <span class="type">String</span>, capitalName: <span class="type">String</span>) &#123; </div><div class="line">		<span class="keyword">self</span>.name = name </div><div class="line">		<span class="keyword">self</span>.capitalCity = <span class="type">City</span>(name: capitalName, country: <span class="keyword">self</span>) </div><div class="line">	&#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">City</span> </span>&#123; </div><div class="line">	<span class="keyword">let</span> name: <span class="type">String</span> </div><div class="line">	<span class="keyword">unowned</span> <span class="keyword">let</span> country: <span class="type">Country</span> </div><div class="line">	<span class="keyword">init</span>(name: <span class="type">String</span>, country: <span class="type">Country</span>) &#123; </div><div class="line">		<span class="keyword">self</span>.name = name </div><div class="line">		<span class="keyword">self</span>.country = country </div><div class="line">	&#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123; </span><br><span class="line">	<span class="keyword">let</span> name: <span class="type">String</span> </span><br><span class="line">	<span class="keyword">var</span> capitalCity: <span class="type">City</span>! </span><br><span class="line">	<span class="keyword">init</span>(name: <span class="type">String</span>, capitalName: <span class="type">String</span>) &#123; </span><br><span class="line">		<span class="keyword">self</span>.name = name </span><br><span class="line">		<span class="keyword">self</span>.capitalCity = <span class="type">City</span>(name: capitalName, country: <span class="keyword">self</span>) </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">City</span> </span>&#123; </span><br><span class="line">	<span class="keyword">let</span> name: <span class="type">String</span> </span><br><span class="line">	<span class="keyword">unowned</span> <span class="keyword">let</span> country: <span class="type">Country</span> </span><br><span class="line">	<span class="keyword">init</span>(name: <span class="type">String</span>, country: <span class="type">Country</span>) &#123; </span><br><span class="line">		<span class="keyword">self</span>.name = name </span><br><span class="line">		<span class="keyword">self</span>.country = country </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h3 id="解决闭包引起的循环引用"><a href="#解决闭包引起的循环引用" class="headerlink" title="解决闭包引起的循环引用"></a>解决闭包引起的循环引用</h3><blockquote>
 <p>Swift 有如下要求：只要在闭包内使用 self 的成员，就要用 self.someProperty 或者 self.someMethod() 不只是 someProperty 或 someMethod() ）。这提醒你可能会一不小心就捕获了 self 。</p>
 </blockquote>
 <p>第一捕获列表解决循环引用，例子：</p>
 <p>捕获列表中的每一项都由一对元素组成，一个元素是 weak 或 unowned 关键字，另一个元素是类实例的引用</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> someClosure: (<span class="type">Int</span>, <span class="type">String</span>) -&gt; <span class="type">String</span> = &#123; </div><div class="line">	[<span class="keyword">unowned</span> <span class="keyword">self</span>, <span class="keyword">weak</span> delegate = <span class="keyword">self</span>.delegate!] (index: <span class="type">Int</span>, stringToProcess: <span class="type">String</span>) -&gt; <span class="type">String</span> <span class="keyword">in</span> </div><div class="line">	<span class="comment">// 这里是闭包的函数体 </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> someClosure: (<span class="type">Int</span>, <span class="type">String</span>) -&gt; <span class="type">String</span> = &#123; </span><br><span class="line">	[<span class="keyword">unowned</span> <span class="keyword">self</span>, <span class="keyword">weak</span> delegate = <span class="keyword">self</span>.delegate!] (index: <span class="type">Int</span>, stringToProcess: <span class="type">String</span>) -&gt; <span class="type">String</span> <span class="keyword">in</span> </span><br><span class="line">	<span class="comment">// 这里是闭包的函数体 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>如果被捕获的引用绝对不会变为 nil ，应该用无主引用，而不是弱引用。</p>
 </blockquote>
@@ -568,7 +567,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -578,10 +577,8 @@
       
 
       <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Jakey" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Jakey">
           <p class="site-author-name" itemprop="name">Jakey</p>
            
               <p class="site-description motion-element" itemprop="description">记录生活工作</p>
@@ -592,7 +589,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -649,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景解析："><span class="nav-number">1.</span> <span class="nav-text">使用场景解析：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决闭包引起的循环引用"><span class="nav-number"></span> <span class="nav-text">解决闭包引起的循环引用</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景解析："><span class="nav-number">1.</span> <span class="nav-text">使用场景解析：</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#解决闭包引起的循环引用"><span class="nav-number"></span> <span class="nav-text">解决闭包引起的循环引用</span></a></li></div>
             
 
           </div>
@@ -669,7 +666,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>
