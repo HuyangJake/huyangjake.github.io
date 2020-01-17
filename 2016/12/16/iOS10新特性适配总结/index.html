@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="1. Notification(通知)自从Notification被引入之后，苹果就不断的更新优化，但这些更新优化只是小打小闹，直至现在iOS 10开始真正的进行大改重构，这让开发者也体会到UserNotifications的易用，功能也变得非常强大。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS10新特性适配总结">
+<meta property="og:url" content="http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="1. Notification(通知)自从Notification被引入之后，苹果就不断的更新优化，但这些更新优化只是小打小闹，直至现在iOS 10开始真正的进行大改重构，这让开发者也体会到UserNotifications的易用，功能也变得非常强大。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919115440465-282261076.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918170238256-1807962290.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918164446868-505879984.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114127228-2093692903.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101042684-1974264450.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101103902-448062410.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101202996-1273097948.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114216825-2072979176.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114620576-1303627103.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114911979-1889192985.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114920417-1828331146.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918115047642-1072358093.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918164934170-318856946.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919140245793-794728449.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160920180122621-1767554257.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160920180323184-1049564596.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160921142554277-537167035.png">
+<meta property="og:updated_time" content="2019-09-10T07:24:08.562Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS10新特性适配总结">
+<meta name="twitter:description" content="1. Notification(通知)自从Notification被引入之后，苹果就不断的更新优化，但这些更新优化只是小打小闹，直至现在iOS 10开始真正的进行大改重构，这让开发者也体会到UserNotifications的易用，功能也变得非常强大。">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919115440465-282261076.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/">
+
+
+
+
+
+  <title>iOS10新特性适配总结 | ColdCode</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-130755566-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ColdCode</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">托起一片绿叶，走向更远的远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS10新特性适配总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T08:45:51+08:00">
+                2016-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/12/16/iOS10新特性适配总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/12/16/iOS10新特性适配总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-Notification-通知"><a href="#1-Notification-通知" class="headerlink" title="1. Notification(通知)"></a>1. Notification(通知)</h3><p>自从Notification被引入之后，苹果就不断的更新优化，但这些更新优化只是小打小闹，直至现在iOS 10开始真正的进行大改重构，这让开发者也体会到UserNotifications的易用，功能也变得非常强大。</p>
+<a id="more"></a>
+<h4 id="iOS-9-以前的通知"><a href="#iOS-9-以前的通知" class="headerlink" title="iOS 9 以前的通知"></a>iOS 9 以前的通知</h4><ol>
+<li><p>在调用方法时，有些方法让人很难区分，容易写错方法，这让开发者有时候很苦恼。</p>
+</li>
+<li><p>应用在运行时和非运行时捕获通知的路径还不一致。</p>
+</li>
+<li><p>应用在前台时，是无法直接显示远程通知，还需要进一步处理。</p>
+</li>
+<li><p>已经发出的通知是不能更新的，内容发出时是不能改变的，并且只有简单文本展示方式，扩展性根本不是很好。</p>
+</li>
+</ol>
+<h4 id="iOS-10-开始的通知"><a href="#iOS-10-开始的通知" class="headerlink" title="iOS 10 开始的通知"></a>iOS 10 开始的通知</h4><ol>
+<li><p>所有相关通知被统一到了UserNotifications.framework框架中。</p>
+</li>
+<li><p>增加了撤销、更新、中途还可以修改通知的内容。</p>
+</li>
+<li><p>通知不在是简单的文本了，可以加入视频、图片，自定义通知的展示等等。</p>
+</li>
+<li><p>iOS 10相对之前的通知来说更加好用易于管理，并且进行了大规模优化，对于开发者来说是一件好事。</p>
+</li>
+<li><p>iOS 10开始对于权限问题进行了优化，申请权限就比较简单了(本地与远程通知集成在一个方法中)。</p>
+</li>
+</ol>
+<p>如果使用了推送，修改如图：</p>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919115440465-282261076.jpg" alt></p>
+<h3 id="2-ATS的问题"><a href="#2-ATS的问题" class="headerlink" title="2. ATS的问题"></a>2. ATS的问题</h3><p>iOS 9中默认非HTTS的网络是被禁止的，当然我们也可以把NSAllowsArbitraryLoads设置为YES禁用ATS。不过iOS 10从2017年1月1日起苹果不允许我们通过这个方法跳过ATS，也就是说强制我们用HTTPS，如果不这样的话提交App可能会被拒绝。但是我们可以通过NSExceptionDomains来针对特定的域名开放HTTP可以容易通过审核。</p>
+<p>NSExceptionDomains方式 设置域。可以简单理解成，把不支持https协议的接口设置成http的接口。</p>
+<p>具体方法：</p>
+<ol>
+<li><p>在项目的info.plist中添加一个Key：App Transport Security Settings，类型为字典类型。</p>
+</li>
+<li><p>然后给它添加一个Exception Domains，类型为字典类型；</p>
+</li>
+<li><p>把需要的支持的域添加給Exception Domains。其中域作为Key，类型为字典类型。</p>
+</li>
+<li><p>每个域下面需要设置3个属性：NSIncludesSubdomains、NSExceptionRequiresForwardSecrecy、NSExceptionAllowsInsecureHTTPLoads。</p>
+</li>
+</ol>
+<p>如图：<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918170238256-1807962290.png" alt><br>细节提示:在iOS9以后的系统中如果使用到网络图片，也要注意网络图片是否是HTTP的哦，如果是，也要把图片的域设置哦！</p>
+<h3 id="3-iOS-10-隐私权限设置"><a href="#3-iOS-10-隐私权限设置" class="headerlink" title="3. iOS 10 隐私权限设置"></a>3. iOS 10 隐私权限设置</h3><p>iOS 10 开始对隐私权限更加严格，如果你不设置就会直接崩溃，现在很多遇到崩溃问题了，一般解决办法都是在info.plist文件添加对应的Key-Value就可以了。<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918164446868-505879984.png" alt><br>以上Value值，圈出的红线部分的文字是展示给用户看的，必须添加。</p>
+<h3 id="4-Xcode-8-运行一堆没用的logs解决办法"><a href="#4-Xcode-8-运行一堆没用的logs解决办法" class="headerlink" title="4. Xcode 8 运行一堆没用的logs解决办法"></a>4. Xcode 8 运行一堆没用的logs解决办法</h3><p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114127228-2093692903.jpg" alt></p>
+<p>上图我们看到，自己新建的一个工程啥也没干就打印一堆烂七八糟的东西，我觉得这个应该是Xcode 8的问题，</p>
+<p>具体也没细研究，解决办法是设置OS_ACTIVITY_MODE : disable如下图:<br>第一步：<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101042684-1974264450.png" alt><br>第二步：<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101103902-448062410.png" alt><br>第三步：<br>添加参数：<br>Name ：<code>OS_ACTIVITY_MODE</code><br>Value :  <code>disable</code><br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919101202996-1273097948.png" alt></p>
+<h3 id="5-iOS-10-UIStatusBar方法过期"><a href="#5-iOS-10-UIStatusBar方法过期" class="headerlink" title="5. iOS 10 UIStatusBar方法过期:"></a>5. iOS 10 UIStatusBar方法过期:</h3><p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114216825-2072979176.jpg" alt><br>在我们开发中有可能用到UIStatusBar一些属性，在iOS 10 中这些方法已经过期了，如果你的项目中有用的话就得需要适配。</p>
+<p>上面的图片也能发现，如果在iOS 10中你需要使用preferredStatusBar比如这样：</p>
+<pre><code>//iOS 10 - (UIStatusBarStyle)preferredStatusBarStyle {    return UIStatusBarStyleDefault;
+}    
+</code></pre><h3 id="6-iOS-10-UICollectionView-性能优化"><a href="#6-iOS-10-UICollectionView-性能优化" class="headerlink" title="6. iOS 10 UICollectionView 性能优化"></a>6. iOS 10 UICollectionView 性能优化</h3><p>随着开发者对UICollectionView的信赖，项目中用的地方也比较多，但是还是存在一些问题，比如有时会卡顿、加载慢等。所以iOS 10 对UICollectionView进一步的优化。</p>
+<ul>
+<li>UICollectionView cell pre-fetching预加载机制</li>
+<li>UICollectionView and UITableView prefetchDataSource 新增的API</li>
+<li>针对self-sizing cells 的改进</li>
+<li>Interactive reordering</li>
+</ul>
+<p>在iOS 10 之前,UICollectionView上面如果有大量cell,当用户活动很快的时候,整个UICollectionView的卡顿会很明显,为什么会造成这样的问题,这里涉及到了iOS 系统的重用机制,当cell准备加载进屏幕的时候,整个cell都已经加载完成,等待在屏幕外面了,也就是整整一行cell都已经加载完毕,这就是造成卡顿的主要原因,专业术语叫做:掉帧.<br>要想让用户感觉不到卡顿,我们的app必须帧率达到60帧/秒,也就是说每帧16毫秒要刷新一次.</p>
+<h4 id="iOS-10-之前UICollectionViewCell的生命周期是这样的"><a href="#iOS-10-之前UICollectionViewCell的生命周期是这样的" class="headerlink" title="iOS 10 之前UICollectionViewCell的生命周期是这样的:"></a>iOS 10 之前UICollectionViewCell的生命周期是这样的:</h4><ol>
+<li>用户滑动屏幕,屏幕外有一个cell准备加载进来,把cell从reusr队列拿出来,然后调用prepareForReuse方法,在这个方法里面,可以重置cell的状态,加载新的数据;</li>
+<li>继续滑动,就会调用cellForItemAtIndexPath方法,在这个方法里面给cell赋值模型,然后返回给系统;</li>
+<li>当cell马上进去屏幕的时候,就会调用willDisplayCell方法,在这个方法里面我们还可以修改cell,为进入屏幕做最后的准备工作;</li>
+<li>执行完willDisplayCell方法后,cell就进去屏幕了.当cell完全离开屏幕以后,会调用didEndDisplayingCell方法.<h4 id="iOS-10-UICollectionViewCell的生命周期是这样的"><a href="#iOS-10-UICollectionViewCell的生命周期是这样的" class="headerlink" title="iOS 10 UICollectionViewCell的生命周期是这样的:"></a>iOS 10 UICollectionViewCell的生命周期是这样的:</h4></li>
+<li>用户滑动屏幕,屏幕外有一个cell准备加载进来,把cell从reusr队列拿出来,然后调用prepareForReuse方法,在这里当cell还没有进去屏幕的时候,就已经提前调用这个方法了,对比之前的区别是之前是cell的上边缘马上进去屏幕的时候就会调用该方法,而iOS 10 提前到cell还在屏幕外面的时候就调用;</li>
+<li>在cellForItemAtIndexPath中创建cell，填充数据，刷新状态等操作,相比于之前也提前了;</li>
+<li>用户继续滑动的话,当cell马上就需要显示的时候我们再调用willDisplayCell方法,原则就是:何时需要显示,何时再去调用willDisplayCell方法;</li>
+<li>当cell完全离开屏幕以后,会调用didEndDisplayingCell方法,跟之前一样,cell会进入重用队列.<br>在iOS 10 之前,cell只能从重用队列里面取出,再走一遍生命周期,并调用cellForItemAtIndexPath创建或者生成一个cell.<br>在iOS 10 中,系统会cell保存一段时间,也就是说当用户把cell滑出屏幕以后,如果又滑动回来,cell不用再走一遍生命周期了,只需要调用willDisplayCell方法就可以重新出现在屏幕中了.<br>iOS 10 中,系统是一个一个加载cell的,二以前是一行一行加载的,这样就可以提升很多性能;<h4 id="iOS-10-新增加的Pre-Fetching预加载"><a href="#iOS-10-新增加的Pre-Fetching预加载" class="headerlink" title="iOS 10 新增加的Pre-Fetching预加载"></a>iOS 10 新增加的Pre-Fetching预加载</h4>这个是为了降低UICollectionViewCell在加载的时候所花费的时间,在 iOS 10 中,除了数据源协议和代理协议外,新增加了一个UICollectionViewDataSourcePrefetching协议,这个协议里面定义了两个方法:</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　- (<span class="keyword">void</span>)collectionView:(<span class="built_in">UICollectionView</span> *)collectionView prefetchItemsAtIndexPaths:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSIndexPath</span> *&gt; *)indexPaths <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">10</span>_0;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　- (<span class="keyword">void</span>)collectionView:(<span class="built_in">UICollectionView</span> *)collectionView cancelPrefetchingForItemsAtIndexPaths:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSIndexPath</span> *&gt; *)indexPaths  <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">10</span>_0;</span><br></pre></td></tr></table></figure>
+<p>　　　在ColletionView prefetchItemsAt indexPaths这个方法是异步预加载数据的,当中的indexPaths数组是有序的,就是item接收数据的顺序;<br>　　　CollectionView cancelPrefetcingForItemsAt indexPaths这个方法是可选的,可以用来处理在滑动中取消或者降低提前加载数据的优先级.<br>　　　注意:这个协议并不能代替之前读取数据的方法,仅仅是辅助加载数据.<br>　　　Pre-Fetching预加载对UITableViewCell同样适用.</p>
+<h3 id="7-iOS-10-UIColor-新增方法"><a href="#7-iOS-10-UIColor-新增方法" class="headerlink" title="7. iOS 10 UIColor 新增方法"></a>7. iOS 10 UIColor 新增方法</h3><p>以下是官方文档的说明：</p>
+<blockquote>
+<p>Most graphics frameworks throughout the system, including Core Graphics, Core Image, Metal, and AVFoundation, have substantially improved support for extended-range pixel formats and wide-gamut color spaces. By extending this behavior throughout the entire graphics stack, it is easier than ever to support devices with a wide color display. In addition, UIKit standardizes on working in a new extended sRGB color space, making it easy to mix sRGB colors with colors in other, wider color gamuts without a significant performance penalty.</p>
+<p>Here are some best practices to adopt as you start working with Wide Color.</p>
+<p>In iOS 10, the UIColor class uses the extended sRGB color space and its initializers no longer clamp raw component values to between 0.0 and 1.0. If your app relies on UIKit to clamp component values (whether you’re creating a color or asking a color for its component values), you need to change your app’s behavior when you link against iOS 10.</p>
+<p>When performing custom drawing in a UIView on an iPad Pro (9.7 inch), the underlying drawing environment is configured with an extended sRGB color space.</p>
+<p>If your app renders custom image objects, use the new UIGraphicsImageRenderer class to control whether the destination bitmap is created using an extended-range or standard-range format.</p>
+<p>If you are performing your own image processing on wide-gamut devices using a lower level API, such as Core Graphics or Metal, you should use an extended range color space and a pixel format that supports 16-bit floating-point component values. When clamping of color values is necessary, you should do so explicitly.</p>
+<p>Core Graphics, Core Image, and Metal Performance Shaders provide new options for easily converting colors and images between color spaces.</p>
+</blockquote>
+<p>因为之前我们都是用RGB来设置颜色，反正用起来也不是特别多样化，这次新增的方法应该就是一个弥补吧。所以在iOS 10 苹果官方建议我们使用sRGB，因为它性能更好，色彩更丰富。如果你自己为UIColor写了一套分类的话也可尝试替换为sRGB，UIColor类中新增了两个Api如下:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">UIColor</span> *)colorWithDisplayP3Red:(<span class="built_in">CGFloat</span>)displayP3Red green:(<span class="built_in">CGFloat</span>)green blue:(<span class="built_in">CGFloat</span>)blue alpha:(<span class="built_in">CGFloat</span>)alpha <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">10</span>_0);</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIColor</span> *)initWithDisplayP3Red:(<span class="built_in">CGFloat</span>)displayP3Red green:(<span class="built_in">CGFloat</span>)green blue:(<span class="built_in">CGFloat</span>)blue alpha:(<span class="built_in">CGFloat</span>)alpha <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">10</span>_0);</span><br></pre></td></tr></table></figure>
+<h3 id="8-iOS-10-UITextContentType"><a href="#8-iOS-10-UITextContentType" class="headerlink" title="8. iOS 10 UITextContentType"></a>8. iOS 10 UITextContentType</h3><pre><code>// The textContentType property is to provide the keyboard with extra information about the semantic intent of the text document.@property(nonatomic,copy) UITextContentType textContentType NS_AVAILABLE_IOS(10_0); // default is nil
+</code></pre><p>在iOS 10 UITextField添加了textContentType枚举，指示文本输入区域所期望的语义意义。</p>
+<p>使用此属性可以给键盘和系统信息，关于用户输入的内容的预期的语义意义。例如，您可以指定一个文本字段，用户填写收到一封电子邮件确认uitextcontenttypeemailaddress。当您提供有关您期望用户在文本输入区域中输入的内容的信息时，系统可以在某些情况下自动选择适当的键盘，并提高键盘修正和主动与其他文本输入机会的整合。</p>
+<h3 id="9-iOS-10-字体随着手机系统字体而改变"><a href="#9-iOS-10-字体随着手机系统字体而改变" class="headerlink" title="9. iOS 10 字体随着手机系统字体而改变"></a>9. iOS 10 字体随着手机系统字体而改变</h3><p>当我们手机系统字体改变了之后，那我们App的label也会跟着一起变化，这需要我们写很多代码来进一步处理才能实现，但是iOS 10 提供了这样的属性adjustsFontForContentSizeCategory来设置。因为没有真机，具体实际操作还没去实现，如果理解错误帮忙指正。</p>
+<pre><code>UILabel *myLabel = [UILabel new];   /*
+</code></pre><p>   UIFont 的preferredFontForTextStyle: 意思是指定一个样式，并让字体大小符合用户设定的字体大小。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myLabel.font =[<span class="built_in">UIFont</span> preferredFontForTextStyle: <span class="built_in">UIFontTextStyleHeadline</span>];</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Indicates whether the corresponding element should automatically update its font when the device’s UIContentSizeCategory is changed.</span></span><br><span class="line"><span class="comment">For this property to take effect, the element’s font must be a font vended using +preferredFontForTextStyle: or +preferredFontForTextStyle:compatibleWithTraitCollection: with a valid UIFontTextStyle.</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>//是否更新字体的变化</p>
+<pre><code>myLabel.adjustsFontForContentSizeCategory = YES;
+</code></pre><h3 id="10-iOS-10-UIScrollView新增refreshControl"><a href="#10-iOS-10-UIScrollView新增refreshControl" class="headerlink" title="10. iOS 10 UIScrollView新增refreshControl"></a>10. iOS 10 UIScrollView新增refreshControl</h3><p>iOS 10 以后只要是继承UIScrollView那么就支持刷新功能：</p>
+<pre><code>@property (nonatomic, strong, nullable) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(10_0) __TVOS_PROHIBITED;
+</code></pre><h3 id="11-iOS-10-判断系统版本正确姿势"><a href="#11-iOS-10-判断系统版本正确姿势" class="headerlink" title="11. iOS 10 判断系统版本正确姿势"></a>11. iOS 10 判断系统版本正确姿势</h3><p>判断系统版本是我们经常用到的，尤其是现在大家都有可能需要适配iOS 10，那么问题就出现了，如下图：<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114620576-1303627103.jpg" alt><br>我们得到了答案是：</p>
+<p>//值为 1 <code>[[[[UIDevice currentDevice] systemVersion] substringToIndex:1] integerValue]</code></p>
+<p>//值为10.000000 <code>[[UIDevice currentDevice] systemVersion].floatValue</code>,</p>
+<p>//值为10.0<code>[[UIDevice currentDevice] systemVersion]</code></p>
+<p>所以说判断系统方法最好还是用后面的两种方法，哦~我忘记说了<code>[[UIDevice currentDevice] systemVersion].floatValue</code>这个方法也是不靠谱的，好像在8.3版本输出的值是8.2，记不清楚了反正是不靠谱的，所以建议大家用<code>[[UIDevice currentDevice] systemVersion]</code>这个方法！</p>
+<p>Swift判断如下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> #available(iOS <span class="number">10.0</span>, *) &#123;</span><br><span class="line">          <span class="comment">// iOS 10.0</span></span><br><span class="line">          <span class="built_in">print</span>(<span class="string">"iOS 10.0"</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123; &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="12-Xcode-8-插件不能用的问题"><a href="#12-Xcode-8-插件不能用的问题" class="headerlink" title="12. Xcode 8 插件不能用的问题"></a>12. Xcode 8 插件不能用的问题</h3><p>大家都升级了Xcode 8，但是对于插件依赖的开发者们，一边哭着一边去网上寻找解决办法。那么下面是解决办法：<br>让你的 Xcode8 继续使用插件(<a href="http://vongloo.me/2016/09/10/Make-Your-Xcode8-Great-Again/?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">http://vongloo.me/2016/09/10/Make-Your-Xcode8-Great-Again/?utm_source=tuicool&amp;utm_medium=referral</a> )</p>
+<p>但是看到文章最后的解释，我们知道如果用插件的话，可能安全上会有问题、并且提交审核会被拒绝，所以建议大家还是不要用了，解决办法总是有的，比如在Xcode中添加注释的代码块也是很方便的。</p>
+<h3 id="13-iOS-10开始项目中有的文字显示不全问题"><a href="#13-iOS-10开始项目中有的文字显示不全问题" class="headerlink" title="13. iOS 10开始项目中有的文字显示不全问题"></a>13. iOS 10开始项目中有的文字显示不全问题</h3><p>我用Xcode 8 和Xcode 7.3分别测试了下，如下图：<br><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114911979-1889192985.jpg" alt></p>
+<p>Xcode 8</p>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918114920417-1828331146.jpg" alt></p>
+<p>Xcode7 </p>
+<p>创建一个Label然后让它自适应大小，字体大小都是17最后输出的宽度是不一样的，我们再看一下，<br>下面的数据就知道为什么升级iOS 10 之后App中有的文字显示不全了：</p>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918115047642-1072358093.png" alt></p>
+<p>英文字母会不会也有这种问题，我又通过测试，后来发现英文字母没有问题，只有汉字有问题。<br>目前只有一个一个修改控件解决这个问题，暂时没有其他好办法来解决。</p>
+<h3 id="14-Xcode-8使用Xib-awakeFromNib的警告问题"><a href="#14-Xcode-8使用Xib-awakeFromNib的警告问题" class="headerlink" title="14.  Xcode 8使用Xib awakeFromNib的警告问题"></a>14.  Xcode 8使用Xib awakeFromNib的警告问题</h3><p>在Xcode 8之前我们使用Xib初始化<code>- (void)awakeFromNib {}</code>都是这么写也没什么问题，但是在Xcode 8会有如下警告：</p>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160918164934170-318856946.png" alt></p>
+<p>官方解释：</p>
+<blockquote>
+<p>You must call the super implementation of awakeFromNib to give parent classes the opportunity to perform any additional initialization they require.<br>Although the default implementation of this method does nothing, many UIKit classes provide non-empty implementations.<br>You may call the super implementation at any point during your own awakeFromNib method.</p>
+</blockquote>
+<p>你必须调用父类实现<code>awakeFromNib</code>来给父类来执行它们需要的任何额外的初始化的机会。<br>虽然这种方法的默认实现不做任何事情，许多UIKit类提供非空的实现。<br>你可以调用自己的<code>awakeFromNib</code>方法中的任何时候超级实现。</p>
+<h3 id="15-推送的时候，开启Remote-notifications"><a href="#15-推送的时候，开启Remote-notifications" class="headerlink" title="15. 推送的时候，开启Remote notifications"></a>15. 推送的时候，开启<code>Remote notifications</code></h3><pre><code>You&apos;ve implemented -[&lt;UIApplicationDelegate&gt; application:didReceiveRemoteNotification:fetchCompletionHandler:],
+but you still need to add &quot;remote-notification&quot; to the list of your supported UIBackgroundModes in your Info.plist.*
+</code></pre><p>解决方案：需要在Xcode 中修改应用的 Capabilities 开启Remote notifications，请参考下图：</p>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160919140245793-794728449.png" alt></p>
+<h3 id="16-One-of-the-two-will-be-used-Which-one-is-undefined"><a href="#16-One-of-the-two-will-be-used-Which-one-is-undefined" class="headerlink" title="16.  One of the two will be used. Which one is undefined."></a>16.  <code>One of the two will be used. Which one is undefined.</code></h3><pre><code>objc[5114]: Class PLBuildVersion is implemented in both /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/PrivateFrameworks/AssetsLibraryServices.framework/AssetsLibraryServices (0x1109a5910) and /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/PrivateFrameworks/PhotoLibraryServices.framework/PhotoLibraryServices (0x110738210). One of the two will be used. Which one is undefined.
+</code></pre><p>　　在模拟器中、发现“One of the two will be used. Which one is undefined.”日志</p>
+<p>　　查找资料发现原因：objc runtime 对所用app使用同一个命名空间(flat namespace)，运行机制如下：</p>
+<ol>
+<li>首先二进制映像被加载，检查程序依赖关系</li>
+<li>每一个二进制映像被加载的同时，程序的objc classes在objc runtime命名空间中注册</li>
+<li>如果具有相同名称的类被再次加载，objc runtime的行为是不可预知的。一种可能的情况是任意一个程序的该类会被加载(这应该也是默认动作)</li>
+</ol>
+<h3 id="17-Invalid-Bundle-The-asset-catalog-at-39-Payload-XXXXX-Assets-car-39-can-39-t-contain-16-bit-or-P3-assets-if-the-app-supports-iOS-9-3-or-earlier"><a href="#17-Invalid-Bundle-The-asset-catalog-at-39-Payload-XXXXX-Assets-car-39-can-39-t-contain-16-bit-or-P3-assets-if-the-app-supports-iOS-9-3-or-earlier" class="headerlink" title="17. Invalid Bundle - The asset catalog at &#39;Payload/XXXXX/Assets.car&#39; can&#39;t contain 16-bit or P3 assets if the app supports iOS 9.3 or earlier"></a>17. <code>Invalid Bundle - The asset catalog at &#39;Payload/XXXXX/Assets.car&#39; can&#39;t contain 16-bit or P3 assets if the app supports iOS 9.3 or earlier</code></h3><p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160920180122621-1767554257.png" alt></p>
+<p>在 Xcode 8 中，当你资源文件中[含有16位图]或者[图片显示模式γ值为’P3’]且iOS targets设定为iOS 9.3以下就会出现这个问题. 如果你的app需要支持广色域显示的话，那你必须得把target设置成iOS 9.3+，相反，如果你的app不需要支持广色域且你想兼容 iOS 9.3 之前的项目，你就得把所有的16位的或者显示模式为’P3’图片全都替换成8位模式的SRGB颜色的图片。</p>
+<p>你可以通过运行“assetutil”在iTunes Connect的错误信息中找到16-bit 或 P3 资源文件。离线的解决方案如下：</p>
+<ol>
+<li><p>导出项目的 ipa 文件</p>
+</li>
+<li><p>定位到该ipa文件修改后缀名.ipa 为 .zip.</p>
+</li>
+<li><p>解压该 .zip 文件. 解压后的目录里面会有一个包含着你的 app bundle 文件的 Payload 文件夹.</p>
+</li>
+<li><p>打开终端病切换到你的app的Payload文件夹下的 .app bundle 文件夹内，形式如下：</p>
+</li>
+</ol>
+<p><code>cd path/to/Payload/your.app</code></p>
+<ol>
+<li>用 find 命令定位到 Assets.car 文件 .app bundle , 形式如下:</li>
+</ol>
+<p><code>find . -name &#39;Assets.car&#39;</code></p>
+<ol>
+<li>使用 assetutil 命令找到任何包含着 16-bit or P3 的资源文件, 对每个 Assets.car 之行以下命令 :</li>
+</ol>
+<p><code>sudo xcrun --sdk iphoneos assetutil --info /path/to/a/Assets.car &gt; /tmp/Assets.json</code></p>
+<ol>
+<li>打开上一步生成的 /tmp/Assets.json 文件并查找包含有 “DisplayGamut”: “P3” 或者相关的内容.  这段json的”Name”字段对应的值就是16位或显示的γ值为P3的资源文件名.</li>
+</ol>
+<p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160920180323184-1049564596.png" alt></p>
+<ol>
+<li>找到这个资源文件修改为 8位的sRGB形式,重新编译上传你的app即可. </li>
+</ol>
+<h3 id="18-This-version-does-not-support-documents-saved-in-the-Xcode-8-format-Open-this-document-with-Xcode-8-or-later"><a href="#18-This-version-does-not-support-documents-saved-in-the-Xcode-8-format-Open-this-document-with-Xcode-8-or-later" class="headerlink" title="18. This version does not support documents saved in the Xcode 8 format. Open this document with Xcode 8 or later"></a>18. This version does not support documents saved in the Xcode 8 format. Open this document with Xcode 8 or later</h3><p>　 编辑项目时默认使用Xcode8打开，导致我用Xcode7打开Xib是报错：</p>
+<pre><code>This version does not support documents saved in the Xcode 8 format. Open this document with Xcode 8.0 or later
+</code></pre><p><img src="http://images2015.cnblogs.com/blog/575661/201609/575661-20160921142554277-537167035.png" alt></p>
+<p>   导致用Xcode8打开的Xib全部打不开，只能用编辑器将Xib里面的下面一句话删除掉才能打开：</p>
+<pre><code>&lt;capability name=&quot;documents saved in the Xcode 8 format&quot; minToolsVersion=&quot;8.0&quot;/&gt;
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jakey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/" title="iOS10新特性适配总结">http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/19/JSPatch学习笔记-一/" rel="prev" title="JSPatch学习笔记(一)">
+                JSPatch学习笔记(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Jakey">
+          <p class="site-author-name" itemprop="name">Jakey</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录生活工作</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Notification-通知"><span class="nav-number">1.</span> <span class="nav-text">1. Notification(通知)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-9-以前的通知"><span class="nav-number">1.1.</span> <span class="nav-text">iOS 9 以前的通知</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-10-开始的通知"><span class="nav-number">1.2.</span> <span class="nav-text">iOS 10 开始的通知</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ATS的问题"><span class="nav-number">2.</span> <span class="nav-text">2. ATS的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-iOS-10-隐私权限设置"><span class="nav-number">3.</span> <span class="nav-text">3. iOS 10 隐私权限设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Xcode-8-运行一堆没用的logs解决办法"><span class="nav-number">4.</span> <span class="nav-text">4. Xcode 8 运行一堆没用的logs解决办法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-iOS-10-UIStatusBar方法过期"><span class="nav-number">5.</span> <span class="nav-text">5. iOS 10 UIStatusBar方法过期:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-iOS-10-UICollectionView-性能优化"><span class="nav-number">6.</span> <span class="nav-text">6. iOS 10 UICollectionView 性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-10-之前UICollectionViewCell的生命周期是这样的"><span class="nav-number">6.1.</span> <span class="nav-text">iOS 10 之前UICollectionViewCell的生命周期是这样的:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-10-UICollectionViewCell的生命周期是这样的"><span class="nav-number">6.2.</span> <span class="nav-text">iOS 10 UICollectionViewCell的生命周期是这样的:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-10-新增加的Pre-Fetching预加载"><span class="nav-number">6.3.</span> <span class="nav-text">iOS 10 新增加的Pre-Fetching预加载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-iOS-10-UIColor-新增方法"><span class="nav-number">7.</span> <span class="nav-text">7. iOS 10 UIColor 新增方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-iOS-10-UITextContentType"><span class="nav-number">8.</span> <span class="nav-text">8. iOS 10 UITextContentType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-iOS-10-字体随着手机系统字体而改变"><span class="nav-number">9.</span> <span class="nav-text">9. iOS 10 字体随着手机系统字体而改变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-iOS-10-UIScrollView新增refreshControl"><span class="nav-number">10.</span> <span class="nav-text">10. iOS 10 UIScrollView新增refreshControl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-iOS-10-判断系统版本正确姿势"><span class="nav-number">11.</span> <span class="nav-text">11. iOS 10 判断系统版本正确姿势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Xcode-8-插件不能用的问题"><span class="nav-number">12.</span> <span class="nav-text">12. Xcode 8 插件不能用的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-iOS-10开始项目中有的文字显示不全问题"><span class="nav-number">13.</span> <span class="nav-text">13. iOS 10开始项目中有的文字显示不全问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Xcode-8使用Xib-awakeFromNib的警告问题"><span class="nav-number">14.</span> <span class="nav-text">14.  Xcode 8使用Xib awakeFromNib的警告问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-推送的时候，开启Remote-notifications"><span class="nav-number">15.</span> <span class="nav-text">15. 推送的时候，开启Remote notifications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-One-of-the-two-will-be-used-Which-one-is-undefined"><span class="nav-number">16.</span> <span class="nav-text">16.  One of the two will be used. Which one is undefined.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Invalid-Bundle-The-asset-catalog-at-39-Payload-XXXXX-Assets-car-39-can-39-t-contain-16-bit-or-P3-assets-if-the-app-supports-iOS-9-3-or-earlier"><span class="nav-number">17.</span> <span class="nav-text">17. Invalid Bundle - The asset catalog at &#39;Payload/XXXXX/Assets.car&#39; can&#39;t contain 16-bit or P3 assets if the app supports iOS 9.3 or earlier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-This-version-does-not-support-documents-saved-in-the-Xcode-8-format-Open-this-document-with-Xcode-8-or-later"><span class="nav-number">18.</span> <span class="nav-text">18. This version does not support documents saved in the Xcode 8 format. Open this document with Xcode 8 or later</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jakey</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://coldreading-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.yangjie.hu/2016/12/16/iOS10新特性适配总结/';
+          this.page.identifier = '2016/12/16/iOS10新特性适配总结/';
+          this.page.title = 'iOS10新特性适配总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://coldreading-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('5');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（一期1~2周），天天工作量杠杠的（因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H5跳转Native路由机制的探索">
+<meta property="og:url" content="http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（一期1~2周），天天工作量杠杠的（因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/hospitalFunctions.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/NativeScheme.png-blog">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/SwitchPage.png-blog">
+<meta property="og:updated_time" content="2019-09-10T07:24:08.554Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="H5跳转Native路由机制的探索">
+<meta name="twitter:description" content="公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（一期1~2周），天天工作量杠杠的（因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/">
+
+
+
+
+
+  <title>H5跳转Native路由机制的探索 | ColdCode</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-130755566-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ColdCode</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">托起一片绿叶，走向更远的远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">H5跳转Native路由机制的探索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-24T09:20:47+08:00">
+                2017-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index">
+                    <span itemprop="name">猿猿养成记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/24/H5跳转Native路由机制的探索/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/24/H5跳转Native路由机制的探索/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>公司的项目核心业务都在H5，为了提高APP的使用体验，这段时间在重构部分功能业务到Native。重构过程持续了4期（<em>一期1~2周</em>），天天工作量杠杠的（<em>因为追求速度，线上质量打了折扣，现在放慢脚步正在稳固，我才得以写这篇文章，接下来还要继续下一期的重构,又期待又紧张</em>）。在重构过程中，收获到了挺多Native与H5之间交互和一些动态配置的体会，就在这记录下这些风雨历程吧。</p>
+<a id="more"></a>
+<p>ps: 文中不涉及具体代码，主要记录实现的机制和逻辑，之后将代码方案抽离项目后会添加demo地址</p>
+<h3 id="功能需求"><a href="#功能需求" class="headerlink" title="功能需求"></a>功能需求</h3><p>扯一扯：<br>公司现在版本的APP的主业务在H5端，那么我们Native重构的页面就避免不了跟H5之间的交互。这是最基本的需求，完成这个需求的方案已经比较稳定，我们使用自己定义的协议对需要交互的功能进行拦截实现H5到Native的交互。Native到H5的话就直接在控制器内加载指定地址的webView。</p>
+<p>很显然，在Native到H5这一步有很大的优化空间。老大提出了这样的要求：</p>
+<ul>
+<li>所有跳转的H5地址都需要能够在服务端动态配置，下文称：<a href="#DymaticH5"><strong>DymaticH5方案</strong></a></li>
+<li>所有的Native页面能够被H5调起，不管在应用内还APP外，下文称：<a href="#NativeScheme"><strong>NativeScheme方案</strong></a></li>
+</ul>
+<p>另外一位H5同事附加提出了一套线上容错方案(<em>拯救了两次线上bug</em>)</p>
+<ul>
+<li>所有(<em>有需求</em>)的Native页面都能够通过服务端配置随时替换成H5， 下文称：<a href="#SwitchPage"><strong>SwitchPage方案</strong></a></li>
+</ul>
+<h3 id="方案探索"><a href="#方案探索" class="headerlink" title="方案探索"></a>方案探索</h3><h5 id="DymaticH5方案"><a href="#DymaticH5方案" class="headerlink" title="DymaticH5方案"></a><span id="DymaticH5">DymaticH5方案</span></h5><p>首先介绍下环境：</p>
+<p>我们的在线环境配置文件都放在自己实现的静态接口平台下面称<code>tms</code>，由我们前端部门的同学自己管理，可以方便及时地配合客户端和H5的迭代和更新。</p>
+<ul>
+<li>首先我们将所有需要动态化配置(<em>由Native跳到H5</em>)的H5地址页面地址整理放到<code>tms</code>的配置文件中，例如:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	home : https://www.baidu.com,</span><br><span class="line">	mine : https://www.mine.com,</span><br><span class="line">	news : https://www.news.com</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>工程项目中添加与<code>tms</code>配置文件格式相同的<code>plist</code>文件,用于存储当<code>tms</code>上没有配置动态H5地址时的默认H5地址。</p>
+</li>
+<li><p>整个项目中的H5地址由<code>URLCenter</code>工具类集中管理，获得H5地址后存储在<code>DynamicH5Model</code>中。</p>
+<ul>
+<li><p><code>DynamicH5Model</code>职责：</p>
+<ul>
+<li>获取plist中的H5地址给model赋值</li>
+<li>读取<code>tms</code>返回的H5地址给model重新赋值 </li>
+</ul>
+</li>
+<li><p><code>URLCenter</code>职责：</p>
+<ul>
+<li>读取DynamicH5Model中的H5地址</li>
+<li>获取调用者传入H5地址所需要带的参数</li>
+<li>拼接参数返回调用者需要的完整的H5地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>我们来看一张简单的流程图：    </p>
+<p><img src="http://qiniu.huyangjie.cn/coldreading/jpg/DynamicH5%E6%96%B9%E6%A1%88.png-blog" alt></p>
+<p>APP启动程序先读取plist中的默认H5地址赋值到model，在请求tms配置文件之后，再获取tms中配置的H5地址赋值到model，这样可以保证每个H5地址都可以有值，并且都是我们所需要的最新的地址。如此，即使在线上，不用发版本我们的APP也可以自如地控制和更新每个功能模块跳转的H5页面内容。</p>
+<p>当然，每个H5地址需要什么参数还是得调用者自己知道，然后将参数赋值到URLCenter中。</p>
+<h5 id="NativeScheme方案"><a href="#NativeScheme方案" class="headerlink" title="NativeScheme方案 "></a><span id="NativeScheme">NativeScheme方案 </span></h5><p>取名叫NativeScheme，当然这个方案跟sheme有关，但也不仅仅是使用sheme。</p>
+<p>先说明这个方案最终达到的效果吧：</p>
+<p>APP中的部分功能模块点击跳转指向本地的哪个页面由服务端控制，不再需要本地固定。<br>可以随时切换功能模块跳转到对应的H5页面还是对应的Native页面，当然前提是这两者页面都有实现。</p>
+<p>例如：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/hospitalFunctions.png-blog" alt></p>
+<p>在这样的功能块中，每个功能模块点击后通过服务器返回的NativeScheme判断跳转到本地的对应页面。</p>
+<p><strong>实现原理：</strong>    </p>
+<ul>
+<li><p>服务器给每个功能块添加一个nativeScheme的字段,     如 <code>myApp://jakeApp/home</code> </p>
+<p>  其中    <code>myApp</code>为APP的info.plist配置文件中的URL Scheme</p>
+<p>   若部分页面初始化时有些必要的参数需要指定，NativeScheme可以附加必要的参数，如<code>myApp://jakeApp/home?homeType=1</code></p>
+</li>
+<li><p>工程项目中创建一个<code>nativeScheme.plist</code>，其中存储的是每个nativeScheme对应的本地控制器的名字和控制器初始化的方式（<em><code>storyboard</code>或<code>xib</code>或<code>frame</code></em>）</p>
+<p>  如：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	myApp://jakeApp/home : &#123;</span><br><span class="line">	 class : HomeViewController,</span><br><span class="line">	 type  : storyboard</span><br><span class="line">	&#125;,</span><br><span class="line">	</span><br><span class="line">	myApp://jakeApp/mine : &#123;</span><br><span class="line">		class : MineViewController,</span><br><span class="line">		type  : xib</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>整个项目的控制器跳转由<code>URLRouter</code>控制，可传入H5地址或者NativeScheme地址获得将要跳转到的控制器</p>
+<ul>
+<li><code>URLRouter</code>职责:<ul>
+<li>传入navtiveScheme格式的地址，则从本地<code>navtiveScheme.plist</code>中获取对应控制器并初始化传入从地址中获得的参数</li>
+<li>传入H5地址则获得完整的H5地址(若有使用第一节中的<code>DynamicH5方案</code>可以将其传入<code>URLCenter</code>获得地址)，创建webView跳转</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>APP可通过 URL Scheme唤起，在AppDelegate对应的方法中使用<code>URLRouter</code>跳转到对应的Native页面</p>
+</li>
+</ul>
+<p>方案扩展使用：</p>
+<p>我们还可以在nativeScheme判读环节添加一个动态的节点(<em>根据需求</em>)，以实现点击功能块后是跳转到H5页面还是跳转本地的页面(<em>此逻辑不同于本章第三节 “SwitchPage方案”</em>)。可以给每个功能块分别添加 本地scheme地址 和 H5地址 两个字段，用于分别是跳向哪种界面。判断规则可以根据自己的需求来定。</p>
+<p>附上NativeScheme的简单流程图：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/NativeScheme.png-blog" alt></p>
+<p><em>此方案部分参考：<a href="https://github.com/DarielChen/DCURLRouter" target="_blank" rel="noopener">https://github.com/DarielChen/DCURLRouter</a> 感谢作者</em></p>
+<h5 id="SwitchPage方案"><a href="#SwitchPage方案" class="headerlink" title="SwitchPage方案"></a><span id="SwitchPage">SwitchPage方案</span></h5><p>这套方案的存在，在某种意义上是一套线上的紧急备用方案—-当重构的Native页面出现问题，可以通过此方案将该Native页面替换为H5页面。此方案，可以说是对我们项目现状<br>比较适用，在其他项目中或许存在的意义没有那么大。但是这套原理可以拿来做参考，毕竟SwitchPage可以将任意一个Native页面替换为任意一个H5的页面。</p>
+<p><strong>实现原理</strong>：</p>
+<p>实现逻辑也比较简单，</p>
+<ul>
+<li><code>tms</code>上配置需要替换的控制器名字和需要替换成的H5地址的绝对路径，如： </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	HomeViewController : https://www.baidu.com</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重写本地的Nativgation的push方法， 在此方法调用super之前，判断将要跳转的控制器名称在tms请求返回的数据中是否存在，如果存在则跳转webView控制器，不存在则按照原来方法跳转。（可结合NativeScheme方案使用，在URLRouter中实现此逻辑）</li>
+</ul>
+<p>附上简单流程图：<br><img src="http://qiniu.huyangjie.cn/coldreading/jpg/SwitchPage.png-blog" alt></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不足：NativeScheme方案中的参数传递比较地生硬，若是需要跳转的Native控制器需要制定的参数需要额外处理，则无法通过shceme后带参数的方式在<code>URLRouter</code>中直接给要返回的控制器添加参数</p>
+<p>上面三套方案可以在项目中一起使用，相互之间不会影响，也可以单独使用其中的某一套方案。</p>
+<p>demo地址：<a href>即将出现</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jakey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/" title="H5跳转Native路由机制的探索">http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/08/JSPatch遇上Swift/" rel="next" title="JSPatch遇上Swift">
+                <i class="fa fa-chevron-left"></i> JSPatch遇上Swift
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/29/removeFromSuperView浅谈/" rel="prev" title="removeFromSuperView浅谈">
+                removeFromSuperView浅谈 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Jakey">
+          <p class="site-author-name" itemprop="name">Jakey</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录生活工作</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能需求"><span class="nav-number">1.</span> <span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案探索"><span class="nav-number">2.</span> <span class="nav-text">方案探索</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DymaticH5方案"><span class="nav-number">2.0.1.</span> <span class="nav-text">DymaticH5方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NativeScheme方案"><span class="nav-number">2.0.2.</span> <span class="nav-text">NativeScheme方案 </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SwitchPage方案"><span class="nav-number">2.0.3.</span> <span class="nav-text">SwitchPage方案</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jakey</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://coldreading-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.yangjie.hu/2017/03/24/H5跳转Native路由机制的探索/';
+          this.page.identifier = '2017/03/24/H5跳转Native路由机制的探索/';
+          this.page.title = 'H5跳转Native路由机制的探索';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://coldreading-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('5');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

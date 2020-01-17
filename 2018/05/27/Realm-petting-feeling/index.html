@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="先来段代码欣赏下 1234567891011121314let myDog = Dog()myDog.name = &quot;Fido&quot;myDog.age = 1try! realm.write &amp;#123;    realm.add(myDog)&amp;#125;let myPuppy = realm.objects(Dog.self).filter(&quot;age == 1&quot;).firsttry! realm.w">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Realm 质感记录">
+<meta property="og:url" content="http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="先来段代码欣赏下 1234567891011121314let myDog = Dog()myDog.name = &quot;Fido&quot;myDog.age = 1try! realm.write &amp;#123;    realm.add(myDog)&amp;#125;let myPuppy = realm.objects(Dog.self).filter(&quot;age == 1&quot;).firsttry! realm.w">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-10T07:24:08.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Realm 质感记录">
+<meta name="twitter:description" content="先来段代码欣赏下 1234567891011121314let myDog = Dog()myDog.name = &quot;Fido&quot;myDog.age = 1try! realm.write &amp;#123;    realm.add(myDog)&amp;#125;let myPuppy = realm.objects(Dog.self).filter(&quot;age == 1&quot;).firsttry! realm.w">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/">
+
+
+
+
+
+  <title>Realm 质感记录 | ColdCode</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-130755566-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ColdCode</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">托起一片绿叶，走向更远的远方</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/2016/12/29/知识传送门/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Realm 质感记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-27T11:49:56+08:00">
+                2018-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/27/Realm-petting-feeling/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/27/Realm-petting-feeling/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>先来段代码欣赏下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myDog = <span class="type">Dog</span>()</span><br><span class="line">myDog.name = <span class="string">"Fido"</span></span><br><span class="line">myDog.age = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>! realm.write &#123;</span><br><span class="line">    realm.add(myDog)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myPuppy = realm.objects(<span class="type">Dog</span>.<span class="keyword">self</span>).<span class="built_in">filter</span>(<span class="string">"age == 1"</span>).first</span><br><span class="line"><span class="keyword">try</span>! realm.write &#123;</span><br><span class="line">    myPuppy!.age = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"age of my dog: \(myDog.age)"</span>) <span class="comment">// =&gt; 2</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="Models（数据库中的表）"><a href="#Models（数据库中的表）" class="headerlink" title="Models（数据库中的表）"></a>Models（数据库中的表）</h3><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><blockquote>
+<p>Realm supports the following property types: Bool, Int, Int8, Int16, Int32, Int64, Double, Float, String, Date, and Data.</p>
+</blockquote>
+<p><strong><code>CGFloat</code> properties are discouraged, as the type is not platform independent.</strong></p>
+<blockquote>
+<p>String, Date and Data properties can be optional. Object properties must be optional. Storing optional numbers is done using RealmOptional.</p>
+</blockquote>
+<p>在Swift中存储对象必须使用optional，存储optional numbers使用RealmOptional</p>
+<p>String, Data, Date 这三种类型的属性可是可选类型可也以不是</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Optional string property, defaulting to nil</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name: <span class="type">String</span>? = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Optional int property, defaulting to nil</span></span><br><span class="line">    <span class="comment">// RealmOptional properties should always be declared with `let`,</span></span><br><span class="line">    <span class="comment">// as assigning to them directly will not work as desired</span></span><br><span class="line">    <span class="keyword">let</span> age = <span class="type">RealmOptional</span>&lt;<span class="type">Int</span>&gt;()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> realm = <span class="keyword">try</span>! <span class="type">Realm</span>()</span><br><span class="line"><span class="keyword">try</span>! realm.write() &#123;</span><br><span class="line">    <span class="keyword">var</span> person = realm.create(<span class="type">Person</span>.<span class="keyword">self</span>, value: [<span class="string">"Jane"</span>, <span class="number">27</span>])</span><br><span class="line">    <span class="comment">// Reading from or modifying a `RealmOptional` is done via the `value` property</span></span><br><span class="line">    person.age.value = <span class="number">28</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h4><p>主键一旦被添加了就不能被修改</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> id = <span class="number">0</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">primaryKey</span><span class="params">()</span></span> -&gt; <span class="type">String</span>? &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"id"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>非必要的时候不建议添加索引，这会增加数据库的大小。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> price = <span class="number">0</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> title = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">indexedProperties</span><span class="params">()</span></span> -&gt; [<span class="type">String</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">"title"</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>索引支持 <code>string</code>, <code>integer</code>, <code>boolean</code>, <code>Date</code>类型的属性</p>
+<h4 id="Ignoring-properties"><a href="#Ignoring-properties" class="headerlink" title="Ignoring properties"></a>Ignoring properties</h4><p>不想要存储到Realm中的属性可以添加标记为<code>ignoredProperties</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> tmpID = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123; <span class="comment">// read-only properties are automatically ignored</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"\(firstName) \(lastName)"</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> firstName = <span class="string">""</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> lastName = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">ignoredProperties</span><span class="params">()</span></span> -&gt; [<span class="type">String</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">"tmpID"</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="属性修饰词"><a href="#属性修饰词" class="headerlink" title="属性修饰词"></a>属性修饰词</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Non-optional</th>
+<th style="text-align:center">Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Bool</td>
+<td style="text-align:center">@objc dynamic var value = false</td>
+<td style="text-align:center">let value = RealmOptional<bool>()</bool></td>
+</tr>
+<tr>
+<td style="text-align:center">Int</td>
+<td style="text-align:center">@objc dynamic var value = 0</td>
+<td style="text-align:center">let value = RealmOptional<int>()</int></td>
+</tr>
+<tr>
+<td style="text-align:center">Float</td>
+<td style="text-align:center">@objc dynamic var value: Float = 0.0</td>
+<td style="text-align:center">let value = RealmOptional<float>()</float></td>
+</tr>
+<tr>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">@objc dynamic var value: Double = 0.0</td>
+<td style="text-align:center">let value = RealmOptional<double>()</double></td>
+</tr>
+<tr>
+<td style="text-align:center">String</td>
+<td style="text-align:center">@objc dynamic var value = “”</td>
+<td style="text-align:center">@objc dynamic var value: String? = nil</td>
+</tr>
+<tr>
+<td style="text-align:center">Data</td>
+<td style="text-align:center">@objc dynamic var value = Data()</td>
+<td style="text-align:center">@objc dynamic var value: Data? = nil</td>
+</tr>
+<tr>
+<td style="text-align:center">Date</td>
+<td style="text-align:center">@objc dynamic var value = Date()</td>
+<td style="text-align:center">@objc dynamic var value: Date? = nil</td>
+</tr>
+<tr>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">n/a: must be optional</td>
+<td style="text-align:center">@objc dynamic var value: Class?=nil</td>
+</tr>
+<tr>
+<td style="text-align:center">List</td>
+<td style="text-align:center">let value = List<type>()</type></td>
+<td style="text-align:center">n/a: must be non-optional</td>
+</tr>
+<tr>
+<td style="text-align:center">LinkingObjects</td>
+<td style="text-align:center">let value = LinkingObjects(fromType: Class.self, property: “property”)</td>
+<td style="text-align:center">n/a: must be non-optional</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="Relationships关系"><a href="#Relationships关系" class="headerlink" title="Relationships关系"></a>Relationships关系</h3><p>连接数据库的两个对象（表），只需要通过<code>Object</code>和<code>List</code>这个两个属性就可以了。</p>
+<p><code>List</code>非常像<code>Array</code>，<code>List</code>中只能存在单种类型的对象。</p>
+<h4 id="Many-to-One-多对一"><a href="#Many-to-One-多对一" class="headerlink" title="Many-to-One 多对一"></a>Many-to-One 多对一</h4><p>创建一对一或者多对一的关系时，只需要在模型中创建一个将要关联对象类型的对象。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name = <span class="string">""</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ... other property declarations</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> owner: <span class="type">Person</span>? <span class="comment">// to-one relationships must be optional</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Usage</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jim = <span class="type">Person</span>()</span><br><span class="line"><span class="keyword">let</span> rex = <span class="type">Dog</span>()</span><br><span class="line">rex.owner = jim</span><br></pre></td></tr></table></figure>
+<h4 id="Many-to-Many-多对多"><a href="#Many-to-Many-多对多" class="headerlink" title="Many-to-Many 多对多"></a>Many-to-Many 多对多</h4><p>使用<code>List</code>属性创建关系</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ... other property declarations</span></span><br><span class="line">    <span class="keyword">let</span> dogs = <span class="type">List</span>&lt;<span class="type">Dog</span>&gt;()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> someDogs = realm.objects(<span class="type">Dog</span>.<span class="keyword">self</span>).<span class="built_in">filter</span>(<span class="string">"name contains 'Fido'"</span>)</span><br><span class="line">jim.dogs.append(objectsIn: someDogs)</span><br><span class="line">jim.dogs.append(rex)</span><br></pre></td></tr></table></figure>
+<h4 id="Inverse-relationships-逆关系"><a href="#Inverse-relationships-逆关系" class="headerlink" title="Inverse relationships 逆关系"></a>Inverse relationships 逆关系</h4><p>从Person可以找到Dog对象，但是不能够从Dog找到它的主人对象。除非是使用一对一的关系，但是这个关系是独立的，给Person对象添加一个新的Dog，并不会讲这个Dog对象中的owner属性设置到正确的Person。因此引入了逆关系</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name = <span class="string">""</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> age = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> owners = <span class="type">LinkingObjects</span>(fromType: <span class="type">Person</span>.<span class="keyword">self</span>, property: <span class="string">"dogs"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的Dog对象中的owners属性中将包含所有拥有这个Dog对象的Person对象。</p>
+<hr>
+<h3 id="Notifications"><a href="#Notifications" class="headerlink" title="Notifications"></a>Notifications</h3><h4 id="Realm-Notification"><a href="#Realm-Notification" class="headerlink" title="Realm Notification"></a>Realm Notification</h4><p>通知返回的是这个通知的token，一旦token被释放了，就意味着这个通知也被注销了。</p>
+<p>一旦有相关的写操作被提交，无论在什么线程上的写操作，通知将会异步地被触发，此时可以进行UI的刷新。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Observe Realm Notifications</span></span><br><span class="line"><span class="keyword">let</span> token = realm.observe &#123; notification, realm <span class="keyword">in</span></span><br><span class="line">    viewController.updateUI()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// later</span></span><br><span class="line">token.invalidate()</span><br></pre></td></tr></table></figure>
+<p>在通知的block中进行数据库的写操作将会抛出异常，可以使用<code>Realm.isInWriteTransaction</code>来区分当前是否处于写的事务中。</p>
+<p>注意通知所在的线程将于注册通知时所处的线程相同。如果不是在主线程注册的通知，则需要给该线程启动一个run loop。因为通知的传递需要依靠run loop，当一个run loop中有其他的任务在执行，那么realm的通知可能会被延迟，因此会有多个写操作事务合并到同一个通知中。</p>
+<h4 id="Collection-Notification"><a href="#Collection-Notification" class="headerlink" title="Collection Notification"></a>Collection Notification</h4><p>Collection的通知在objects添加、删除、修改的时候都会触发，但不会接收整个realm，只会接收改变的部分数据。通过Block的参数<code>RealmCollectionChange</code>可以获取到改变的值，包括删除、插入、修改影响到的索引位置。</p>
+<p>一个对象的属性发生变化、属性List中的对象发生变化，不管是对多还是对一的关系，都会触发通知。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name = <span class="string">""</span></span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> age = <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> name = <span class="string">""</span></span><br><span class="line">    <span class="keyword">let</span> dogs = <span class="type">List</span>&lt;<span class="type">Dog</span>&gt;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UITableViewController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> notificationToken: <span class="type">NotificationToken</span>? = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="keyword">let</span> realm = <span class="keyword">try</span>! <span class="type">Realm</span>()</span><br><span class="line">        <span class="keyword">let</span> results = realm.objects(<span class="type">Person</span>.<span class="keyword">self</span>).<span class="built_in">filter</span>(<span class="string">"age &gt; 5"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Observe Results Notifications</span></span><br><span class="line">        notificationToken = results.observe &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] (changes: <span class="type">RealmCollectionChange</span>) <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">guard</span> <span class="keyword">let</span> tableView = <span class="keyword">self</span>?.tableView <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">            <span class="keyword">switch</span> changes &#123;</span><br><span class="line">            <span class="keyword">case</span> .initial:</span><br><span class="line">                <span class="comment">// Results are now populated and can be accessed without blocking the UI</span></span><br><span class="line">                tableView.reloadData()</span><br><span class="line">            <span class="keyword">case</span> .update(<span class="number">_</span>, <span class="keyword">let</span> deletions, <span class="keyword">let</span> insertions, <span class="keyword">let</span> modifications):</span><br><span class="line">                <span class="comment">// Query results have changed, so apply them to the UITableView</span></span><br><span class="line">                tableView.beginUpdates()</span><br><span class="line">                tableView.insertRows(at: insertions.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>) &#125;),</span><br><span class="line">                                     with: .automatic)</span><br><span class="line">                tableView.deleteRows(at: deletions.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>)&#125;),</span><br><span class="line">                                     with: .automatic)</span><br><span class="line">                tableView.reloadRows(at: modifications.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>) &#125;),</span><br><span class="line">                                     with: .automatic)</span><br><span class="line">                tableView.endUpdates()</span><br><span class="line">            <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">                <span class="comment">// An error occurred while opening the Realm file on the background worker thread</span></span><br><span class="line">                <span class="built_in">fatalError</span>(<span class="string">"\(error)"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        notificationToken?.invalidate()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此就可以根据具体需要刷新的位置来局部刷新列表，不需要整个重新地刷新。</p>
+<h4 id="Object-Notifications"><a href="#Object-Notifications" class="headerlink" title="Object Notifications"></a>Object Notifications</h4><p>可以监听对象，当对象被删除或者对象的内容改变的时候会触发通知。修改对象属性的时候触发通知的参数会返回对象的属性数组，包含每个属性的旧值和新值</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StepCounter</span>: <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="keyword">dynamic</span> <span class="keyword">var</span> steps = <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> stepCounter = <span class="type">StepCounter</span>()</span><br><span class="line"><span class="keyword">let</span> realm = <span class="keyword">try</span>! <span class="type">Realm</span>()</span><br><span class="line"><span class="keyword">try</span>! realm.write &#123;</span><br><span class="line">    realm.add(stepCounter)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> token : <span class="type">NotificationToken</span>?</span><br><span class="line">token = stepCounter.observe &#123; change <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> change &#123;</span><br><span class="line">    <span class="keyword">case</span> .change(<span class="keyword">let</span> properties):</span><br><span class="line">        <span class="keyword">for</span> property <span class="keyword">in</span> properties &#123;</span><br><span class="line">            <span class="keyword">if</span> property.name == <span class="string">"steps"</span> &amp;&amp; property.newValue <span class="keyword">as</span>! <span class="type">Int</span> &gt; <span class="number">1000</span> &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">"Congratulations, you've exceeded 1000 steps."</span>)</span><br><span class="line">                token = <span class="literal">nil</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"An error occurred: \(error)"</span>)</span><br><span class="line">    <span class="keyword">case</span> .deleted:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"The object was deleted."</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Interface-driven-writes"><a href="#Interface-driven-writes" class="headerlink" title="Interface-driven writes"></a>Interface-driven writes</h4><p>在添加数据之后需要同步刷新UI的操作，就不需要再出发一个异步的通知去刷新TableView了，以免引起crash。</p>
+<p>在提交写操作的时候只需要调用<code>Realm.commitWrite(withoutNotifying:)</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add fine-grained notification block</span></span><br><span class="line">token = collection.observe &#123; changes <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> changes &#123;</span><br><span class="line">    <span class="keyword">case</span> .initial:</span><br><span class="line">        tableView.reloadData()</span><br><span class="line">    <span class="keyword">case</span> .update(<span class="number">_</span>, <span class="keyword">let</span> deletions, <span class="keyword">let</span> insertions, <span class="keyword">let</span> modifications):</span><br><span class="line">        <span class="comment">// Query results have changed, so apply them to the UITableView</span></span><br><span class="line">        tableView.beginUpdates()</span><br><span class="line">        tableView.insertRows(at: insertions.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>) &#125;),</span><br><span class="line">                             with: .automatic)</span><br><span class="line">        tableView.deleteRows(at: deletions.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>)&#125;),</span><br><span class="line">                             with: .automatic)</span><br><span class="line">        tableView.reloadRows(at: modifications.<span class="built_in">map</span>(&#123; <span class="type">IndexPath</span>(row: $<span class="number">0</span>, section: <span class="number">0</span>) &#125;),</span><br><span class="line">                             with: .automatic)</span><br><span class="line">        tableView.endUpdates()</span><br><span class="line">    <span class="keyword">case</span> .error(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="comment">// handle error</span></span><br><span class="line">        ()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertItem</span><span class="params">()</span></span> <span class="keyword">throws</span> &#123;</span><br><span class="line">     <span class="comment">// Perform an interface-driven write on the main thread:</span></span><br><span class="line">     collection.realm!.beginWrite()</span><br><span class="line">     collection.insert(<span class="type">Item</span>(), at: <span class="number">0</span>)</span><br><span class="line">     <span class="comment">// And mirror it instantly in the UI</span></span><br><span class="line">     tableView.insertRows(at: [<span class="type">IndexPath</span>(row: <span class="number">0</span>, section: <span class="number">0</span>)], with: .automatic)</span><br><span class="line">     <span class="comment">// Making sure the change notification doesn't apply the change a second time</span></span><br><span class="line">     <span class="keyword">try</span> collection.realm!.commitWrite(withoutNotifying: [token])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Jakey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/" title="Realm 质感记录">http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/26/Realm-touch-feeling/" rel="next" title="Realm 触感记录">
+                <i class="fa fa-chevron-left"></i> Realm 触感记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/29/how-to-choose-blog/" rel="prev" title="程序员的异次元世界---个人博客">
+                程序员的异次元世界---个人博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Jakey">
+          <p class="site-author-name" itemprop="name">Jakey</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录生活工作</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Models（数据库中的表）"><span class="nav-number">1.</span> <span class="nav-text">Models（数据库中的表）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">1.1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键"><span class="nav-number">1.2.</span> <span class="nav-text">主键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引"><span class="nav-number">1.3.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ignoring-properties"><span class="nav-number">1.4.</span> <span class="nav-text">Ignoring properties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性修饰词"><span class="nav-number">1.5.</span> <span class="nav-text">属性修饰词</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relationships关系"><span class="nav-number">2.</span> <span class="nav-text">Relationships关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Many-to-One-多对一"><span class="nav-number">2.1.</span> <span class="nav-text">Many-to-One 多对一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Many-to-Many-多对多"><span class="nav-number">2.2.</span> <span class="nav-text">Many-to-Many 多对多</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inverse-relationships-逆关系"><span class="nav-number">2.3.</span> <span class="nav-text">Inverse relationships 逆关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Notifications"><span class="nav-number">3.</span> <span class="nav-text">Notifications</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realm-Notification"><span class="nav-number">3.1.</span> <span class="nav-text">Realm Notification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collection-Notification"><span class="nav-number">3.2.</span> <span class="nav-text">Collection Notification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-Notifications"><span class="nav-number">3.3.</span> <span class="nav-text">Object Notifications</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Interface-driven-writes"><span class="nav-number">3.4.</span> <span class="nav-text">Interface-driven writes</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jakey</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://coldreading-1.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.yangjie.hu/2018/05/27/Realm-petting-feeling/';
+          this.page.identifier = '2018/05/27/Realm-petting-feeling/';
+          this.page.title = 'Realm 质感记录';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://coldreading-1.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('5');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
