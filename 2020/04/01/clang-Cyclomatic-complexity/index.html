@@ -94,21 +94,21 @@
 
 
 
-<meta name="description" content="Clang 插件计算圈复杂度 圈复杂度 圈复杂度（Cyclomatic complexity，简写CC）也称为条件复杂度，是一种代码复杂度的衡量标准。由托马斯·J·麦凯布（Thomas J. McCabe, Sr.）于1976年提出，用来表示程序的复杂度，其符号为VG或是M。它可以用来衡量一个模块判定结构的复杂程度，数量上表现为独立现行路径条数，也可理解为覆盖所有的可能情况最少使用的测试用例数。圈">
+<meta name="description" content="Clang 插件计算圈复杂度">
 <meta name="keywords" content="编译原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Clang Cyclomatic Complexity">
 <meta property="og:url" content="http://www.yangjie.hu/2020/04/01/clang-Cyclomatic-complexity/index.html">
 <meta property="og:site_name" content="ColdCode">
-<meta property="og:description" content="Clang 插件计算圈复杂度 圈复杂度 圈复杂度（Cyclomatic complexity，简写CC）也称为条件复杂度，是一种代码复杂度的衡量标准。由托马斯·J·麦凯布（Thomas J. McCabe, Sr.）于1976年提出，用来表示程序的复杂度，其符号为VG或是M。它可以用来衡量一个模块判定结构的复杂程度，数量上表现为独立现行路径条数，也可理解为覆盖所有的可能情况最少使用的测试用例数。圈">
+<meta property="og:description" content="Clang 插件计算圈复杂度">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15853651754787.jpg">
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15845138142623.jpg">
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15851935710272.jpg">
-<meta property="og:updated_time" content="2020-03-31T16:03:43.758Z">
+<meta property="og:updated_time" content="2020-03-31T16:07:35.669Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clang Cyclomatic Complexity">
-<meta name="twitter:description" content="Clang 插件计算圈复杂度 圈复杂度 圈复杂度（Cyclomatic complexity，简写CC）也称为条件复杂度，是一种代码复杂度的衡量标准。由托马斯·J·麦凯布（Thomas J. McCabe, Sr.）于1976年提出，用来表示程序的复杂度，其符号为VG或是M。它可以用来衡量一个模块判定结构的复杂程度，数量上表现为独立现行路径条数，也可理解为覆盖所有的可能情况最少使用的测试用例数。圈">
+<meta name="twitter:description" content="Clang 插件计算圈复杂度">
 <meta name="twitter:image" content="http://qiniu.huyangjie.cn/mweb/15853651754787.jpg">
 
 
@@ -426,6 +426,7 @@
 
       
         <h1 id="Clang-插件计算圈复杂度"><a href="#Clang-插件计算圈复杂度" class="headerlink" title="Clang 插件计算圈复杂度"></a>Clang 插件计算圈复杂度</h1><p><img src="http://qiniu.huyangjie.cn/mweb/15853651754787.jpg" alt></p>
+<a id="more"></a>
 <h2 id="圈复杂度"><a href="#圈复杂度" class="headerlink" title="圈复杂度"></a>圈复杂度</h2><blockquote>
 <p>圈复杂度（Cyclomatic complexity，简写CC）也称为条件复杂度，是一种代码复杂度的衡量标准。由托马斯·J·麦凯布（Thomas J. McCabe, Sr.）于1976年提出，用来表示程序的复杂度，其符号为VG或是M。它可以用来衡量一个模块判定结构的复杂程度，数量上表现为独立现行路径条数，也可理解为覆盖所有的可能情况最少使用的测试用例数。圈复杂度大说明程序代码的判断逻辑复杂，可能质量低且难于测试和 维护。程序的可能错误和高的圈复杂度有着很大关系。</p>
 <p>通俗得讲圈复杂度就是确定某一方法到达100%的覆盖率将需要多少条测试用例</p>
@@ -434,7 +435,6 @@
 <li>McCabe (December 1976). “A Complexity Measure”.<br>IEEE Transactions on Software Engineering: 308–320<br><a href="http://www.literateprogramming.com/mccabe.pdf" target="_blank" rel="noopener">http://www.literateprogramming.com/mccabe.pdf</a></li>
 </ul>
 </blockquote>
-<a id="more"></a>
 <h2 id="圈复杂度算法"><a href="#圈复杂度算法" class="headerlink" title="圈复杂度算法"></a>圈复杂度算法</h2><h3 id="点边计算法"><a href="#点边计算法" class="headerlink" title="点边计算法"></a>点边计算法</h3><p>计算公式</p>
 <pre><code>V(G) = e – n + 2 * p
 </code></pre><blockquote>
