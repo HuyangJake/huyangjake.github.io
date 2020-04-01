@@ -363,7 +363,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/01/Reduce-Cyclomatic-Complexity/" itemprop="url">Reduce Cyclomatic Complexity</a></h1>
+                <a class="post-title-link" href="/2020/04/01/Reduce-Cyclomatic-Complexity/" itemprop="url">降低圈复杂度的方法</a></h1>
         
 
         <div class="post-meta">
@@ -424,7 +424,7 @@
 
       
         
-          <h1 id="降低圈复杂度的方法"><a href="#降低圈复杂度的方法" class="headerlink" title="降低圈复杂度的方法"></a>降低圈复杂度的方法</h1><h2 id="重新组织你的函数"><a href="#重新组织你的函数" class="headerlink" title="重新组织你的函数"></a>重新组织你的函数</h2><h3 id="技巧1-提炼函数"><a href="#技巧1-提炼函数" class="headerlink" title="技巧1 提炼函数"></a>技巧1 提炼函数</h3><p>有一段代码可以被组织在一起并独立出来:</p>
+          <h2 id="重新组织你的函数"><a href="#重新组织你的函数" class="headerlink" title="重新组织你的函数"></a>重新组织你的函数</h2><h3 id="技巧1-提炼函数"><a href="#技巧1-提炼函数" class="headerlink" title="技巧1 提炼函数"></a>技巧1 提炼函数</h3><p>有一段代码可以被组织在一起并独立出来:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Example</span><span class="params">(<span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>( val &gt; MAX_VAL)</span><br><span class="line">	&#123;</span><br><span class="line">		val = MAX_VAL;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; val; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		doSomething(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
@@ -498,7 +498,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/01/clang-Cyclomatic-complexity/" itemprop="url">Clang Cyclomatic Complexity</a></h1>
+                <a class="post-title-link" href="/2020/04/01/clang-Cyclomatic-complexity/" itemprop="url">Clang 插件计算圈复杂度</a></h1>
         
 
         <div class="post-meta">
@@ -559,7 +559,7 @@
 
       
         
-          <h1 id="Clang-插件计算圈复杂度"><a href="#Clang-插件计算圈复杂度" class="headerlink" title="Clang 插件计算圈复杂度"></a>Clang 插件计算圈复杂度</h1><p><img src="http://qiniu.huyangjie.cn/mweb/15853651754787.jpg" alt></p>
+          <p><img src="http://qiniu.huyangjie.cn/mweb/15853651754787.jpg" alt></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/04/01/clang-Cyclomatic-complexity/#more" rel="contents">
@@ -632,7 +632,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/31/clang-build/" itemprop="url">Clang Build</a></h1>
+                <a class="post-title-link" href="/2020/03/31/clang-build/" itemprop="url">Clang 源码开发环境的搭建</a></h1>
         
 
         <div class="post-meta">
@@ -693,7 +693,7 @@
 
       
         
-          <h1 id="Clang-源码开发环境的搭建"><a href="#Clang-源码开发环境的搭建" class="headerlink" title="Clang 源码开发环境的搭建"></a>Clang 源码开发环境的搭建</h1><p>跟随 <a href="https://www.jianshu.com/p/e3f46d42643b" target="_blank" rel="noopener">教程</a> 搭建</p>
+          <p>跟随 <a href="https://www.jianshu.com/p/e3f46d42643b" target="_blank" rel="noopener">教程</a> 搭建</p>
 <p>使用下面命令下载源码搭建环境：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone -b release_90 git@github.com:llvm-mirror/llvm.git llvm</span><br><span class="line">git clone -b release_90 git@github.com:llvm-mirror/clang.git llvm/tools/clang</span><br><span class="line">git clone -b release_90 git@github.com:llvm-mirror/clang-tools-extra.git llvm/tools/clang/tools/extra</span><br><span class="line">git clone -b release_90 git@github.com:llvm-mirror/compiler-rt.git llvm/projects/compiler-rt</span><br></pre></td></tr></table></figure>
           <!--noindex-->
