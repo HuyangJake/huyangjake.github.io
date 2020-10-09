@@ -208,6 +208,186 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2020/10/09/Go-Concurrent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/09/Go-Concurrent/" class="post-title-link" itemprop="url">Go并发编程基础概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-09 10:17:07 / 修改时间：10:25:43" itemprop="dateCreated datePublished" datetime="2020-10-09T10:17:07+08:00">2020-10-09</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/09/Go-Concurrent/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/09/Go-Concurrent/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Go并发编程基础概念"><a href="#Go并发编程基础概念" class="headerlink" title="Go并发编程基础概念"></a>Go并发编程基础概念</h1><h2 id="协程机制"><a href="#协程机制" class="headerlink" title="协程机制"></a>协程机制</h2><p>Thread vs. Groutine</p>
+<ol>
+<li>创建时默认的stack的大小<ul>
+<li>Groutine的Stack初始化大小为2K</li>
+</ul>
+</li>
+<li><p>和KSE（Kernel Space Entity）的对应关系</p>
+<ol>
+<li><p>Java Thread 是 1 : 1</p>
+<ol>
+<li>线程之间发生context切换的时候回直接造成内核对象的切换，造成很大的消耗<br><img src="http://qiniu.huyangjie.cn/mweb/15939614397342.jpg" alt="-w1202"></li>
+</ol>
+</li>
+<li><p>Groutine 是 M:N</p>
+</li>
+</ol>
+</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/Go-Concurrent/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2020/10/09/SwiftUI-DataFlow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/09/SwiftUI-DataFlow/" class="post-title-link" itemprop="url">SwiftUI 数据流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-09 10:14:39 / 修改时间：10:25:58" itemprop="dateCreated datePublished" datetime="2020-10-09T10:14:39+08:00">2020-10-09</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/09/SwiftUI-DataFlow/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/09/SwiftUI-DataFlow/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="SwiftUI-数据流"><a href="#SwiftUI-数据流" class="headerlink" title="SwiftUI 数据流"></a>SwiftUI 数据流</h1><blockquote>
+<p>“纯函数指的是，返回值只由调用时的参数决定，而不依赖于任何系统状态，也不改变其作用域之外的变量状态的函数”</p>
+<p>摘录来自: 王 巍. “SwiftUI 和 Combine 编程。” Apple Books. </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/SwiftUI-DataFlow/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2020/04/01/Reduce-Cyclomatic-Complexity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1808,195 +1988,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2018/05/02/赋予H5以Native的生命-——《WebView优化》/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jakey">
-      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ColdCode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/02/赋予H5以Native的生命-——《WebView优化》/" class="post-title-link" itemprop="url">赋予H5以Native的生命 ——《WebView优化》</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-02 18:07:40" itemprop="dateCreated datePublished" datetime="2018-05-02T18:07:40+08:00">2018-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-10 15:24:08" itemprop="dateModified" datetime="2019-09-10T15:24:08+08:00">2019-09-10</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/05/02/赋予H5以Native的生命-——《WebView优化》/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/02/赋予H5以Native的生命-——《WebView优化》/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文是从客户端为起点发散到WebView使用过程中的优化点。当前市场上的Native App中WebView使用的情况还是比较多的，像手机QQ，淘宝业务更替快速的产品，使用WebView动态渲染页面是必然的选择(或者说曾经)，然而遵从这个选择就必须承担着它带来的弊病，更确切地说应该是尽可能解决它的弊病。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知在移动端使用WebView给人最直观的感觉是慢。造成这个现象的原因是多层次的，不过主要可以归纳为两个方面<sup>[2]</sup> ：</p>
-<ul>
-<li>页面启动时间：打开一个 H5 页面需要做一系列处理，会有一段白屏时间，体验糟糕。</li>
-<li>响应流畅度：由于 webkit 的渲染机制，单线程，历史包袱等原因，页面刷新/交互的性能体验不如原生。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/05/02/赋予H5以Native的生命-——《WebView优化》/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2018/04/05/CheckBox-in-RN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jakey">
-      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ColdCode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/05/CheckBox-in-RN/" class="post-title-link" itemprop="url">CheckBox in React Native</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-05 11:54:23" itemprop="dateCreated datePublished" datetime="2018-04-05T11:54:23+08:00">2018-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-10 15:24:08" itemprop="dateModified" datetime="2019-09-10T15:24:08+08:00">2019-09-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/04/05/CheckBox-in-RN/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/05/CheckBox-in-RN/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="关于RN-CheckBox组件"><a href="#关于RN-CheckBox组件" class="headerlink" title="关于RN CheckBox组件"></a>关于RN CheckBox组件</h3><p>在写hello world过程中iOS同学发现CheckBox组件展示不了，但是文档上确确实实是存在这个组件的介绍的，只不过没有demo。</p>
-<p>我查了源码的<code>CheckBox</code>实现和发布说明发现以下信息，分享下：</p>
-<p><code>CheckBox</code> 这个组件是在 RN <code>v0.49.0</code>版本引入，这是<code>CheckBox</code>的首现版本的说明：</p>
-<p><a href="https://github.com/facebook/react-native/releases/tag/v0.49.0" target="_blank" rel="noopener">https://github.com/facebook/react-native/releases/tag/v0.49.0</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/04/05/CheckBox-in-RN/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2068,7 +2059,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2081,7 +2072,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

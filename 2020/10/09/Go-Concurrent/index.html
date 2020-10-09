@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.yangjie.hu","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Go并发编程基础概念协程机制Thread vs. Groutine  创建时默认的stack的大小 Groutine的Stack初始化大小为2K   和KSE（Kernel Space Entity）的对应关系  Java Thread 是 1 : 1  线程之间发生context切换的时候回直接造成内核对象的切换，造成很大的消耗   Groutine 是 M:N">
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go并发编程基础概念">
+<meta property="og:url" content="http://www.yangjie.hu/2020/10/09/Go-Concurrent/index.html">
+<meta property="og:site_name" content="ColdCode">
+<meta property="og:description" content="Go并发编程基础概念协程机制Thread vs. Groutine  创建时默认的stack的大小 Groutine的Stack初始化大小为2K   和KSE（Kernel Space Entity）的对应关系  Java Thread 是 1 : 1  线程之间发生context切换的时候回直接造成内核对象的切换，造成很大的消耗   Groutine 是 M:N">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15939614397342.jpg">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15939616949160.jpg">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15943060683677.jpg">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15943060759561.jpg">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15943074210765.jpg">
+<meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/15943074336801.jpg">
+<meta property="og:updated_time" content="2020-10-09T02:25:43.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go并发编程基础概念">
+<meta name="twitter:description" content="Go并发编程基础概念协程机制Thread vs. Groutine  创建时默认的stack的大小 Groutine的Stack初始化大小为2K   和KSE（Kernel Space Entity）的对应关系  Java Thread 是 1 : 1  线程之间发生context切换的时候回直接造成内核对象的切换，造成很大的消耗   Groutine 是 M:N">
+<meta name="twitter:image" content="http://qiniu.huyangjie.cn/mweb/15939614397342.jpg">
+
+<link rel="canonical" href="http://www.yangjie.hu/2020/10/09/Go-Concurrent/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Go并发编程基础概念 | ColdCode</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130755566-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-130755566-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3fdf633934fb9f62ceee0538975b8820";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ColdCode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">托起一片绿叶，走向更远的远方</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2020/10/09/Go-Concurrent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go并发编程基础概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-09 10:17:07 / 修改时间：10:25:43" itemprop="dateCreated datePublished" datetime="2020-10-09T10:17:07+08:00">2020-10-09</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/09/Go-Concurrent/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/09/Go-Concurrent/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Go并发编程基础概念"><a href="#Go并发编程基础概念" class="headerlink" title="Go并发编程基础概念"></a>Go并发编程基础概念</h1><h2 id="协程机制"><a href="#协程机制" class="headerlink" title="协程机制"></a>协程机制</h2><p>Thread vs. Groutine</p>
+<ol>
+<li>创建时默认的stack的大小<ul>
+<li>Groutine的Stack初始化大小为2K</li>
+</ul>
+</li>
+<li><p>和KSE（Kernel Space Entity）的对应关系</p>
+<ol>
+<li><p>Java Thread 是 1 : 1</p>
+<ol>
+<li>线程之间发生context切换的时候回直接造成内核对象的切换，造成很大的消耗<br><img src="http://qiniu.huyangjie.cn/mweb/15939614397342.jpg" alt="-w1202"></li>
+</ol>
+</li>
+<li><p>Groutine 是 M:N</p>
+</li>
+</ol>
+</li>
+</ol>
+<a id="more"></a>
+<h3 id="协程原理图"><a href="#协程原理图" class="headerlink" title="协程原理图"></a>协程原理图</h3><p><img src="http://qiniu.huyangjie.cn/mweb/15939616949160.jpg" alt></p>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p>Processor为Go语言实现的协程处理器，Processor在不同的系统线程里，每个Processor有一个准备运行的协程队列，有一个正在运行的协程。</p>
+<h4 id="并发性能"><a href="#并发性能" class="headerlink" title="并发性能"></a>并发性能</h4><ol>
+<li><p>GO运行的时候会有一个守护线程进行计数，记录每个Processor的完成协程的数量。当一段时间完成的数量没有变化的时候，就会在该Processor的协程任务栈中插入一个特殊的标记，当协程运行非内联函数时就会遇到此标记，就会将自己中断下来然后插在等待队列的队尾，切换成别的协程继续运行。</p>
+</li>
+<li><p>协程被中断的时候，Processor会把自己移到另一个可使用的系统线程中，继续执行所挂队列里的其他协程。当被中断的协程被唤醒时，它会被加在其中某一个Processor的等待队列中，或者全局等待队列中。其在寄存器中的状态会被保存到协程对象中，在下一次获取执行机会的时候，会再将状态保存到寄存器中。</p>
+</li>
+</ol>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestGroutine</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">		<span class="comment">//这里的i在每个协程中的地址是不一样的，会进行值复制</span></span><br><span class="line">			fmt.Println(i)</span><br><span class="line">		&#125;(i)</span><br><span class="line">		</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">        go func() &#123;</span></span><br><span class="line"><span class="comment">		//这样写就会存在内存共享，会存在竞态</span></span><br><span class="line"><span class="comment">		  fmt.Println(i)</span></span><br><span class="line"><span class="comment">		&#125;()</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">	&#125;</span><br><span class="line">	time.Sleep(time.Millisecond * <span class="number">50</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="控制并发"><a href="#控制并发" class="headerlink" title="控制并发"></a>控制并发</h2><h3 id="共享内存并发机制"><a href="#共享内存并发机制" class="headerlink" title="共享内存并发机制"></a>共享内存并发机制</h3><h4 id="使用锁-Mutex-保证线程读写安全"><a href="#使用锁-Mutex-保证线程读写安全" class="headerlink" title="使用锁 Mutex 保证线程读写安全"></a>使用锁 <code>Mutex</code> 保证线程读写安全</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCounterThreadSafe</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> mut sync.Mutex</span><br><span class="line">	counter := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				mut.Unlock()</span><br><span class="line">			&#125;()</span><br><span class="line">			mut.Lock()</span><br><span class="line">			counter++</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line">	t.Logf(<span class="string">"counter = %d"</span>, counter)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="WaitGroup-可以进行同步操作"><a href="#WaitGroup-可以进行同步操作" class="headerlink" title="WaitGroup 可以进行同步操作"></a>WaitGroup 可以进行同步操作</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCounterWaitGroup</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> mut sync.Mutex</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	counter := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5000</span>; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				mut.Unlock()</span><br><span class="line">			&#125;()</span><br><span class="line">			mut.Lock()</span><br><span class="line">			counter++</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">	t.Logf(<span class="string">"counter = %d"</span>, counter)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CSP并发机制"><a href="#CSP并发机制" class="headerlink" title="CSP并发机制"></a>CSP并发机制</h3><p>依赖于一个通道来完成两个通讯实体之间的协调</p>
+<h4 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h4><p>典型的Channel机制， 通讯两方都需要在，传递和接受消息都需要</p>
+<p><img src="http://qiniu.huyangjie.cn/mweb/15943060683677.jpg" alt></p>
+<p>Buffer Channel 发送者和接受者松耦合。channel会有一个容量，在没有满的情况下都可以发消息</p>
+<p><img src="http://qiniu.huyangjie.cn/mweb/15943060759561.jpg" alt></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">service</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	time.Sleep(time.Millisecond * <span class="number">500</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Done"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AsyncService</span><span class="params">()</span> <span class="title">chan</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	retCh := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">	<span class="comment">//设置了容量之后，就是buffer channel， 不会阻塞当前的协程</span></span><br><span class="line">	<span class="comment">// retCh := make(chan string, 1)</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		ret := service()</span><br><span class="line">		fmt.Println(<span class="string">"returned result"</span>)</span><br><span class="line">		retCh &lt;- ret</span><br><span class="line">		fmt.Println(<span class="string">"service exited"</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">return</span> retCh</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestAsyncService</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	retCh := AsyncService()</span><br><span class="line">	otherTask()</span><br><span class="line">	fmt.Println(&lt;-retCh)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="channel的关闭"><a href="#channel的关闭" class="headerlink" title="channel的关闭"></a>channel的关闭</h4><ul>
+<li>向关闭的channel发送数据，会导致panic</li>
+<li>v , ok &lt;- ch; ok 为 bool值，true 表示正常接收，false表示通道关闭</li>
+<li><p>所有的channel 接受者都会在channel关闭时，立刻从阻塞等待中返回且上述ok值为false，数据会返回通道对应类型值的零值。</p>
+<blockquote>
+<p>这个广播机制常被利用，进行向多个订阅者同时发送信号。如：退出信号</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">dataProducer</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">			ch &lt;- i</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//可以同时跟很多订阅者发送特殊的通知</span></span><br><span class="line">		<span class="built_in">close</span>(ch)</span><br><span class="line">		ch &lt;- <span class="number">11</span></span><br><span class="line">		wg.Done()</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">dataReceiver</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> data, ok := &lt;-ch; ok &#123;</span><br><span class="line">				fmt.Println(data)</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		wg.Done()</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCloseChannel</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line">	wg.Add(<span class="number">1</span>)</span><br><span class="line">	dataProducer(ch, &amp;wg)</span><br><span class="line">	wg.Add(<span class="number">1</span>)</span><br><span class="line">	dataReceiver(ch, &amp;wg)</span><br><span class="line">	wg.Add(<span class="number">1</span>)</span><br><span class="line">	dataReceiver(ch, &amp;wg)</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="多路选择和超时控制"><a href="#多路选择和超时控制" class="headerlink" title="多路选择和超时控制"></a>多路选择和超时控制</h3><p><img src="http://qiniu.huyangjie.cn/mweb/15943074210765.jpg" alt></p>
+<p><img src="http://qiniu.huyangjie.cn/mweb/15943074336801.jpg" alt></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestSelect</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> ret := &lt;-AsyncService():</span><br><span class="line">		t.Log(ret)</span><br><span class="line">	<span class="keyword">case</span> &lt;-time.After(time.Millisecond * <span class="number">100</span>):</span><br><span class="line">		t.Error(<span class="string">"time out"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>100毫秒的时候到了之后，AsyncService() 还没有返回就会进入超时的错误信息打印</p>
+<h3 id="任务取消"><a href="#任务取消" class="headerlink" title="任务取消"></a>任务取消</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isCancelled</span><span class="params">(cancelChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-cancelChan:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用close广播机制进行批量取消任务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cancel_2</span><span class="params">(cancelChan <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	<span class="built_in">close</span>(cancelChan)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCancel</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	cancelChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(i <span class="keyword">int</span>, cancelCh <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> isCancelled(cancelCh) &#123;</span><br><span class="line">					<span class="keyword">break</span></span><br><span class="line">				&#125;</span><br><span class="line">				time.Sleep(time.Millisecond * <span class="number">5</span>)</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(i, <span class="string">"Cancelled"</span>)</span><br><span class="line">		&#125;(i, cancelChan)</span><br><span class="line">	&#125;</span><br><span class="line">	cancel_2(cancelChan)</span><br><span class="line">	time.Sleep(time.Millisecond * <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Context-上下文取消任务"><a href="#Context-上下文取消任务" class="headerlink" title="Context 上下文取消任务"></a>Context 上下文取消任务</h3><ul>
+<li>根Context： 通过 context.Background()创建</li>
+<li>子Context： context.WithCancel(parentContext)创建<ul>
+<li>ctx, cancel := context.WithCancel(context.Background())</li>
+</ul>
+</li>
+<li>当前Context被取消时，基于他的子context 都会被取消</li>
+<li>接收消息通知&lt;-ctx.Done()</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isCancelled</span><span class="params">(ctx context.Context)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCancel</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(i <span class="keyword">int</span>, ctx context.Context)</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> isCancelled(ctx) &#123;</span><br><span class="line">					<span class="keyword">break</span></span><br><span class="line">				&#125;</span><br><span class="line">				time.Sleep(time.Millisecond * <span class="number">5</span>)</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(i, <span class="string">"Cancelled"</span>)</span><br><span class="line">		&#125;(i, ctx)</span><br><span class="line">	&#125;</span><br><span class="line">	cancel()</span><br><span class="line">	time.Sleep(time.Millisecond * <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Jakey
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yangjie.hu/2020/10/09/Go-Concurrent/" title="Go并发编程基础概念">http://www.yangjie.hu/2020/10/09/Go-Concurrent/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/09/SwiftUI-DataFlow/" rel="prev" title="SwiftUI 数据流">
+      <i class="fa fa-chevron-left"></i> SwiftUI 数据流
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Go并发编程基础概念"><span class="nav-number">1.</span> <span class="nav-text">Go并发编程基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#协程机制"><span class="nav-number">1.1.</span> <span class="nav-text">协程机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协程原理图"><span class="nav-number">1.1.1.</span> <span class="nav-text">协程原理图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结构"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发性能"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">并发性能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制并发"><span class="nav-number">1.2.</span> <span class="nav-text">控制并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#共享内存并发机制"><span class="nav-number">1.2.1.</span> <span class="nav-text">共享内存并发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用锁-Mutex-保证线程读写安全"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">使用锁 Mutex 保证线程读写安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WaitGroup-可以进行同步操作"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">WaitGroup 可以进行同步操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSP并发机制"><span class="nav-number">1.2.2.</span> <span class="nav-text">CSP并发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Channel"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#channel的关闭"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">channel的关闭</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多路选择和超时控制"><span class="nav-number">1.2.3.</span> <span class="nav-text">多路选择和超时控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务取消"><span class="nav-number">1.2.4.</span> <span class="nav-text">任务取消</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Context-上下文取消任务"><span class="nav-number">1.2.5.</span> <span class="nav-text">Context 上下文取消任务</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jakey"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jakey</p>
+  <div class="site-description" itemprop="description">托起一片绿叶的 iOS 临时工</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HuyangJake" title="GitHub → https://github.com/HuyangJake" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jakey_yang@hotmail.com" title="E-Mail → mailto:jakey_yang@hotmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/joybook_jake" title="Twitter → https://twitter.com/joybook_jake" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://note.huyangjie.cn" title="http://note.huyangjie.cn" rel="noopener" target="_blank">Jakey's NoteBook</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/">欢迎添加友链</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">浙ICP备 </a>
+      <img src="http://qiniu.huyangjie.cn/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=18046274" rel="noopener" target="_blank">18046274号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jakey</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://www.yangjie.hu/2020/10/09/Go-Concurrent/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://coldreading-1.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://www.yangjie.hu/2020/10/09/Go-Concurrent/";
+    this.page.identifier = "2020/10/09/Go-Concurrent/";
+    this.page.title = "Go并发编程基础概念";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://coldreading-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
