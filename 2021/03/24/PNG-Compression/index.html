@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_310c7ec2-d262-4c4f-85be-445e709f19b4.png">
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/16164672724450.jpg">
 <meta property="og:image" content="http://qiniu.huyangjie.cn/mweb/16164694289252.jpg">
-<meta property="og:updated_time" content="2021-03-24T07:07:11.293Z">
+<meta property="og:updated_time" content="2021-03-24T07:49:06.518Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PNG 图片的压缩原理">
 <meta name="twitter:description" content="图片压缩是个很大的话题。本文从具体的工具进行初探其中的原理。 本文探索的工具有： TinyPNG 看一下 TinyPNG 官网上是如何介绍的：  它是如何工作的？好问题！ 当您上传一张PNG（Portable Network Graphics）图片时，图片中相似的颜色会被合并。 这种技术被称作“量化（quantization）”。 通过减少颜色数量，可以将24位PNG文件转换成更小的8位索引颜色图">
@@ -239,7 +239,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-24 15:01:53 / 修改时间：15:07:11" itemprop="dateCreated datePublished" datetime="2021-03-24T15:01:53+08:00">2021-03-24</time>
+              <time title="创建时间：2021-03-24 15:01:53 / 修改时间：15:49:06" itemprop="dateCreated datePublished" datetime="2021-03-24T15:01:53+08:00">2021-03-24</time>
             </span>
 
           
@@ -288,7 +288,7 @@
 <li>PNG 32：32表示有32bit,除了RGB占了24bit，还有8 bit可以表示透明度，0-255表示透明程度;</li>
 </ul>
 <h3 id="PNG-数据格式"><a href="#PNG-数据格式" class="headerlink" title="PNG 数据格式"></a>PNG 数据格式</h3><p>首先看一张 png 图片的十六进制数据：</p>
-<p>数据头部得 <code>8950 4e47 0d0a 1a0a</code> 是 PNG 图片的头，通常通过这串编码判断文件是否为 PNG 格式图片。</p>
+<p>数据头部的 <code>8950 4e47 0d0a 1a0a</code> 是 PNG 图片的头，通常通过这串编码判断文件是否为 PNG 格式图片。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">00000000: 8950 4e47 0d0a 1a0a 0000 000d 4948 4452  .PNG........IHDR</span><br><span class="line">00000010: 0000 0018 0000 002a 0806 0000 00a9 c59b  .......*........</span><br><span class="line">00000020: 5e00 0000 0173 5247 4200 aece 1ce9 0000  ^....sRGB.......</span><br><span class="line">00000030: 010f 4944 4154 480d d5d7 ed09 c230 1485  ..IDATH......0..</span><br><span class="line">00000040: e134 d8df e222 ddc0 1d1c c1d1 1cc1 1ddc  .4..."..........</span><br><span class="line">00000050: c045 c4df 952a 2790 d298 7edc 7b73 2218  .E...*'...~.&#123;s".</span><br><span class="line">00000060: 10d2 2aef d3a6 508c 73bf 1ab7 fbfd 800f  ..*...P.s.......</span><br><span class="line">00000070: db6b 1044 78d7 fb33 e6af 76b8 1cbb ee81  .k.Dx..3..v.....</span><br><span class="line">00000080: 3963 3431 3eb8 f71e 41ef 9a27 13f1 be77  9c41&gt;...A..'...w</span><br><span class="line">00000090: a718 0780 39ee 86b5 5c7e 68dd 1557 8d78  ....9...\~h..W.x</span><br><span class="line">000000a0: 1c4c 2479 06d3 3b01 c658 ae00 20f6 fd2c  .L$y..;..X.. ..,</span><br><span class="line">000000b0: 700e a314 1901 c46a 2009 5003 c900 3632  p......j .P...62</span><br><span class="line">000000c0: 0b30 9145 8085 ac02 0c64 1328 4544 4009  .0.E.....d.(ED@.</span><br><span class="line">000000d0: 2206 ac88 0ab0 206a 408b 9800 0d62 06a4  "..... j@....b..</span><br><span class="line">000000e0: 88c7 0f6b 0ef3 1d48 dfbc 2640 1ac7 caa8  ...k...H..&amp;@....</span><br><span class="line">000000f0: 014d 5c0d 68e3 2ac0 1217 03d6 b808 2889  .M\.h.*.......(.</span><br><span class="line">00000100: 6f02 a5f1 5580 115f 0458 f159 8019 cf00  o...U.._.X.Y....</span><br><span class="line">00000110: 763c 016a c447 a056 3c00 35e3 00b2 0d48  v&lt;.j.G.V&lt;.5....H</span><br><span class="line">00000120: 3849 dce5 641b 90d2 bfeb b8c0 e908 afeb  8I..d...........</span><br><span class="line">00000130: b84c f882 b93f 9b42 616f 0028 39f9 0f07  .L...?.Bao.(9...</span><br><span class="line">00000140: 1f25 0c91 1bbe 7533 6200 0000 0049 454e  .%....u3b....IEN</span><br><span class="line">00000150: 44ae 4260 82                             D.B`.</span><br></pre></td></tr></table></figure>
 <p>我通过截图来描述下其他的字段含义：<br><img src="http://qiniu.huyangjie.cn/mweb/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_310c7ec2-d262-4c4f-85be-445e709f19b4.png" alt></p>
 <p>每段的十六进制编码就有一个特定的含义。</p>
