@@ -208,6 +208,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2018/05/15/breakpoint-resume-in-iOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jakey">
+      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ColdCode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/15/breakpoint-resume-in-iOS/" class="post-title-link" itemprop="url">AFNetworking 实现断点续传</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-15 23:14:19" itemprop="dateCreated datePublished" datetime="2018-05-15T23:14:19+08:00">2018-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-10 15:24:08" itemprop="dateModified" datetime="2019-09-10T15:24:08+08:00">2019-09-10</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/05/15/breakpoint-resume-in-iOS/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/15/breakpoint-resume-in-iOS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><blockquote>
+<ol>
+<li><p>从协议层面来说，断点续传的实现都是通过http头里面的Range来实现的。对于以前asi的实现和基于NSURLConnection的实现来说，我们都是通过手动保存当前大小然后填充到Range的策略来实现断点续传功能的。</p>
+</li>
+<li><p>NSURLSession内置了对于断点续传的api支持，主要是通过resumeData和tmp中间文件。在NSURLSession暂停时，其中间文件的相关信息被保存到resumeData，我们只要通过这个resumeData，即可从之前的下载进度中恢复。也就是说1中的细节被封装在api内部了。</p>
+</li>
+</ol>
+<p>目前来看，基于NSURLSession的断点续传主要有两个问题需要考虑：</p>
+<p>a. 程序退出（手动kill等）时需要自动保存resumeData，后续应用起来时再恢复之。</p>
+<p>b. iOS10里面的resumeData的保存有点问题，需要特别处理，可以参考此demo:<a href="https://github.com/HustHank/BackgroundDownloadDemo" target="_blank" rel="noopener">https://github.com/HustHank/BackgroundDownloadDemo</a>.</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/05/15/breakpoint-resume-in-iOS/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2018/05/02/赋予H5以Native的生命-——《WebView优化》/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2056,134 +2152,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yangjie.hu/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jakey">
-      <meta itemprop="description" content="托起一片绿叶的 iOS 临时工">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ColdCode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/" class="post-title-link" itemprop="url">自定义NSURLProtocol实现UIWebView缓存机制</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-07-14 10:08:43" itemprop="dateCreated datePublished" datetime="2017-07-14T10:08:43+08:00">2017-07-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-10 15:24:08" itemprop="dateModified" datetime="2019-09-10T15:24:08+08:00">2019-09-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/猿猿养成记/" itemprop="url" rel="index"><span itemprop="name">猿猿养成记</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>近期正在研究UIWebView加载网页的缓存的实现，比较常见的是使用自定义的NSURLProtocol进行拦截处理。根据网上的资料，结合试验和自己的理解做个记录。</p>
-<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p><strong>介绍下我产出的YJURLProtocol完成的功能</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">功能</th>
-<th style="text-align:center">支持</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">缓存数据</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">将整个request缓存下来，以及其response</td>
-</tr>
-<tr>
-<td style="text-align:center">设置过期时间</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">默认为两天过期，过期后请求会删除原有缓存</td>
-</tr>
-<tr>
-<td style="text-align:center">自动更新缓存</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">间隔时间超过1min的请求，加载页面后异步更新缓存</td>
-</tr>
-</tbody>
-</table>
-<p>UIWebView缓存使用机制：</p>
-<ul>
-<li>两个相同的请求时间相隔在60s之内，直接使用缓存，不进行异步更新缓存</li>
-<li>两个相同的请求相隔60s+但是没有过期，使用缓存加载页面后，1min后进行异步更新缓存并刷新页面</li>
-<li>缓存命中但是时间已经是两天前，则删除缓存走网络数据</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/14/自定义NSURLProtocol实现UIWebView缓存机制/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2255,7 +2223,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2268,7 +2236,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -2322,7 +2290,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
